@@ -1,0 +1,71 @@
+.content {
+    @include layout;
+    margin-bottom: 50px;
+    @include tablet {
+        margin-bottom: 100px;
+    }
+    @include desktop {
+        display: flex;
+    }
+
+    &__wide {
+        @include desktop {
+            display: block;
+        }
+    }
+
+    & > div:not([class]) {
+        flex-grow: 1;
+    }
+
+    & + & {
+        margin-top: -50px;
+        @include tablet {
+            margin-top: -100px;
+        }
+    }
+
+    &_sidebar {
+        @include desktop {
+            width: $sidebar-width__small;
+            margin: 0 30px 0 0;
+            flex-shrink: 0;
+        }
+        @include desktop-large() {
+            width: $sidebar-width;
+        }
+
+        &__right {
+            @include desktop {
+                width: 315px;
+                margin: 0 0 0 30px;
+            }
+        }
+
+        & + div {
+            @include desktop {
+                width: 100%;
+            }
+        }
+    }
+    &_sidebar-gray-section {
+        background: $cLight;
+        padding: 30px 28px;
+        margin: 0 0 60px;
+        @include tablet {
+            margin: 0 0 90px;
+        }
+    }
+    &_columns {
+        @include desktop {
+            display: flex;
+            gap: 30px;
+        }
+    }
+    &_column {
+        @include desktop {
+            flex-grow: 1;
+            width: 50%;
+        }
+    }
+}

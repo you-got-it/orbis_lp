@@ -1,0 +1,61 @@
+@mixin button {
+    display: inline-block;
+    background: $cRed;
+    box-sizing: border-box;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    height: 42px;
+    line-height: 42px;
+    padding: 0 24px;
+    text-align: center;
+    width: 100%;
+    transition: .2s ease-in-out border-color,
+                .2s ease-in-out background-color,
+                .2s ease-in-out color;
+    @include tablet {
+        width: auto;
+        min-width: 230px;
+    }
+
+    &:active,
+    &__active {
+        color: rgba(#fff, .3);
+    }
+    &:disabled {
+        background: #141516;
+        border-color: #2b3036;
+        color: #2b3036;
+    }
+}
+
+.button,
+button,
+input[type="button"],
+input[type="submit"] {
+    @include button;
+}
+
+.secondary-button {
+    border: 1px solid rgba(196, 196, 196, .5);
+    background: #fff;
+    color: $color;
+}
+
+.light-button {
+    @include button;
+    display: inline-block;
+    border: 1px solid $cRed;
+    background: #fff;
+    color: $cRed;
+    width: auto;
+    transition: .2s $easing color,
+                .2s $easing background;
+
+    &:hover {
+        color: $cLight;
+        background-color: $cRed;
+    }
+}

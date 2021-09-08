@@ -1,0 +1,141 @@
+.menu {
+    position: relative;
+    width: 100%;
+    @include desktop {
+        width: auto;
+    }
+
+    &_toggle {
+        background: url(#{$img}/burger-red.svg) no-repeat center right 22px, url(#{$img}/catalog.svg) no-repeat center left 22px;
+        background-color: #EBEBEB;
+        color: $color;
+        height: 60px;
+        line-height: 64px;
+        padding: 0 50px 0 64px;
+        text-align: left;
+        width: 100%;
+        white-space: nowrap;
+        @include desktop {
+            width: $sidebar-width__small;
+        }
+        @include desktop-large {
+            width: $sidebar-width;
+        }
+
+        &__wide {
+            @include desktop {
+                width: 100%;
+            }
+            @include desktop-large {
+                width: 100%;
+            }
+        }
+    }
+    &_list {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        border-radius: 0 0 6px 6px;
+        background: #fff;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        z-index: 11;
+        width: 95vw;
+        max-width: 370px;
+        @include desktop {
+            box-shadow: 0px 4px 20px rgba(0,0,0,0.3);
+            position: absolute;
+            left: 0;
+            top: 60px;
+            border-radius: 0;
+            width: 100%;
+            max-width: none;
+        }
+
+        .menu.opened & {
+            display: block;
+        }
+    }
+    &_list-item {
+        border-top: 1px solid rgba(196, 196, 196, 0.5);
+        padding: 0;
+        margin: 0;
+
+        &:first-child {
+            border-top: none;
+        }
+    }
+    &_list-link {
+        display: flex;
+        align-items: center;
+        min-height: 45px;
+        padding: 4px 52px;
+        position: relative;
+        background: #fff url(#{$img}/chevron-right.svg) no-repeat center right 12px;
+        font-weight: bold;
+        font-size: 16px;
+        color: $color;
+        z-index: 2;
+
+        &:hover {
+            color: $cRed;
+        }
+    }
+    &_list-icon {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        width: 25px;
+        height: 25px;
+        object-fit: contain;
+    }
+    &_sublist {
+        max-width: none;
+        background: #fff;
+        padding: 10px 10px;
+        box-sizing: border-box;
+        display: none;
+        @include tablet {
+            min-width: 351px;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            min-height: 100%;
+            padding: 20px 35px;
+            border-radius: 0 0 6px 6px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3),
+                        10px 0px 10px rgba(0, 0, 0, 0.1) inset;
+            z-index: 1;
+        }
+        @include desktop {
+            border-radius: 0;
+        }
+
+        .menu_list-item:hover & {
+            @include desktop {
+                display: block;
+            }
+        }
+        .active > & {
+            display: block;
+        }
+    }
+    &_sublist-link {
+        font-size: 14px;
+        line-height: 18px;
+        display: block;
+        color: $color;
+        margin: 0 0 10px;
+        @include tablet {
+            font-size: 18px;
+            line-height: 24px;
+            margin: 0 0 20px;
+        }
+
+        &:hover {
+            color: $cRed;
+        }
+    }
+}

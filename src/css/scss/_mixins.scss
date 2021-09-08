@@ -1,0 +1,58 @@
+@mixin invisible-text {
+    font: 0/0 a;
+    text-shadow: none;
+    color: transparent;
+}
+@mixin cutted-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+@mixin tablet() {
+    @media all and (min-width: 768px) { @content; }
+}
+@mixin desktop() {
+    @media all and (min-width: 1124px) { @content; }
+}
+@mixin desktop-large() {
+    @media all and (min-width: 1366px) { @content; }
+}
+@mixin media($resolution) {
+    @media all and (min-width: $resolution) { @content; }
+}
+@mixin mediaHeight($resolution) {
+    @media all and (min-height: $resolution) { @content; }
+}
+@mixin placeholder-color($color) {
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+    &::-moz-placeholder {
+        color: $color;
+    }
+    &:-ms-input-placeholder
+    {
+        color: $color;
+    }
+}
+
+@mixin layout {
+    padding-left: 20px;
+    padding-right: 20px;
+    @include tablet {
+        max-width: $max-width;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: $indent;
+        padding-right: $indent;
+    }
+
+}
+
+@mixin gradiented-text($color1, $color2) {
+    @supports(-webkit-background-clip: text) {
+        background: linear-gradient($color1,$color2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
