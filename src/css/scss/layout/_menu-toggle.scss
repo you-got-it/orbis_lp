@@ -1,9 +1,0 @@
-.menu-toggle {
-    background: $bg_color url(#{$img}/burger.svg) no-repeat center;
-    height: 42px;
-    width: 41px;
-    margin: 0 0 0 18px;
-    @include desktop {
-        display: none;
-    }
-}

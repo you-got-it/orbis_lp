@@ -25,17 +25,17 @@
     &_tabs-button {
         @include button;
         background: #fff;
-        color: $cRed;
+        color: $cYellow;
         font-size: 15px;
-        border: 1px solid $cRed;
+        border: 1px solid $cYellow;
         @include tablet {
             font-size: 18px;
         }
 
         &:hover,
         &.active {
-            background-color: $cRed;
-            color: $cLight;
+            background-color: $cYellow;
+            color: $color;
         }
     }
     &_tabs-content {

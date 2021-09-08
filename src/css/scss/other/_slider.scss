@@ -1,0 +1,7 @@
+.slider {
+    overflow: hidden;
+    margin: 0 0 50px;
+    @include tablet {
+        margin-bottom: 100px;
+    }
+}

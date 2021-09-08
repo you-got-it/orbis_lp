@@ -1,4 +1,5 @@
 body {
+    background: $bg_color;
     color: $color;
     font: #{$font-size__small}/#{1.4} $font-family;
     padding: 0;
@@ -8,7 +9,6 @@ body {
 }
 
 a {
-    color: $cRed;
     text-decoration: none;
     transition: .2s $easing color;
 

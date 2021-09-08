@@ -1,0 +1,21 @@
+.marked-text {
+    display: inline-block;
+    font-size: 24px;
+    line-height: 1;
+    font-weight: bold;
+    background-color: $cBlue;
+    padding: 10px 20px 8px;
+    @include tablet {
+        padding: 27px 31px 24px;
+        font-size: 47px;
+    }
+
+    &__small {
+        font-size: 12px;
+        padding: 10px 10px 8px;
+        @include tablet {
+            font-size: 27px;
+            padding: 9px 12px 7px;
+        }
+    }
+}

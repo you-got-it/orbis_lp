@@ -21,14 +21,21 @@
 @import  "layout/headings";
 @import  "layout/header";
 @import  "layout/footer";
-@import  "layout/menu";
-@import  "layout/main-menu";
 @import  "layout/content";
 @import  "layout/popup";
-@import  "layout/menu-toggle";
 @import  "layout/fade";
+@import  "layout/logo";
 
 /* other */
+@import  "other/showcase";
+@import  "other/about";
+@import  "other/marked-text";
+@import  "other/bright-text";
+@import  "other/person";
+@import  "other/slider";
+@import  "other/memories";
+@import  "other/orbis";
 
 
 /* plugins */
+@import  "plugins/swiper";

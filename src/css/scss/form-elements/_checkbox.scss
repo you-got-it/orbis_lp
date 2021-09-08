@@ -37,10 +37,10 @@ input[type="checkbox"] {
         }
     }
     &:checked + label {
-        color: $cRed;
+        color: $cYellow;
 
         &::before {
-            border-color: $cRed;
+            border-color: $cYellow;
         }
         &::after {
             opacity: 1;
