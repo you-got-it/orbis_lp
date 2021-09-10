@@ -1,3 +1,54 @@
 .orbis {
-    
+    background: url(#{$img}/orbis.png) no-repeat center / 100% 100%;
+    padding: 158px $indent 50px;
+    margin-left: -$indent;
+    margin-right: -$indent;
+    margin-bottom: 50px;
+    position: relative;
+    @include desktop {
+        box-sizing: border-box;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 200px;
+        padding: 290px 128px 50px 392px;
+        min-height: 720px;
+    }
+    @include desktop-large {
+        min-height: 1020px;
+        padding: 290px 168px 50px 592px;
+    }
+
+    &_title {
+        display: inline-block;
+        color: $cDark;
+        font-weight: 900;
+        font-size: 24px;
+        padding: 0 20px;
+        height: 57px;
+        line-height: 57px;
+        background-color: $cLightBlue;
+        margin: 0 0 20px;
+        text-transform: uppercase;
+        @include desktop {
+            margin-bottom: 40px;
+        }
+    }
+    &_image {
+        position: absolute;
+        width: 180px;
+        right: $indent;
+        top: -56px;
+        @include desktop {
+            right: auto;
+            left: -100px;
+            top: 150px;
+            width: 400px;
+        }
+        @include desktop-large {
+            right: auto;
+            left: -300px;
+            top: 150px;
+            width: 720px;
+        }
+    }
 }

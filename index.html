@@ -90,11 +90,61 @@
             </div>
 
             <div class="orbis">
-                <img class="orbis_bg" src="src/img/orbis.png" alt="">
-                <img class="orbis_image" src="src/img/girl.jpg" alt="">
+                <picture class="orbis_image">
+                    <source srcset="src/img/girl-mobile.jpg" media="(max-width: 768px)">
+                    <img src="src/img/girl.jpg" alt="" class="">
+                </picture>
                 <span class="orbis_title">who are orbis?</span>
                 <p>We are an international eye care charity that saves people’s sight, giving them the chance to change their lives. We train eye health professionals and workers, raise awareness, and improve access to eye care around the world.</p>
             </div>
+
+            <div class="quote-wrapper">
+                <div class="quote-wrapper_top-corners"></div>
+                <div class="quote-wrapper_bottom-corners"></div>
+                <figure>
+                    <blockquote cite="https://developer.mozilla.org/samples/html/figure.html">
+                        ‘Everywhere Orbis works, it leaves lasting change by training, educating and distributing knowledge and inspiring local teams to fight avoidable blindness in their own communities.’ 
+                    </blockquote>
+                    <figcaption>TOM DAVIES – EYE WEAR DESIGNER</figcaption>
+                </figure>
+
+            </div>
+
+            <form action="" class="form">
+                <h3 class="form_title">
+                    <div>
+                        <span>If you lost your sight,</span>
+                    </div>
+                    <span>what moment would you see again?</span>
+                </h3>
+                <div class="form_row">
+                    <label for="want">i’d see...</label>
+                    <input type="text" id="want" placeholder="Type here what you would see|">
+                </div>
+                <div class="form_row">
+                    <label for="moment">could you describe that moment to us?</label>
+                    <input type="text" id="moment" placeholder="Type here a description of that moment|">
+                </div>
+                <div class="form_row">
+                    <label for="name">first name</label>
+                    <input type="text" id="name" placeholder="Enter your first name|">
+                </div>
+                <div class="form_row">
+                    <label for="surname">second name</label>
+                    <input type="text" id="surname" placeholder="Enter your second name|">
+                </div>
+                <div class="form_row">
+                    <label for="mail">email address</label>
+                    <input type="email" id="mail" placeholder="Enter your email address">
+                </div>
+                <div class="form_row">
+                    <input type="checkbox" id="recieve">
+                    <label for="recieve">Tick this box if you would like to receive email communications and updates about our work. We will use your data in accordance with our Privacy Policy</label>
+                </div>
+                <div class="form_row">
+                    <input type="submit" value="SUBMIT">
+                </div>
+            </form>
         </div>
 
     </main>
@@ -107,7 +157,8 @@
                     <a href="#" class="footer_menu-link">terms & conditions</a>
                 </div>
                 <div class="footer_copyrights">
-                    <span>Orbis UK (Orbis Charitable Trust) is an affiliate of Orbis International .Registered charity number 1061352, company number 3303689 6th Floor, 10 Lower Thames Street, London EC3R 6AF</span>
+                    <p>Orbis UK (Orbis Charitable Trust) is an affiliate of Orbis International .Registered charity number 1061352, company number 3303689</p>
+                    <p>6th Floor, 10 Lower Thames Street, London EC3R 6AF</p>
                 </div>
             </div>
             <img src="src/img/fr.svg" alt="" class="footer_logo">

@@ -1,48 +1,32 @@
 .form {
+    text-align: center;
+    @include tablet {
+        margin-bottom: 150px;
+    }
+    
+    &_title {
+        span {
+            font-weight: 900;
+            font-size: 24px;
+            line-height: 30px;
+            white-space: pre-wrap;
+            background-color: $cLightBlue;
+            border: 0 solid $cLightBlue;
+            padding: 13px;
+            @include tablet {
+                font-weight: 900;
+                font-size: 60px;
+                line-height: 60px;
+                padding: 28px;
+            }
+        }
+        
+    }
     &_row {
+        margin: 0 auto 50px;
+        max-width: 572px;
         @include tablet {
-            display: flex;
-            gap: 30px;
-        }
-    }
-    &_cell {
-        margin: 0 0 20px;
-        width: 100%;
-        @include tablet {
-            margin-bottom: 30px;
-            flex-grow: 1;
-            width: 50%;
-        }
-    }
-    &_tabs-buttons {
-        display: flex;
-        gap: 20px;
-        margin: 0 0 20px;
-        @include tablet {
-            margin-bottom: 30px;
-        }
-    }
-    &_tabs-button {
-        @include button;
-        background: #fff;
-        color: $cYellow;
-        font-size: 15px;
-        border: 1px solid $cYellow;
-        @include tablet {
-            font-size: 18px;
-        }
-
-        &:hover,
-        &.active {
-            background-color: $cYellow;
-            color: $color;
-        }
-    }
-    &_tabs-content {
-        display: none;
-
-        &.active {
-            display: block;
+            margin-bottom: 80px;
         }
     }
 }

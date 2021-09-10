@@ -1,0 +1,60 @@
+.quote-wrapper {
+    position: relative;
+    padding: 53px 0;
+    margin: 0 0 50px;
+    @include tablet {
+        padding: 95px 150px;
+        margin-bottom: 200px;
+    }
+
+    &_top-corners {
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 25px;
+            height: 25px;
+            border-color: $cLightBlue;
+            border-style: solid;
+            @include tablet {
+                height: 50px;
+                width: 50px;
+            }
+        }
+
+        &::before {
+            left: 0;
+            border-width: 1px 0 0 1px;
+        }
+        &::after {
+            right: 0;
+            border-width: 1px 1px 0 0;
+        }
+    }
+    &_bottom-corners {
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 25px;
+            height: 25px;
+            border-color: $cLightBlue;
+            border-style: solid;
+            @include tablet {
+                height: 50px;
+                width: 50px;
+            }
+        }
+
+        &::before {
+            left: 0;
+            border-width: 0 0 1px 1px;
+        }
+        &::after {
+            right: 0;
+            border-width: 0 1px 1px 0;
+        }
+    }
+}

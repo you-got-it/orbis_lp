@@ -1,5 +1,5 @@
 body {
-    background: $bg_color;
+    background: $cDark;
     color: $color;
     font: #{$font-size__small}/#{1.4} $font-family;
     padding: 0;
@@ -48,4 +48,29 @@ textarea {
 
 table {
     min-width: 100%;
+}
+
+blockquote {
+    text-align: center;
+    color: $cLightBlue;
+    font-size: 24px;
+    line-height: 30px;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+    font-weight: 900;
+    @include tablet {
+        font-size: 42px;
+        line-height: 52px;
+    }
+}
+
+figcaption {
+    font-size: 18px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: 4px;
+    @include tablet {
+        font-size: 20px;
+        line-height: 52px;
+    }
 }

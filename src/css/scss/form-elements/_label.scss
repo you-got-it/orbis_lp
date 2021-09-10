@@ -1,12 +1,12 @@
 label {
-    font-size: 14px;
-    line-height: 18px;
-    color: $color;
+    font-size: 19px;
+    line-height: 30px;
     display: block;
     text-align: left;
-    position: relative;
+    margin: 0 0 10px;
+    text-transform: uppercase;
     @include tablet {
-        font-size: 16px;
-        line-height: 18px;
+        font-size: 20px;
+        line-height: 20px;
     }
 }
