@@ -49,34 +49,32 @@
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="person">
-                            <span class="person_blindfold">
-                                <span class="marked-text marked-text__small">I’d see my family</span>
-                            </span>
                             <img class="person_image" src="src/img/slider-1.webp" alt="">
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="person">
-                            <span class="person_blindfold">
-                                <span class="marked-text marked-text__small">I’d see my daughter's wedding</span>
-                            </span>
                             <img class="person_image" src="src/img/slider-2.webp" alt="">
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="person">
-                            <span class="person_blindfold">
-                                <span class="marked-text marked-text__small">I’d see my mum</span>
-                            </span>
-                            <img class="person_image" src="src/img/slider-1.webp" alt="">
+                            <img class="person_image" src="src/img/slider-3.webp" alt="">
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="person">
-                            <span class="person_blindfold">
-                                <span class="marked-text marked-text__small">I’d see my daughter's wedding</span>
-                            </span>
-                            <img class="person_image" src="src/img/slider-1.webp" alt="">
+                            <img class="person_image" src="src/img/slider-4.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="person">
+                            <img class="person_image" src="src/img/slider-5.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="person">
+                            <img class="person_image" src="src/img/slider-6.webp" alt="">
                         </div>
                     </div>
                 </div>
@@ -110,12 +108,12 @@
 
             </div>
 
-            <form action="" class="form">
+            <form action="" class="form" id="form">
                 <h3 class="form_title">
                     <div>
-                        <span>If you lost your sight,</span>
+                        <span>If <span>you lost</span><span> your</span><span>sight,</span></span>
                     </div>
-                    <span>what moment would you see again?</span>
+                    <span><span>what </span><span>moment</span> <span>would </span><span>you </span><span>see </span><span>again?</span></span>
                 </h3>
                 <div class="form_row">
                     <label for="want">i’d see...</label>
@@ -171,5 +169,19 @@
 
     <script src="./src/js/swiper.min.js"></script>
     <script src="./src/js/main.js"></script>
+
+    <script>
+        (function () {
+            var s = document.createElement("script"),
+                e = !document.body ? document.querySelector("head") : document.body;
+            s.src = "https://acsbapp.com/apps/app/dist/js/app.js";
+            s.async = true;
+            s.onload = function () {
+                acsbJS.init({ statementLink: "", footerHtml: "", hideMobile: false, hideTrigger: false, language: "en", position: "left", leadColor: "#146ff8", triggerColor: "#146ff8", triggerRadius: "50%", triggerPositionX: "right", triggerPositionY: "bottom", triggerIcon: "people", triggerSize: "medium", triggerOffsetX: 20, triggerOffsetY: 20, mobile: { triggerSize: "small", triggerPositionX: "right", triggerPositionY: "bottom", triggerOffsetX: 10, triggerOffsetY: 10, triggerRadius: "50%" } });
+            };
+            e.appendChild(s);
+        })();
+    </script>
+
 </body>
 </html>

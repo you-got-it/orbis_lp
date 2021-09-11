@@ -13,8 +13,7 @@
     text-align: center;
     white-space: nowrap;
     text-transform: uppercase;
-    transition: .2s ease-in-out background-color,
-                .2s ease-in-out color;
+    transition: .2s ease-in-out opacity;
     @include tablet {
         font-size: 20px;
         height: 74px;
@@ -22,8 +21,12 @@
         padding: 0 35px;
     }
 
+    &:hover,
+    &:focus {
+        opacity: .6;
+    }
     &:active {
-        color: rgba(#fff, .3);
+        opacity: .8;
     }
     &:disabled {
         opacity: .5;

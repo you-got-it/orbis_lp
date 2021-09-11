@@ -1,6 +1,3 @@
 .content {
     @include layout;
-    @include tablet {
-        max-width: 1164px;
-    }
 }

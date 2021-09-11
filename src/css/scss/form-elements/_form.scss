@@ -5,20 +5,49 @@
     }
     
     &_title {
+        margin: 0 0 60px;
+        @include tablet {
+            margin-bottom: 120px;
+        }
+
         span {
             font-weight: 900;
             font-size: 24px;
             line-height: 30px;
             white-space: pre-wrap;
-            background-color: $cLightBlue;
             border: 0 solid $cLightBlue;
-            padding: 13px;
+            position: relative;
             @include tablet {
                 font-weight: 900;
                 font-size: 60px;
                 line-height: 60px;
-                padding: 28px;
             }
+
+            span {
+                white-space: nowrap;
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                left: -13px;
+                top:-13px;
+                bottom:-13px;
+                right:-13px;
+                padding: 13px;
+                z-index: -1;
+                background-color: $cBlue;
+                @include tablet {
+                    left: -28px;
+                    top:-28px;
+                    bottom:-28px;
+                    right:-28px;
+                }
+            }
+        }
+
+        div span::before {
+            z-index: -2;
         }
         
     }
