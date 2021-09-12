@@ -2,6 +2,9 @@
     padding: 120px 0 0;
     position: relative;
     background-color: $bg_color;
+    @include tablet {
+        padding-top: 180px;
+    }
 
     &_title {
         position: absolute;
@@ -14,6 +17,7 @@
         left: $indent;
         right: $indent;
         @include tablet {
+            top: 180px;
             font-size: 30px;
             line-height: 46px;
             left: 50%;
@@ -40,12 +44,13 @@
             top: 46%;
         }
     }
-    &_image {
+    &_image,
+    &_video {
         display: block;
-        width: 100%;
+        width: 95%;
         margin: auto;
-        @include tablet {
-            max-width: 984px;
+        @include desktop {
+            margin-top: -5vw;
         }
     }
 }
