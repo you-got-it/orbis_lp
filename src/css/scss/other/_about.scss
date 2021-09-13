@@ -13,5 +13,12 @@
             max-width: 60%;
             margin: 0;
         }
+
+        & + a {
+            @include tablet {
+                display: inline-block;
+                margin: 0 0 15px;
+            }
+        }
     }
 }

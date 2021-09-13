@@ -15,15 +15,16 @@ body {
 
 a {
     text-decoration: none;
-    transition: .2s $easing color;
+    transition: .2s $easing opacity;
 
-    &:hover,
-    &.hover {
+    &:hover{
         outline: none;
+        opacity: .6;
     }
-    &:active,
-    &.active {
+    &:active{
         outline: none;
+        opacity: .6;
+
     }
 }
 

@@ -10,11 +10,19 @@
         margin-left: 0;
         margin-right: 0;
         margin-bottom: 200px;
+        margin-right: -4.5vw;
         padding: 290px 128px 50px 392px;
         min-height: 720px;
     }
     @include desktop-large {
+        padding: 290px 168px 50px 492px;
+        min-height: 720px;
+    }
+    @include media(1680px) {
+        padding: 290px 168px 50px 492px;
         min-height: 1020px;
+    }
+    @include media(1900px) {
         padding: 290px 168px 50px 592px;
     }
 
@@ -44,10 +52,12 @@
             top: 150px;
             width: 400px;
         }
-        @include desktop-large {
-            right: auto;
+        @include media(1680px) {
+            left: -10vw;
+            width: 30vw;
+        }
+        @include media(1900px) {
             left: -300px;
-            top: 150px;
             width: 720px;
         }
     }

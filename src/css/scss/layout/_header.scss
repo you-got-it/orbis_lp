@@ -14,5 +14,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        @include tablet {
+            max-width: 1780px;
+            padding-left: 82px;
+            padding-right: 82px;
+        }
+        @include media(1680px) {
+            //max-width: $max-width;
+        }
     }
 }

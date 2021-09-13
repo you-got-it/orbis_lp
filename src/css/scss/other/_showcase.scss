@@ -2,8 +2,10 @@
     padding: 120px 0 0;
     position: relative;
     background-color: $bg_color;
+    margin: 0 0 50px;
     @include tablet {
         padding-top: 180px;
+        margin-bottom: 150px;
     }
 
     &_title {
