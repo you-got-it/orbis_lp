@@ -2,7 +2,9 @@
     overflow: hidden;
     margin: 0 #{-$indent} 108px;
     padding: 0 $indent;
+    height: 236px;
     @include tablet {
+        height: auto;
         margin-bottom: 150px;
         margin-left: calc(calc(10% + 25px) / -1);
         margin-right: calc(calc(10% + 25px) / -1);

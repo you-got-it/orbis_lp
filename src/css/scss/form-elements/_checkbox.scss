@@ -12,6 +12,7 @@ input[type="checkbox"] {
         line-height: 18px;
         min-height: 20px;
         position: relative;
+        text-transform: none;
         margin: 0;
         transition: .2s $easing color;
 
@@ -35,6 +36,11 @@ input[type="checkbox"] {
             left: 0;
             opacity: 0;
             transition: .1s $easing opacity;
+        }
+
+        a {
+            color: $color;
+            text-decoration: underline;
         }
     }
     &:checked + label {
