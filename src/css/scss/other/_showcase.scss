@@ -57,6 +57,7 @@
         @include tablet {
             width: 95%;
             margin: auto;
+            transform: none;
         }
         @include desktop {
             margin-top: -5vw;
