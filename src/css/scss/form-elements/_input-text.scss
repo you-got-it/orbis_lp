@@ -16,6 +16,7 @@ input[type="tel"] {
     padding: 20px 0;
     width: 100%;
     letter-spacing: .5px;
+    border-radius: 0;
     transition: .2s ease-in color;
     @include tablet {
         font-size: 19px;
