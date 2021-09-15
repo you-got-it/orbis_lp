@@ -26,4 +26,9 @@ input[type="tel"] {
     &:focus {
         color: $color;
     }
+
+    &:invalid {
+        @include placeholder-color(#c71f15);
+        border-color: #c71f15;
+    }
 }

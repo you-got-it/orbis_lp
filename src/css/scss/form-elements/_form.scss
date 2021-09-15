@@ -59,4 +59,27 @@
             margin-bottom: 80px;
         }
     }
+    &_success {
+        display: none;
+    }
+
+    &.done {
+        .form_title {
+            display: none !important;
+        }
+        .form_row {
+            display: none;
+        }
+        .form_title__success {
+            display: block !important;
+        }
+        .form_success {
+            display: block;
+        }
+    }
+}
+
+#form {
+    position: relative;
+    top: -70px;
 }

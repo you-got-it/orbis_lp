@@ -7,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="48x48px.ico">
-    <link rel="icon" type="image/x-icon" href="48x48px.ico">
-    <link rel="icon" type="image/png" href="16x16px.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="32x32px.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="48x48px.png" sizes="48x48">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
     <meta content="telephone=no" name="format-detection">
     <meta name="HandheldFriendly" content="true">
 </head>
@@ -106,7 +107,8 @@
 
             </div>
 
-            <form action="" class="form" id="form">
+            <form action="https://orbis-updates.org/signup.ashx" method="POST" class="form">
+                <div id="form"></div>
                 <h3 class="form_title js-random-text">
                     <div>
                         <span>If <span>you lost</span><span> your</span><span> sight,</span></span>
@@ -125,32 +127,50 @@
                     </div>
                     <span><span>what’s </span><span>the first</span> <span>thing </span><span>you’d </span><span>want </span><span>to see?</span></span>
                 </h3>
+                <h3 class="form_title form_title__success" style="display: none;">
+                    <div>
+                        <span>Thamk you <span>for</span><span> submitting</span></span>
+                    </div>
+                    <span><span>your </span><span>memory.</span></span>
+                </h3>
                 <div class="form_row">
                     <label for="want">i’d see...</label>
-                    <input type="text" id="want" placeholder="Type here what you would see|">
+                    <input type="text" id="want" name="IDSEE" placeholder="Type here what you would see|" required>
                 </div>
                 <div class="form_row">
                     <label for="moment">could you describe that moment to us?</label>
-                    <textarea type="text" id="moment" placeholder="Type here a description of that moment|"></textarea>
+                    <textarea type="text" id="moment" name="IDSEEDESC" placeholder="Type here a description of that moment|"></textarea>
                 </div>
                 <div class="form_row">
                     <label for="name">first name</label>
-                    <input type="text" id="name" placeholder="Enter your first name|">
+                    <input type="text" id="name" name="FIRSTNAME" placeholder="Enter your first name|" required>
                 </div>
                 <div class="form_row">
                     <label for="surname">second name</label>
-                    <input type="text" id="surname" placeholder="Enter your second name|">
+                    <input type="text" id="surname" name="LASTNAME" placeholder="Enter your second name|" required>
                 </div>
                 <div class="form_row">
                     <label for="mail">email address</label>
-                    <input type="email" id="mail" placeholder="Enter your email address">
+                    <input type="email" id="mail" name="email" placeholder="Enter your email address" required>
                 </div>
                 <div class="form_row">
-                    <input type="checkbox" id="recieve">
+                    <input type="checkbox" id="recieve" name="IDSEEOPTIN">
                     <label for="recieve">Tick this box if you would like to receive email communications and updates about our work. We will use your data in accordance with our <a href="https://gbr.orbis.org/en/privacy-policy" target="__blank">Privacy Policy</a></label>
                 </div>
                 <div class="form_row">
                     <input type="submit" value="SUBMIT">
+                </div>
+                <div class="form_success">
+                    <div class="social">
+                        <span class="social_title">share this page</span>
+                        <div class="social_links">
+                            <div class="addthis_inline_share_toolbox_ztvi"></div>
+                        </div>
+                        <div class="social_copy">
+                            <span class="social_copy-title">Or share with link</span>
+                            <button class="social_copy-button js-copy-button">https://www.orbis.co.uk...</button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -176,5 +196,6 @@
     <script src="./src/js/swiper.min.js"></script>
     <script src="./src/js/main.js"></script>
 
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5642faf671d1921e"></script> 
 </body>
 </html>

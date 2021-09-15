@@ -1,0 +1,32 @@
+.social {
+    &_title {
+        font-size: 20px;
+        line-height: 20px;
+        text-align: center;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        display: block;
+        margin: 100px 0 50px;
+    }
+    &_copy-title {
+        font-size: 10px;
+        line-height: 20px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        display: block;
+        margin: 0 0 10px;
+    }
+    &_copy-button {
+        background: rgba(0, 163, 224, 0.2) url(#{$img}/copy.svg) no-repeat center right 16px;
+        font-size: 14px;
+        padding: 0 36px 0 16px;
+        height: 53px;
+        line-height: 53px;
+        font-weight: normal;
+        color: $color;
+        text-transform: none;
+        width: 100%;
+        max-width: 512px;
+        text-align: left;
+    }
+}
