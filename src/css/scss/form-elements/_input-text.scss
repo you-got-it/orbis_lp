@@ -28,7 +28,6 @@ input[type="tel"] {
     }
 
     .submitted &:invalid {
-        @include placeholder-color(#c71f15);
-        border-color: #c71f15;
+        border-color: #FF5C5C;
     }
 }
