@@ -27,7 +27,7 @@ input[type="tel"] {
         color: $color;
     }
 
-    &:invalid {
+    .submitted &:invalid {
         @include placeholder-color(#c71f15);
         border-color: #c71f15;
     }
