@@ -27,29 +27,32 @@
 
             span {
                 white-space: nowrap;
-            }
-
-            &::before {
-                content: '';
-                position: absolute;
-                left: -13px;
-                top:-13px;
-                bottom:-13px;
-                right:-13px;
-                padding: 13px;
-                z-index: -1;
-                background-color: $cBlue;
-                @include tablet {
-                    left: -28px;
-                    top:-28px;
-                    bottom:-28px;
-                    right:-28px;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    left: -13px;
+                    top:-13px;
+                    bottom:-13px;
+                    right:-13px;
+                    padding: 13px;
+                    z-index: -1;
+                    background-color: $cBlue;
+                    @include tablet {
+                        left: -28px;
+                        top:-28px;
+                        bottom:-28px;
+                        right:-28px;
+                    }
                 }
             }
+
         }
 
         div span::before {
             z-index: -2;
+        }
+        div > span::before {
+            content: none;
         }
     }
     &_row {
