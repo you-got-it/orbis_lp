@@ -57,7 +57,7 @@ const copyButton = document.querySelector('.js-copy-button');
 copyButton.addEventListener('click', function(e) {
     e.preventDefault();
 
-    navigator.clipboard.writeText(location).then(function () {
+    navigator.clipboard.writeText(e.target.innerText).then(function () {
         console.log('Async: Copying to clipboard was successful!');
     }, function (err) {
         console.error('Async: Could not copy text: ', err);
