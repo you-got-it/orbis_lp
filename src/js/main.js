@@ -33,8 +33,11 @@ submitButton.addEventListener('click', function(e) {
         if (!el.checkValidity()) {
             isValid = false;
         }
-
-        formData.append(el.name, el.value);
+        if (el.name === 'IDSEEOPTIN') {
+            formData.append(el.name, el.checked ? 'YES' : 'NO');
+        } else {
+            formData.append(el.name, el.value);
+        }
     })
 
     if (isValid) {
