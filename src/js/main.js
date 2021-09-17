@@ -29,7 +29,7 @@ submitButton.addEventListener('click', function(e) {
     let isValid = true;
 
     let formData = new FormData();
-    document.querySelectorAll('input[name]').forEach(el => {
+    document.querySelectorAll('input[name], textarea').forEach(el => {
         if (!el.checkValidity()) {
             isValid = false;
         }
