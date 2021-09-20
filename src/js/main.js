@@ -33,27 +33,18 @@ submitButton.addEventListener('click', function(e) {
         if (!el.checkValidity()) {
             isValid = false;
         }
-        if (el.name === 'IDSEEOPTIN') {
-            formData.append(el.name, el.checked ? 'YES' : 'NO');
-        } else {
-            formData.append(el.name, el.value);
-        }
     })
 
     if (isValid) {
-        fetch(form.action,
-            {
-                body: formData,
-                method: "post",
-                mode: 'cors',
-                headers: {
-                    'Cors': 'Access-Control-Allow-Origin'
-                }
-            });
+        form.submit();
     
         form.classList.add('done');
     }
-})
+});
+
+if (location.hash === '#thankyou') {
+    form.classList.add('done');
+}
 
 
 const copyButton = document.querySelector('.js-copy-button');
