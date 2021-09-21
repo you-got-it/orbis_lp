@@ -135,12 +135,12 @@
                 </h3>
                 <div class="form_row">
                     <label for="want">i’d see...</label>
-                    <input type="text" id="want" name="IDSEE" placeholder="Type here what you would see|" required>
+                    <input type="text" id="want" name="cd_IDSEE" placeholder="Type here what you would see|" required>
                     <span class="form_error">this is a required field</span>
                 </div>
                 <div class="form_row">
                     <label for="moment">could you describe that moment to us?</label>
-                    <textarea type="text" id="moment" name="IDSEEDESC" placeholder="Type here a description of that moment|"></textarea>
+                    <textarea type="text" id="moment" name="cd_IDSEEDESC" placeholder="Type here a description of that moment|"></textarea>
                     <span class="form_error">this is a required field</span>
                 </div>
                 <div class="form_row">
@@ -155,18 +155,19 @@
                 </div>
                 <div class="form_row">
                     <label for="mail">email address</label>
-                    <input type="email" id="mail" name="email" placeholder="Enter your email address" required>
+                    <input type="email" id="mail" name="email" placeholder="Enter your email address|" required>
                     <span class="form_error">this is a required field</span>
                 </div>
                 <div class="form_row">
-                    <input type="checkbox" id="recieve" name="IDSEEOPTIN">
+                    <input type="hidden" id="cd_IDSEEOPTIN_radio" name="cd_IDSEEOPTIN_radio" value="n">
+                    <input type="checkbox" id="recieve" onclick="cd_IDSEEOPTIN_radio.value = this.checked ? 'y' : 'n';">
                     <label for="recieve">Tick this box if you would like to receive email communications and updates about our work. We will use your data in accordance with our <a href="https://gbr.orbis.org/en/privacy-policy" target="__blank">Privacy Policy</a></label>
                 </div>
                 <div class="form_row">
                     <input type="hidden" name="userid" value="27593">
                     <input type="hidden" name="SIG8d84b17650384ca190ee32335eab25c87bd17a81072830bd88f0b174aa21ccf7" value="">
                     <input type="hidden" name="addressbookid" value="70042828" />
-                    <input type="hidden" name="ReturnURL" value="https://you-got-it.github.io/orbis_lp/index.html#thankyou">
+                    <input type="hidden" name="ReturnURL" value="https://idsee.orbis.org/#thankyou">
                     <input type="hidden" id="ci_consenturl" name="ci_consenturl" value="">
                     <input type="submit" value="SUBMIT" >
                 </div>
