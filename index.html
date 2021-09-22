@@ -31,11 +31,11 @@
             <h1 class="showcase_title js-random-text" style="display: none;"><span>If you went blind for 3 years,</span> what’s the first thing you’d want to see?</h1>
             <div style="
                 position: absolute;
-                top: 0;
+                top: 50px;
                 left: 0;
-                height: 255px;
+                height: 400px;
                 width: 100%;
-                background-image: linear-gradient(180deg, #0C1F2F 60%, transparent);
+                background-image: linear-gradient(180deg, #0C1F2F, transparent);
             "></div>
             <video class="showcase_video" src="src/video/hero-video.mp4" loop muted autoplay playsinline poster="src/img/hero-video-cover.jpg">
             </video>
@@ -147,9 +147,8 @@
                     <span class="form_error">this is a required field</span>
                 </div>
                 <div class="form_row">
-                    <label for="moment">could you describe that moment to us?</label>
+                    <label for="moment">could you describe that moment to us? <small>(optional)</small></label>
                     <textarea type="text" id="moment" name="cd_IDSEEDESC" placeholder="Type here a description of that moment|"></textarea>
-                    <span class="form_error">this is a required field</span>
                 </div>
                 <div class="form_row">
                     <label for="name">first name</label>
