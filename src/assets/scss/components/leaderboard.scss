@@ -1,0 +1,80 @@
+.leaderboard-wrapper {
+  @include desktop-up-layout {
+    max-width: 756px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+.leaderboard {
+  width: 100%;
+  td, th {
+    text-align: center;
+
+    padding: 14px 6px;
+    @include desktop-up-layout {
+      padding: 21px 6px;
+    }
+  }
+
+  .text-left {
+    text-align: left;
+  }
+
+  thead {
+    text-transform: uppercase;
+    font-size: 14px;
+    tr {
+      border-bottom: 10px solid transparent;
+    }
+  }
+
+  td, th {
+    &:first-child {
+      padding-left: 30px;
+    }
+    &:last-child {
+      padding-right: 30px;
+    }
+  }
+
+  tbody {
+    tr {
+      &:not(:last-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, .3);
+      }
+
+      &.active {
+        background: #fff;
+        box-shadow: rgba(0,0,0,0.18) 0 15px 25px 0;
+        border-bottom: 0;
+        * {
+          color: #2B2B2B;
+        }
+      }
+    }
+    td {
+      vertical-align: middle;
+    }
+    .flag {
+      padding-left: 0;
+
+      img {
+        width: 18px;
+        height: 12px;
+      }
+    }
+    .rank {
+      font-weight: 500;
+      width: 15%;
+    }
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-all;
+
+      &__company {
+        font-size: 11px;
+      }
+    }
+  }
+}

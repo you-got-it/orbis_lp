@@ -1,0 +1,60 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+ 
+  //min-width: 207px;
+  //min-height: 40px;
+  outline: 0;
+  appearance: none;
+  background-color: transparent;
+	border-radius: 0;
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 0;
+  text-transform: inherit;
+  $button-border-color: $color-sandstone-50;
+  border: 1px solid $button-border-color;
+	//overflow: hidden;
+	z-index: 1;
+  user-select: none;
+
+  cursor: pointer;
+ 
+  @include font($font-button);  
+
+  @include desktop-up-layout {
+    //min-height: 52px;
+    //line-height: 52px;
+  }
+
+  &__primary {   
+    //font-weight: 300;
+    color: $color-charcoal;
+    font-size: 13px;
+    letter-spacing: 4px;
+    min-width: 160px;
+
+    @include desktop-up-layout {
+      font-size: 24px;
+    }
+   
+  }
+
+  &__secondary {
+    background-color: #2B2B2B;
+    //font-weight: 300;
+    color: #fff;
+    font-size: 20px;
+
+    @include desktop-up-layout {
+      font-size: 24px;
+    }
+
+    &--light {
+      background-color: #63666A;
+    }
+  }
+  
+}

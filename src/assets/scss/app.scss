@@ -1,0 +1,68 @@
+@import "common/variables";
+@import "common/reset";
+@import "common/fonts";
+@import "common/mixins";
+@import "common/grid";
+
+@import "common/buttons";
+@import "common/form";
+
+@import "components/select-team";
+@import "components/stat";
+@import "components/leaderboard";
+
+#arjs-video{
+position: fixed !important;
+}
+
+body, * {
+  //font-family: 'Amplitude', 'Open Sans', sans-serif;
+  font-family:  sans-serif;
+  color: #2B2B2B;
+  line-height: 1.4;
+  font-weight: 300;
+  font-size: 16px;
+  
+}
+
+a, .link {
+  @include font($font-alright-normal); 
+  color: #253746;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 18px;  
+}
+
+b {
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 48px;
+  line-height: 1;
+
+  @include desktop-up-layout {
+    font-size: 100px;
+  }
+}
+
+h2 {
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: #2B2B2B;
+  @include font($font-alright-normal);  
+  font-family:  sans-serif;
+  @include desktop-up-layout {
+    font-size: 40px;
+    line-height: 1;
+  }
+}
+
+html, body, #app, .main {
+  height:100%;
+}
+html, body, #app, .main {
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    height: 100%;
+  }
+}

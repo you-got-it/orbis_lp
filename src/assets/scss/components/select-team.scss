@@ -1,0 +1,87 @@
+.select-team {
+  overflow: hidden;
+  position: relative;
+
+  .slide {
+    text-align: center;
+
+    &__img {
+      margin: 0 auto;
+
+      img {
+        max-height: 186px;
+        max-width: 184px;
+      }
+    }
+
+    &__country {
+      margin-top: 20px;
+      font-size: 20px;
+
+      @include desktop-up-layout {
+        margin-top: 40px;
+        font-size: 24px;
+      }
+    }
+
+    &__desc {
+      margin-top: 20px;
+
+      @include desktop-up-layout {
+        max-width: 358px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  .swiper-button-prev, .swiper-button-next {
+    top: 93px;
+    border-left: 2px solid #2B2B2B;
+    border-top: 2px solid #2B2B2B;
+    width: 22px;
+    height: 22px;
+
+    background: none;
+
+    @include desktop-up-layout {
+      top: 110px;
+    }
+  }
+
+  .swiper-button-prev {
+    left: 5px;
+    transform: rotate(-45deg);
+  }
+
+  .swiper-button-next {
+    right: 5px;
+    transform: rotate(-225deg);
+  }
+}
+
+.team-shirts {
+  overflow: hidden;
+
+  .slide {
+    text-align: center;
+
+      &__img {
+        margin: 0 auto;
+
+        img {
+          max-height: 186px;
+          max-width: 184px;
+        }
+      }
+  }
+
+  .swiper-slide {
+    &:not(.swiper-slide-active) {
+      opacity: 0.4;
+    }
+  }
+}
+
+
+

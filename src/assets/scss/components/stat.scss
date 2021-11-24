@@ -1,0 +1,29 @@
+.stat {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  &__item {
+    flex-basis: 50%;
+    position: relative;
+    &:nth-child(2n) {
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #DCDCDC;
+        width: 1px;
+        height: 100%;
+      }
+    }
+  }
+  &__count {
+    font-size: 36px;
+    line-height: 1;
+
+    @include desktop-up-layout {
+      font-size: 54px;
+    }
+  }
+}

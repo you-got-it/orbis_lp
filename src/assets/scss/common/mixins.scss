@@ -1,0 +1,24 @@
+//BREAKPOINT LAYOUT
+@mixin desktop-up-layout {
+  @media (min-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+@mixin desktop-down-layout {
+  @media (max-width: $breakpoint-desktop - 0.5) {
+    @content;
+  }
+}
+
+@mixin font($settings) {
+	font: {
+		family: map-get($settings, "font-family");
+		size: map-get($settings, "font-size");
+		style: map-get($settings, "font-style");
+		weight: map-get($settings, "font-weight");
+	}
+	letter-spacing: map-get($settings, "letter-spacing");
+	line-height: map-get($settings, "line-height");
+	text-transform: map-get($settings, "text-transform");
+}

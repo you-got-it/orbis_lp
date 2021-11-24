@@ -1,0 +1,10 @@
+**/*.js
+.cache
+build
+build-client
+.nuxt
+**/node_modules/**
+vendor
+ts-shim.d.ts
+dist
+**/public/*.js
