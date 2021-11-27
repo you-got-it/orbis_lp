@@ -1,32 +1,27 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import AR from './components/AR.vue';
-import HintScreen from './components/HintScreen.vue';
-
+import Vue from "vue";
+import Router from "vue-router";
+import AR from "./components/AR.vue";
+import HintScreen from "./components/HintScreen.vue";
 
 export const router = new Router({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '',
-      redirect: 'start',
-    },  
+      path: "",
+      redirect: "start",
+    },
     {
-      path: '/start',
+      path: "/start",
       component: HintScreen,
-      props: {
-
-      },
-    },   
+      props: {},
+    },
     {
-      path: '/ar',
+      path: "/ar",
       component: AR,
-      props: {
-
-      },
-    },   
-    { path: '*', redirect: 'start' },
+      props: {},
+    },
+    { path: "*", redirect: "start" },
   ],
 });
 

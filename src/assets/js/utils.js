@@ -162,6 +162,8 @@ export function trueAlpha(alpha) {
   return Math.round(alpha * 100) / 100;
 }
 
+
+
 export function newCanvas(width, height) {
   const canvas = document.createElement("CANVAS");
   canvas.width = width;
