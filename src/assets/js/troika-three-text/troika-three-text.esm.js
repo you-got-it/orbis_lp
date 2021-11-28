@@ -1625,7 +1625,7 @@ const GlyphsGeometry = /*#__PURE__*/(() => {
   function getTemplateGeometry(detail) {
     let geom = templateGeometries[detail];
     if (!geom) {
-      geom = templateGeometries[detail] = new PlaneBufferGeometry(1, 1, detail, detail).translate(0.5, 0.5, 0);
+      geom = templateGeometries[detail] = new PlaneBufferGeometry(1, 1, detail, detail).translate(0.5, 0.5, 0);       
     }
     return geom
   }
@@ -1697,7 +1697,7 @@ const GlyphsGeometry = /*#__PURE__*/(() => {
         this._detail = detail;
         if (typeof detail !== 'number' || detail < 1) {
           detail = 1;
-        }
+        }        
         let tpl = getTemplateGeometry(detail)
         ;['position', 'normal', 'uv'].forEach(attr => {
           this.attributes[attr] = tpl.attributes[attr].clone();

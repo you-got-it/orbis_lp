@@ -50,6 +50,8 @@ import {
   PlaneBufferGeometry,
   LoopOnce,
   Plane,
+  Fog,
+  CylinderGeometry,
 } from "three";
 import {
   trueAlpha,
@@ -106,6 +108,16 @@ export default class AR extends Vue {
   get getDebugString() {
     return this.debugString;
   }
+
+  momentsString = [
+    `I'd see my Beautiful Cat`,
+    `I'd see the ocean with a beautiful sunset`,
+    `I'd see a mountain range`,
+    `I'd see my 3 children & 2 Grandsons`,
+    `My Dad it would make me so happy`,
+    `I'd my friends and my family`,
+    `I'd see my beautiful nephew`,
+  ];
 
   setDebugString(text) {
     this.debugString = text;
@@ -213,14 +225,14 @@ export default class AR extends Vue {
 
   initScene() {
     this.scene = new Scene();
-    this.ambient = new AmbientLight(0xffffff, 0.5);
+    this.ambient = new AmbientLight(0xdbf2ff, 0.1);
     this.scene.add(this.ambient);
-    this.light = new DirectionalLight(0xff6666, 0.52);
-    this.light.position.set(-1, 20, 15);
+    this.light = new DirectionalLight(0xdbf2ff, 0.66);
+    this.light.position.set(-3.6, 2, 5);
     this.scene.add(this.light);
 
-    this.camera = new PerspectiveCamera(56, 1, 0.01, 1000);
-    this.camera.position.set(0, 0, 4);
+    this.camera = new PerspectiveCamera(35, 1, 0.01, 1000);
+    this.camera.position.set(0, 0, 6);
     this.scene.add(this.camera);
 
     // render
@@ -245,6 +257,8 @@ export default class AR extends Vue {
     this.sceneGroup = new Group();
     this.scene.add(this.sceneGroup);
 
+    this.scene.fog = new Fog(0x131e27, 6 - 0.5, 6 + 0.5);
+
     this.pmremGenerator = new PMREMGenerator(this.renderer);
     this.pmremGenerator.compileEquirectangularShader();
   }
@@ -252,6 +266,10 @@ export default class AR extends Vue {
   setupObjects() {
     //
     this.initMainText();
+    gsap.delayedCall(0.05, () => {
+      this.initString();
+    });
+
     this.raf = window.requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -291,44 +309,6 @@ export default class AR extends Vue {
       this.mainText.colorRanges[i.index] = i;
     });
 
-    const customMaterial = createDerivedMaterial(
-      new MeshBasicMaterial({ side: DoubleSide }),
-      {
-        uniforms: {
-          // Total width of the text, assigned on synccomplete
-          textLength: { value: 2.8 },
-        },
-        vertexDefs: `
-          uniform float textLength;
-        `,
-        vertexTransform: `
-          float scale = 1.0 / textLength * PI * 1.98;
-          float theta = -position.x * scale;
-          float r = 10.0;
-          float r2 = r + position.y * scale * r;
-          position.x = cos(theta) * r2;
-          position.y = sin(theta) * r2;
-        `,
-        /* Secondary example ala https://tympanus.net/codrops/2019/10/10/create-text-in-three-js-with-three-bmfont-text/
-        timeUniform: 'time',
-        vertexTransform: `
-          float frequency1 = 0.035;
-          float amplitude1 = 20.0;
-          float frequency2 = 0.025;
-          float amplitude2 = 70.0;
-
-          // Oscillate vertices up/down
-          position.y += (sin(position.x * frequency1 + time / 1000.0) * 0.5 + 0.5) * amplitude1;
-
-          // Oscillate vertices inside/outside
-          position.z += (sin(position.x * frequency2 + time / 1000.0) * 0.5 + 0.5) * amplitude2;
-        `
-        */
-      }
-    );
-
-    // this.mainText.material = customMaterial;
-    // Set properties to configure:
     this.mainText.text = this.mainTextString;
     this.mainText.font = "/fonts/FontsFree-Net-aa1woff2-1.ttf";
     this.mainText.fontSize = 0.2;
@@ -338,17 +318,15 @@ export default class AR extends Vue {
     this.mainText.textAlign = "center";
     this.mainText.anchorX = "center";
     this.mainText.anchorY = "middle";
-
-    //this.mainText.fillOpacity = 0.0;
-
     this.mainText.outlineBlur = 0;
-    //this.mainText.outlineOpacity = 0;
-    //this.mainText.outlineWidth = 0.001;
-
     this.mainText.outlineColor = 0xffffff;
+    this.mainText.material = new MeshBasicMaterial({
+      fog: false,
+      side: DoubleSide,
+    });
+    // this.mainText.material = customMaterial;
+    // Set properties to configure:
 
-    //this.updateColorRanges();
-    // Update the rendering:
     this.mainText.sync(() => {
       this.startMainAnim();
     });
@@ -365,11 +343,10 @@ export default class AR extends Vue {
       },
       delay: 0.0,
     });
-
     this.splittedText.forEach((item, i) => {
       item.outlineBlur = 0.2;
       item.outlineOpacity = 0;
-      item.z = 0.4;
+      item.z = -0.4;
       this.mainTween
         .to(
           item,
@@ -394,56 +371,130 @@ export default class AR extends Vue {
         );
     });
     this.mainTween.timeScale(1.5);
-    // this.mainTween.to(
-    //   this.splittedText,
-    //   {
-    //     duration: 2,
-    //     //outlineBlur: 0.0001,
-    //     outlineOpacity: 1,
-    //     stagger: 0.3,
-    //     ease: "power3.out",
-    //   },
-    //   0
-    // ).to(
-    //   this.splittedText,
-    //   {
-    //     duration: 2,
-    //     //outlineBlur: 0.0001,
-    //     outlineOpacity: 1,
-    //     stagger: 0.3,
-    //     ease: "power3.in",
-    //   },
-    //   0
-    // );
+  }
 
-    // gsap.to(this.splittedText, {
-    //   duration: 2,
-    //   outlineBlur: 0.0001,
-    //   //outlineOpacity: 1,
-    //   stagger: 0.3,
-    //   ease: "power3.out",
-    //   onUpdate: () => {
-    //     this.updateColorRanges();
-    //   },
-    //   onComplete: () => {
-    //     this.mainText.fillOpacity = 1;
-    //     this.mainText.outlineBlur = 0;
-    //   },
-    // });
-    // gsap.to(this.splittedText, {
-    //   duration: 2,
-    //   // outlineBlur: 0.0001,
-    //   outlineOpacity: 1,
-    //   stagger: 0.3,
-    //   ease: "power3.in",
-    //   onUpdate: () => {
-    //     this.updateColorRanges();
-    //   },
-    //   onComplete: () => {
-    //     this.mainText.fillOpacity = 1;
-    //     this.mainText.outlineBlur = 0;
-    //   },
-    // });
+  initString() {
+    this.string = new Text();
+    this.scene.add(this.string);
+
+    this.string.text = `I'd see my Beautiful Cat`;
+    this.string.font = "/fonts/FontsFree-Net-aa1woff2-1.ttf";
+    this.string.fontSize = 0.06;
+    this.string.color = 0xffffff;
+    this.string.textAlign = "center";
+    this.string.anchorX = "center";
+    this.string.anchorY = "middle";
+
+    const customMaterial = createDerivedMaterial(
+      new MeshStandardMaterial({ transparent: false }),
+      {
+        uniforms: {
+          // Total width of the text, assigned on synccomplete
+          rad: { value: 1.56 },
+          speed: { value: 0 /* Math.random() + 0.1*/ },
+          timeDelta: { value: 0 },
+        },
+        timeUniform: "time",
+        vertexDefs: `      
+          uniform float rad;
+          uniform float timeDelta;
+          uniform float speed;
+        `,
+        // vertexTransform: `
+        //   float scale = 1.0 / textLength * PI * 1.98;
+        //   float theta = -position.x * scale;
+        //   float r = 10.0;
+        //   float r2 = r + position.y * scale * r;
+        //   position.z = cos(theta) * r2;
+        //   position.y = sin(theta) * r2;
+        // `,
+        vertexTransform: `
+        float addTime = time * 0.0005 * speed;
+        float theta = position.x / rad + addTime + timeDelta;        
+        position.xz = vec2(sin(theta) * rad, cos(theta) * rad);
+        `,
+        /* Secondary example ala https://tympanus.net/codrops/2019/10/10/create-text-in-three-js-with-three-bmfont-text/
+        timeUniform: 'time',
+        vertexTransform: `
+          float frequency1 = 0.035;
+          float amplitude1 = 20.0;
+          float frequency2 = 0.025;
+          float amplitude2 = 70.0;
+
+          // Oscillate vertices up/down
+          position.y += (sin(position.x * frequency1 + time / 1000.0) * 0.5 + 0.5) * amplitude1;
+
+          // Oscillate vertices inside/outside
+          position.z += (sin(position.x * frequency2 + time / 1000.0) * 0.5 + 0.5) * amplitude2;
+        `
+        */
+      }
+    );
+    this.string.material = customMaterial;
+    this.stringsArray = [];
+
+    this.string.sync(() => {
+      // console.log(this.string.geometry.boundingBox.max);
+
+      // const geometry = new PlaneGeometry(
+      //   this.string.geometry.boundingBox.max.x * 2,
+      //   this.string.geometry.boundingBox.max.y * 2,
+      //   56,
+      //   1
+      // );
+
+      const geometry = new CylinderGeometry(
+        1.559,
+        1.559,
+        this.string.geometry.boundingBox.max.y * 2 + 0.05,
+        30,
+        1,
+        true,
+        -(this.string.geometry.boundingBox.max.x * 2 + 0.05) / 2 / 1.559,
+        (this.string.geometry.boundingBox.max.x * 2 + 0.05) / 1.559
+      );
+      // console.log(geometry);
+
+      const material = new MeshStandardMaterial({
+        color: 0x008bdb,
+        side: DoubleSide,
+        transparent: false,
+        // depthWrite: false,
+      });
+      this.plane = new Mesh(geometry, material);
+      this.scene.add(this.plane);
+
+      this.group = new Group();
+      this.group.add(this.string);
+      this.group.add(this.plane);
+      this.string.renderOrder = 1;
+      this.scene.add(this.group);
+      this.group2 = this.group.clone();
+      //this.scene.add(this.group2);
+      for (let i = 0; i < 20; i += 1) {
+        const group = this.group.clone();
+        group.position.y = Math.random() * 0.6 - 0.3;
+        group.rotation.y = Math.random() * 7;
+        const scale = 1 - Math.random() * 0.3;
+        group.scale.set(scale, scale, scale);
+        this.scene.add(group);
+        this.stringsArray.push(group);
+      }
+      // for (let i = 0; i < 16; i += 1) {
+      //   const string = this.string.clone();
+      //   string.material = customMaterial.clone();
+      //   string.material.uniforms.timeDelta.value = Math.random() * 6;
+      //   string.material.uniforms.rad.value = 1.52 + Math.random() * 0.3;
+      //   string.material.uniforms.speed.value = Math.random() + 0.1;
+      //   this.stringsArray.push(string);
+      //   // this.scene.add(string);
+      // }
+      // this.stringsArray.forEach((s) => {
+      //   s.position.y = Math.random() * 0.6 - 0.3;
+      // });
+      // this.string.scale.set(6, 6, 6);
+      //this.string.position.z = 1;
+    });
   }
 
   canvasClick() {
@@ -510,7 +561,12 @@ export default class AR extends Vue {
     this.lastTimeMsec = this.lastTimeMsec || nowMsec - 1000 / 60;
     const deltaMsec = Math.min(200, nowMsec - this.lastTimeMsec);
     this.lastTimeMsec = nowMsec;
-
+    if (this.group) {
+      this.group.rotation.y += 0.01;
+      this.stringsArray.forEach((g) => {
+        g.rotation.y += 0.005;
+      });
+    }
     // this.mixers.forEach((mixer) => {
     //   mixer.update(deltaMsec / 1000);
     // });
