@@ -1886,7 +1886,7 @@ float rad = uTroikaCurveRadius;
 if (rad != 0.0) {
   float angle = position.x / rad;
   position.xz = vec2(sin(angle) * rad, rad - cos(angle) * rad);
-  normal.xz = vec2(sin(angle), cos(angle));
+  normal.xz = vec2(cos(angle+1.57), sin(angle+1.57));
 }
   
 position = uTroikaOrient * position;

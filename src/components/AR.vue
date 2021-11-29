@@ -52,6 +52,7 @@ import {
   Plane,
   Fog,
   CylinderGeometry,
+  CylinderBufferGeometry,
 } from "three";
 import {
   trueAlpha,
@@ -118,6 +119,7 @@ export default class AR extends Vue {
     `I'd my friends and my family`,
     `I'd see my beautiful nephew`,
   ];
+  moments = [];
 
   setDebugString(text) {
     this.debugString = text;
@@ -266,10 +268,79 @@ export default class AR extends Vue {
   setupObjects() {
     //
     this.initMainText();
-    gsap.delayedCall(0.05, () => {
-      this.initString();
+    gsap.delayedCall(4, () => {
+      this.initMoments();
     });
 
+    this.string = new Text();
+    this.string.text = `I'd see my Beautiful Cat`;
+    this.string.font = "/fonts/FontsFree-Net-aa1woff2-1.ttf";
+    this.string.fontSize = 0.06;
+    this.string.color = 0xffffff;
+    this.string.textAlign = "center";
+    this.string.anchorX = "center";
+    this.string.anchorY = "middle";
+
+    const customMaterial = createDerivedMaterial(
+      new MeshStandardMaterial({ transparent: false }),
+      {
+        uniforms: {
+          // Total width of the text, assigned on synccomplete
+          rad: { value: 1.56 },
+          speed: { value: 0.1 /* Math.random() + 0.1*/ },
+          timeDelta: { value: 0 },
+        },
+        timeUniform: "time",
+        vertexDefs: `      
+          uniform float rad;
+          uniform float timeDelta;
+          uniform float speed;
+        `,
+        // vertexTransform: `
+        //   float scale = 1.0 / textLength * PI * 1.98;
+        //   float theta = -position.x * scale;
+        //   float r = 10.0;
+        //   float r2 = r + position.y * scale * r;
+        //   position.z = cos(theta) * r2;
+        //   position.y = sin(theta) * r2;
+        // `,
+        vertexTransform: `      
+        float addTime = time * 0.0005 * speed;
+        float theta = position.x / rad  + addTime + timeDelta;     
+        position.xz = vec2(sin(theta) * rad, cos(theta) * rad);
+        `,
+        /* Secondary example ala https://tympanus.net/codrops/2019/10/10/create-text-in-three-js-with-three-bmfont-text/
+        timeUniform: 'time',
+        vertexTransform: `
+          float frequency1 = 0.035;
+          float amplitude1 = 20.0;
+          float frequency2 = 0.025;
+          float amplitude2 = 70.0;
+          // Oscillate vertices up/down
+          position.y += (sin(position.x * frequency1 + time / 1000.0) * 0.5 + 0.5) * amplitude1;
+          // Oscillate vertices inside/outside
+          position.z += (sin(position.x * frequency2 + time / 1000.0) * 0.5 + 0.5) * amplitude2;
+        `
+        */
+      }
+    );
+    //this.string.material = customMaterial;
+    this.string.material = new MeshStandardMaterial({ transparent: false });
+
+    this.stringBg = new MeshStandardMaterial({
+      color: 0x008bdb,
+      side: DoubleSide,
+      transparent: false,
+      // depthWrite: false,
+    });
+    // this.string.curveRadius = -0.33;
+    // this.string.position.z = 0.33;
+    //this.group3 = new Group();
+    // this.group3.add(this.string);
+    // this.scene.add(this.group3);
+    this.scene.add(this.string);
+    this.renderer.compile(this.scene, this.camera);
+    this.scene.remove(this.string);
     this.raf = window.requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -373,66 +444,82 @@ export default class AR extends Vue {
     this.mainTween.timeScale(1.5);
   }
 
+  initMoments() {
+    for (let i = 0; i < 25; i += 1) {
+      const string = this.string.clone();
+      string.text = this.momentsString[i % this.momentsString.length];
+      string.material = this.string.material.clone();
+
+      //const rad = 0.1 + Math.random() * 1.6;
+      const rad = 1.52 + Math.random() * 0.3;
+      //const rad = 0.3;
+
+      const dAng = Math.PI; //Math.random() * Math.PI * 2;
+      const speed = 0; // Math.random() * 0.5 + 0.2;
+      const group = new Group();
+      const dY = Math.random() * 0.5 - 0.25;
+      string.position.z = rad;
+      group.rotation.y = dAng;
+
+      //string.material.uniforms.rad.value = rad;
+      //string.material.uniforms.speed.value = 1 + Math.random() * 0.5;
+
+      group.add(string);
+      // this.scene.add(string);
+      group.position.y = dY;
+      this.scene.add(group);
+      string.sync(() => {
+        const bgRad = rad - 0.002;
+
+        const geometry = new CylinderBufferGeometry(
+          bgRad,
+          bgRad,
+          this.string.fontSize + 0.02,
+          30,
+          1,
+          true,
+          -(string.geometry.boundingBox.max.x * 2 + 0.03) / 2 / bgRad,
+          (string.geometry.boundingBox.max.x * 2 + 0.03) / bgRad
+        );
+        string.curveRadius = -rad;
+        string.sync();
+        const bgMesh = new Mesh(geometry, this.stringBg);
+        group.add(bgMesh);
+
+        this.moments.push({
+          string,
+          group,
+          rad,
+          speed,
+          dAng,
+          addAng: 0,
+          dY,
+          text: string.text,
+        });
+      });
+    }
+    gsap.delayedCall(0.5, () => {
+      this.stringAnim();
+    });
+    gsap.delayedCall(8, () => {
+      this.stringAnim();
+    });
+  }
+
+  stringAnim() {
+    gsap.to(this.moments, {
+      duration: 2,
+      dAng: () => {
+        return Math.random() * Math.PI * 2;
+      },
+      speed: () => {
+        return Math.random() * 1.1 + 0.1;
+      },
+      ease: "sine.inOut",
+    });
+  }
+
   initString() {
-    this.string = new Text();
-    this.scene.add(this.string);
-
-    this.string.text = `I'd see my Beautiful Cat`;
-    this.string.font = "/fonts/FontsFree-Net-aa1woff2-1.ttf";
-    this.string.fontSize = 0.06;
-    this.string.color = 0xffffff;
-    this.string.textAlign = "center";
-    this.string.anchorX = "center";
-    this.string.anchorY = "middle";
-
-    const customMaterial = createDerivedMaterial(
-      new MeshStandardMaterial({ transparent: false }),
-      {
-        uniforms: {
-          // Total width of the text, assigned on synccomplete
-          rad: { value: 1.56 },
-          speed: { value: 0 /* Math.random() + 0.1*/ },
-          timeDelta: { value: 0 },
-        },
-        timeUniform: "time",
-        vertexDefs: `      
-          uniform float rad;
-          uniform float timeDelta;
-          uniform float speed;
-        `,
-        // vertexTransform: `
-        //   float scale = 1.0 / textLength * PI * 1.98;
-        //   float theta = -position.x * scale;
-        //   float r = 10.0;
-        //   float r2 = r + position.y * scale * r;
-        //   position.z = cos(theta) * r2;
-        //   position.y = sin(theta) * r2;
-        // `,
-        vertexTransform: `
-        float addTime = time * 0.0005 * speed;
-        float theta = position.x / rad + addTime + timeDelta;        
-        position.xz = vec2(sin(theta) * rad, cos(theta) * rad);
-        `,
-        /* Secondary example ala https://tympanus.net/codrops/2019/10/10/create-text-in-three-js-with-three-bmfont-text/
-        timeUniform: 'time',
-        vertexTransform: `
-          float frequency1 = 0.035;
-          float amplitude1 = 20.0;
-          float frequency2 = 0.025;
-          float amplitude2 = 70.0;
-
-          // Oscillate vertices up/down
-          position.y += (sin(position.x * frequency1 + time / 1000.0) * 0.5 + 0.5) * amplitude1;
-
-          // Oscillate vertices inside/outside
-          position.z += (sin(position.x * frequency2 + time / 1000.0) * 0.5 + 0.5) * amplitude2;
-        `
-        */
-      }
-    );
-    this.string.material = customMaterial;
-    this.stringsArray = [];
-
     this.string.sync(() => {
       // console.log(this.string.geometry.boundingBox.max);
 
@@ -471,23 +558,31 @@ export default class AR extends Vue {
       this.scene.add(this.group);
       this.group2 = this.group.clone();
       //this.scene.add(this.group2);
-      for (let i = 0; i < 20; i += 1) {
-        const group = this.group.clone();
-        group.position.y = Math.random() * 0.6 - 0.3;
-        group.rotation.y = Math.random() * 7;
-        const scale = 1 - Math.random() * 0.3;
-        group.scale.set(scale, scale, scale);
-        this.scene.add(group);
-        this.stringsArray.push(group);
-      }
+      // for (let i = 0; i < 20; i += 1) {
+      //   const group = this.group.clone();
+      //   group.position.y = Math.random() * 0.6 - 0.3;
+      //   group.rotation.y = Math.random() * 7;
+      //   const scale = 1 - Math.random() * 0.3;
+      //   group.scale.set(scale, scale, scale);
+      //   this.scene.add(group);
+      //   this.stringsArray.push(group);
+      // }
       // for (let i = 0; i < 16; i += 1) {
       //   const string = this.string.clone();
-      //   string.material = customMaterial.clone();
-      //   string.material.uniforms.timeDelta.value = Math.random() * 6;
-      //   string.material.uniforms.rad.value = 1.52 + Math.random() * 0.3;
-      //   string.material.uniforms.speed.value = Math.random() + 0.1;
+      //   string.timeDelta = Math.random() * 6;
+      //   string.rad = 1.52 + Math.random() * 0.3;
+      //   string.speed = Math.random() + 0.1;
+      //   string.material = customMaterial;
+      //   string.onBeforeRender = function () {
+      //     this.material.uniforms.timeDelta.value = this.timeDelta;
+      //     this.material.uniforms.rad.value = this.rad;
+      //     this.material.uniforms.speed.value = this.speed;
+      //   };
+      //   // string.material.uniforms.timeDelta.value = Math.random() * 6;
+      //   // string.material.uniforms.rad.value = 1.52 + Math.random() * 0.3;
+      //   // string.material.uniforms.speed.value = Math.random() + 0.1;
       //   this.stringsArray.push(string);
-      //   // this.scene.add(string);
+      //   this.scene.add(string);
       // }
       // this.stringsArray.forEach((s) => {
       //   s.position.y = Math.random() * 0.6 - 0.3;
@@ -561,12 +656,15 @@ export default class AR extends Vue {
     this.lastTimeMsec = this.lastTimeMsec || nowMsec - 1000 / 60;
     const deltaMsec = Math.min(200, nowMsec - this.lastTimeMsec);
     this.lastTimeMsec = nowMsec;
-    if (this.group) {
-      this.group.rotation.y += 0.01;
-      this.stringsArray.forEach((g) => {
-        g.rotation.y += 0.005;
-      });
-    }
+    this.moments.forEach((moment) => {
+      moment.addAng += 0.004 * moment.speed;
+      moment.group.rotation.y = moment.addAng + moment.dAng;
+      // const string = moment.string;
+      // string.position.z = Math.cos(moment.group.rotation.y) * moment.rad;
+      // string.position.x = Math.sin(moment.group.rotation.y) * moment.rad;
+      // string.rotation.y = moment.group.rotation.y;
+      // string.position.y = moment.dY;
+    });
     // this.mixers.forEach((mixer) => {
     //   mixer.update(deltaMsec / 1000);
     // });
