@@ -6,7 +6,10 @@
       width="10px"
       height="10px"
       @click="canvasClick"
-      :style="isDesktop ? { background: '#f2f2f2' } : {}"
+      :style="{
+        background: '#f2f2f2',
+        cursor: mouse.hover ? 'pointer' : 'auto',
+      }"
     ></canvas>
   </div>
 </template>
@@ -30,7 +33,6 @@ import {
   sRGBEncoding,
   Scene,
   MeshStandardMaterial,
-  Raycaster,
   PMREMGenerator,
   Box3,
   UnsignedByteType,
@@ -53,6 +55,7 @@ import {
   Fog,
   CylinderGeometry,
   CylinderBufferGeometry,
+  Raycaster,
 } from "three";
 import {
   trueAlpha,
@@ -72,12 +75,15 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { SkeletonUtils } from "three/examples/jsm/utils/SkeletonUtils";
 import { createDerivedMaterial } from "troika-three-utils";
 import { createCustomMaterial } from "../assets/js/customMaterial";
+import { ExploreControl } from "../assets/js/ExploreControl.js";
 
 //import { Text, preloadFont } from "troika-three-text";
 import {
   Text,
   preloadFont,
 } from "../assets/js/troika-three-text/troika-three-text.esm";
+
+import globalBus from "@/globalBus";
 
 //import { ArToolkitProfile } from "@ar-js-org/ar.js";
 // import {
@@ -110,6 +116,15 @@ export default class AR extends Vue {
     return this.debugString;
   }
 
+  get mouse() {
+    return globalBus.mouse;
+  }
+
+  width = 0;
+  height = 0;
+
+  globalBus = globalBus;
+
   momentsString = [
     `I'd see my Beautiful Cat`,
     `I'd see the ocean with a beautiful sunset`,
@@ -120,6 +135,8 @@ export default class AR extends Vue {
     `I'd see my beautiful nephew`,
   ];
   moments = [];
+
+  explore = { phi: 0.01 };
 
   setDebugString(text) {
     this.debugString = text;
@@ -183,7 +200,7 @@ export default class AR extends Vue {
       new Promise((resolve, reject) => {
         preloadFont(
           {
-            font: "/fonts/FontsFree-Net-aa1woff2-1.ttf",
+            font: "./fonts/FontsFree-Net-aa1woff2-1.ttf",
             characters: this.mainTextString,
           },
           () => {
@@ -256,25 +273,53 @@ export default class AR extends Vue {
     this.controls.update();
     this.controls.autoRotate = false;
     this.controls.autoRotateSpeed = -2;
+
+    this.controls.enabled = false;
+
     this.sceneGroup = new Group();
     this.scene.add(this.sceneGroup);
 
     this.scene.fog = new Fog(0x131e27, 6 - 0.5, 6 + 0.5);
 
-    this.pmremGenerator = new PMREMGenerator(this.renderer);
-    this.pmremGenerator.compileEquirectangularShader();
+    this.raycaster = new Raycaster();
+    this.setExplorer();
+
+    // this.pmremGenerator = new PMREMGenerator(this.renderer);
+    // this.pmremGenerator.compileEquirectangularShader();
+  }
+
+  setExplorer() {
+    this.explore = {
+      phi: 0.01,
+      // speed: 0,
+      // theta: Math.PI / 2,
+      // radius: 0,
+      // sy: this.camera.position.y,
+      // sx: -1,
+      // sz: this.camera.position.z - 14,
+      // memCounter: 0,
+      // isOver: false,
+      storyId: "",
+      hoverId: "",
+      mouseDownId: "",
+      downTime: Date.now(),
+      // selectable: false,
+      // selected: false,
+      // autoselect: true,
+    };
+    this.explore.controls = new ExploreControl(this.explore, this.$refs["3d"]);
+    this.explore.controls.dampingFactor = 0.035;
+    this.explore.controls.addEventListener("start", this.mouseDown, false);
+    this.explore.controls.addEventListener("end", this.mouseUp, false);
   }
 
   setupObjects() {
     //
     this.initMainText();
-    gsap.delayedCall(4, () => {
-      this.initMoments();
-    });
 
     this.string = new Text();
     this.string.text = `I'd see my Beautiful Cat`;
-    this.string.font = "/fonts/FontsFree-Net-aa1woff2-1.ttf";
+    this.string.font = "./fonts/FontsFree-Net-aa1woff2-1.ttf";
     this.string.fontSize = 0.06;
     this.string.color = 0xffffff;
     this.string.textAlign = "center";
@@ -326,9 +371,10 @@ export default class AR extends Vue {
     );
     //this.string.material = customMaterial;
     this.string.material = new MeshStandardMaterial({ transparent: false });
-
-    this.stringBg = new MeshStandardMaterial({
-      color: 0x008bdb,
+    this.bgColor = new Color(0x008bdb);
+    this.bgColorHover = new Color(0x253746);
+    this.bgMat = new MeshStandardMaterial({
+      color: this.bgColor,
       side: DoubleSide,
       transparent: false,
       // depthWrite: false,
@@ -341,6 +387,8 @@ export default class AR extends Vue {
     this.scene.add(this.string);
     this.renderer.compile(this.scene, this.camera);
     this.scene.remove(this.string);
+
+    this.initMoments();
     this.raf = window.requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -381,7 +429,7 @@ export default class AR extends Vue {
     });
 
     this.mainText.text = this.mainTextString;
-    this.mainText.font = "/fonts/FontsFree-Net-aa1woff2-1.ttf";
+    this.mainText.font = "./fonts/FontsFree-Net-aa1woff2-1.ttf";
     this.mainText.fontSize = 0.2;
     this.mainText.position.z = 0;
     this.mainText.color = 0xffffff;
@@ -483,8 +531,9 @@ export default class AR extends Vue {
         );
         string.curveRadius = -rad;
         string.sync();
-        const bgMesh = new Mesh(geometry, this.stringBg);
+        const bgMesh = new Mesh(geometry, this.bgMat.clone());
         group.add(bgMesh);
+        bgMesh.momentId = this.moments.length;
 
         this.moments.push({
           string,
@@ -493,17 +542,20 @@ export default class AR extends Vue {
           speed,
           dAng,
           addAng: 0,
+          storyId: i % this.momentsString.length,
           dY,
+          bg: bgMesh,
           text: string.text,
+          hover: false,
         });
       });
     }
-    gsap.delayedCall(0.5, () => {
+    gsap.delayedCall(0.6, () => {
       this.stringAnim();
     });
-    gsap.delayedCall(8, () => {
-      this.stringAnim();
-    });
+    // gsap.delayedCall(8, () => {
+    //   this.stringAnim();
+    // });
   }
 
   stringAnim() {
@@ -513,87 +565,63 @@ export default class AR extends Vue {
         return Math.random() * Math.PI * 2;
       },
       speed: () => {
-        return Math.random() * 1.1 + 0.1;
+        return this.getRandomSpeed();
       },
       ease: "sine.inOut",
     });
   }
 
-  initString() {
-    this.string.sync(() => {
-      // console.log(this.string.geometry.boundingBox.max);
+  getRandomSpeed() {
+    return Math.random() * 1.1 + 0.1;
+  }
 
-      // const geometry = new PlaneGeometry(
-      //   this.string.geometry.boundingBox.max.x * 2,
-      //   this.string.geometry.boundingBox.max.y * 2,
-      //   56,
-      //   1
-      // );
-
-      const geometry = new CylinderGeometry(
-        1.559,
-        1.559,
-        this.string.geometry.boundingBox.max.y * 2 + 0.05,
-        30,
-        1,
-        true,
-        -(this.string.geometry.boundingBox.max.x * 2 + 0.05) / 2 / 1.559,
-        (this.string.geometry.boundingBox.max.x * 2 + 0.05) / 1.559
-      );
-      // console.log(geometry);
-
-      const material = new MeshStandardMaterial({
-        color: 0x008bdb,
-        side: DoubleSide,
-        transparent: false,
-        // depthWrite: false,
-      });
-      this.plane = new Mesh(geometry, material);
-      this.scene.add(this.plane);
-
-      this.group = new Group();
-      this.group.add(this.string);
-      this.group.add(this.plane);
-      this.string.renderOrder = 1;
-      this.scene.add(this.group);
-      this.group2 = this.group.clone();
-      //this.scene.add(this.group2);
-      // for (let i = 0; i < 20; i += 1) {
-      //   const group = this.group.clone();
-      //   group.position.y = Math.random() * 0.6 - 0.3;
-      //   group.rotation.y = Math.random() * 7;
-      //   const scale = 1 - Math.random() * 0.3;
-      //   group.scale.set(scale, scale, scale);
-      //   this.scene.add(group);
-      //   this.stringsArray.push(group);
-      // }
-      // for (let i = 0; i < 16; i += 1) {
-      //   const string = this.string.clone();
-      //   string.timeDelta = Math.random() * 6;
-      //   string.rad = 1.52 + Math.random() * 0.3;
-      //   string.speed = Math.random() + 0.1;
-      //   string.material = customMaterial;
-      //   string.onBeforeRender = function () {
-      //     this.material.uniforms.timeDelta.value = this.timeDelta;
-      //     this.material.uniforms.rad.value = this.rad;
-      //     this.material.uniforms.speed.value = this.speed;
-      //   };
-      //   // string.material.uniforms.timeDelta.value = Math.random() * 6;
-      //   // string.material.uniforms.rad.value = 1.52 + Math.random() * 0.3;
-      //   // string.material.uniforms.speed.value = Math.random() + 0.1;
-      //   this.stringsArray.push(string);
-      //   this.scene.add(string);
-      // }
-      // this.stringsArray.forEach((s) => {
-      //   s.position.y = Math.random() * 0.6 - 0.3;
-      // });
-      // this.string.scale.set(6, 6, 6);
-      //this.string.position.z = 1;
+  mouseDown() {
+    this.mouse.isDown = true;
+    gsap.to(this.moments, {
+      duration: 0.3,
+      speed: 0,
+      ease: "sine.out",
     });
+    this.explore.mouseDownId = this.explore.hoverId;
+    this.explore.downTime = Date.now();
+  }
+  mouseUp() {
+    this.mouse.isDown = false;
+    if (
+      this.explore.mouseDownId !== "" &&
+      this.explore.mouseDownId === this.explore.hoverId &&
+      Date.now() - this.explore.downTime < 200
+    ) {
+      console.log(this.moments[this.explore.mouseDownId].storyId);
+    } else {
+      gsap.to(this.moments, {
+        duration: 0.3,
+        speed: () => {
+          return this.getRandomSpeed();
+        },
+        ease: "sine.in",
+      });
+    }
+    this.explore.mouseDownId = "";
   }
 
   canvasClick() {
     //
+  }
+
+  hitTestStrings(pos) {
+    this.raycaster.setFromCamera(pos, this.camera);
+    let intersects = this.raycaster.intersectObjects(
+      this.moments.map((s) => {
+        return s.bg;
+      })
+    );
+
+    if (intersects.length > 0 && intersects[0].distance < 6) {
+      return intersects[0];
+    } else {
+      return undefined;
+    }
   }
 
   getCorrectPath(url) {
@@ -652,19 +680,48 @@ export default class AR extends Vue {
     this.mixer = new AnimationMixer(model);
   }
 
-  animate(nowMsec) {
-    this.lastTimeMsec = this.lastTimeMsec || nowMsec - 1000 / 60;
-    const deltaMsec = Math.min(200, nowMsec - this.lastTimeMsec);
-    this.lastTimeMsec = nowMsec;
+  updateMoments(delta) {
+    this.explore.controls.fps = delta;
+    this.explore.controls.update();
+    const intersect = this.hitTestStrings(this.mouse.pos);
+    if (intersect) {
+      this.moments[intersect.object.momentId].hover = true;
+      this.explore.hoverId = intersect.object.momentId;
+      globalBus.setHover(true);
+    } else {
+      globalBus.setHover(false);
+      this.explore.hoverId = "";
+    }
     this.moments.forEach((moment) => {
       moment.addAng += 0.004 * moment.speed;
       moment.group.rotation.y = moment.addAng + moment.dAng;
+      moment.group.rotation.y -= this.explore.phi;
+      if (moment.hover) {
+        moment.bg.material.color = this.bgColorHover;
+      } else {
+        moment.bg.material.color = this.bgColor;
+      }
+      moment.hover = false;
+
       // const string = moment.string;
       // string.position.z = Math.cos(moment.group.rotation.y) * moment.rad;
       // string.position.x = Math.sin(moment.group.rotation.y) * moment.rad;
       // string.rotation.y = moment.group.rotation.y;
       // string.position.y = moment.dY;
     });
+  }
+
+  animate(nowMsec) {
+    this.lastTimeMsec = this.lastTimeMsec || nowMsec - 1000 / 60;
+    const deltaMsec = Math.min(200, nowMsec - this.lastTimeMsec);
+    this.lastTimeMsec = nowMsec;
+    this.updateMoments(deltaMsec);
+
+    // this.camera.position.x +=
+    //   (this.mouse.pos.x * 1.6 - this.camera.position.x) * 0.02;
+    // this.camera.position.y +=
+    //   (this.mouse.pos.y * 0.4 - this.camera.position.y) * 0.02;
+
     // this.mixers.forEach((mixer) => {
     //   mixer.update(deltaMsec / 1000);
     // });

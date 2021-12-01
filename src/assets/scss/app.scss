@@ -18,7 +18,7 @@ position: fixed !important;
 body, * {
   //font-family: 'Amplitude', 'Open Sans', sans-serif;
   font-family:  sans-serif;
-  color: #2B2B2B;
+  color: #fff;
   line-height: 1.4;
   font-weight: 300;
   font-size: 16px;
@@ -27,10 +27,11 @@ body, * {
 
 a, .link {
   @include font($font-alright-normal); 
-  color: #253746;
+  color: $color-link;
   text-decoration: none;
-  font-size: 14px;
-  line-height: 18px;  
+  font-size: 20px;
+  line-height: 18px;
+  font-weight: bold;
 }
 
 b {
@@ -65,4 +66,10 @@ html, body, #app, .main {
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     height: 100%;
   }
+}
+
+.ui{
+  width: 100%;
+  padding: 82px 82px 30px;
+  box-sizing: border-box;
 }
