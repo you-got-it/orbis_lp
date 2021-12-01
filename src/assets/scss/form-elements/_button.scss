@@ -1,0 +1,49 @@
+@mixin button {
+    display: inline-block;
+    background: $cYellow;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    color: $cDark;
+    font-weight: 900;
+    font-size: 20px;
+    height: 74px;
+    line-height: 78px;
+    padding: 0 35px;
+    text-align: center;
+    white-space: nowrap;
+    text-transform: uppercase;
+    transition: .2s ease-in-out opacity;
+
+    &:hover,
+    &:focus {
+        opacity: .6;
+    }
+    &:active {
+        opacity: .8;
+    }
+    &:disabled {
+        opacity: .5;
+    }
+
+    .header & {
+        height: 41px;
+        line-height: 43px;
+        font-size: 14px;
+        padding: 0 15px;
+        @include tablet {
+            font-size: 20px;
+            height: 74px;
+            line-height: 74px;
+            padding: 0 35px;
+        }
+    }
+}
+
+.button,
+button,
+input[type="button"],
+input[type="submit"] {
+    @include button;
+}

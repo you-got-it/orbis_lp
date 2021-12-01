@@ -1,0 +1,50 @@
+.popup {
+    display: none;
+    background: #fff;
+    border-radius: 10px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 50vh;
+    z-index: 11;
+    width: 90%;
+    max-width: 1360px;
+    height: 75vh;
+    max-height: 600px;
+    @include tablet {
+        height: 70vh;
+        width: 80%;
+    }
+
+    &.opened {
+        display: block;
+    }
+
+    &_content {
+        padding: 22px 32px;
+        box-sizing: border-box;
+        overflow: auto;
+        height: 100%;
+    }
+    &_close {
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        right: 0;
+        top: -30px;
+        padding: 0;
+        min-width: 0;
+        background: url(#{$img}/close-light.svg) no-repeat center center;
+        background-size: 100% 100%;
+        transition: .2s $easing opacity;
+
+        &:hover {
+            opacity: .6;
+        }
+        &:active {
+            opacity: 1;
+        }
+    }
+}

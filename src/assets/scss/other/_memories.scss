@@ -1,0 +1,15 @@
+.memories {
+    margin: 0 0 106px;
+    @include tablet {
+        max-width: 868px;
+        margin-bottom: 150px;
+    }
+
+    &_button {
+        display: none;
+        @include tablet {
+            display: block;
+            margin-top: 45px;
+        }
+    }
+}

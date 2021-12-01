@@ -1,0 +1,23 @@
+.person {
+    width: 236px;
+    position: relative;
+    @include tablet {
+        width: 572px;
+    }
+
+    &_blindfold {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        @include tablet {
+            top: 35%;
+        }
+    }
+    &_image {
+        display: block;
+        width: 100%;
+        margin: auto;
+    }
+}

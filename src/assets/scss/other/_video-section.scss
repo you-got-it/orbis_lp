@@ -1,0 +1,19 @@
+.video-section {
+    display: flex;
+    justify-content: center;
+    margin: 50px -30px;
+
+    &_container {
+        max-width: 500px;
+        width: 100%;
+    }
+
+    @media (min-width: 501px) {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    @include tablet {
+        margin: 90px 0;
+    }
+}

@@ -1,19 +1,50 @@
-@import "common/variables";
+@charset "UTF-8";
+
+@import  "const";
+@import  "mixins";
+@import  "placeholders";
 @import "common/reset";
-@import "common/fonts";
-@import "common/mixins";
-@import "common/grid";
 
-@import "common/buttons";
-@import "common/form";
+/* basic */
+@import  "basic/normalize";
+@import  "basic/fonts";
+@import  "basic/default";
 
-@import "components/select-team";
-@import "components/stat";
-@import "components/leaderboard";
+/*Form elements*/
+@import  "form-elements/button";
+@import  "form-elements/input-text";
+@import  "form-elements/textarea";
+@import  "form-elements/checkbox";
+@import  "form-elements/label";
+@import  "form-elements/form";
 
-#arjs-video{
-position: fixed !important;
-}
+/*layout*/
+@import  "layout/headings";
+@import  "layout/header";
+@import  "layout/footer";
+@import  "layout/content";
+@import  "layout/popup";
+@import  "layout/fade";
+@import  "layout/logo";
+
+/* other */
+@import  "other/showcase";
+@import  "other/about";
+@import  "other/marked-text";
+@import  "other/bright-text";
+@import  "other/person";
+@import  "other/slider";
+@import  "other/memories";
+@import  "other/orbis";
+@import  "other/intro";
+@import  "other/quote-wrapper";
+@import  "other/social";
+@import  "other/video-embed";
+@import  "other/video-section";
+
+/* plugins */
+@import  "plugins/swiper";
+
 
 body, * {
   //font-family: 'Amplitude', 'Open Sans', sans-serif;
@@ -27,11 +58,16 @@ body, * {
 
 a, .link {
   @include font($font-alright-normal); 
-  color: $color-link;
+  color: $cYellow;
   text-decoration: none;
   font-size: 20px;
   line-height: 18px;
   font-weight: bold;
+}
+
+a:focus{
+  outline: none;
+  opacity: .6;
 }
 
 b {
@@ -42,7 +78,7 @@ h1 {
   font-size: 48px;
   line-height: 1;
 
-  @include desktop-up-layout {
+  @include desktop {
     font-size: 100px;
   }
 }
@@ -53,7 +89,7 @@ h2 {
   color: #2B2B2B;
   @include font($font-alright-normal);  
   font-family:  sans-serif;
-  @include desktop-up-layout {
+  @include desktop {
     font-size: 40px;
     line-height: 1;
   }
@@ -72,4 +108,8 @@ html, body, #app, .main {
   width: 100%;
   padding: 82px 82px 30px;
   box-sizing: border-box;
+}
+
+.layout{
+  padding: 330px 40px 40px;
 }

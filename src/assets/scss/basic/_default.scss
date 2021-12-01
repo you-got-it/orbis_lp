@@ -1,0 +1,82 @@
+html,
+body {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: $cDark;
+    color: $color;
+    font: #{$font-size__small}/#{1.4} $font-family;
+    padding: 0;
+    @include tablet {
+        font-size: $font-size;
+    }
+}
+
+a {
+    text-decoration: none;
+    transition: .2s $easing opacity;
+
+    &:hover{
+        outline: none;
+        opacity: .6;
+    }
+    &:active{
+        outline: none;
+        opacity: .6;
+
+    }
+}
+
+p {
+    margin: 0 0 10px;
+    @include tablet {
+        margin-bottom: 18px;
+    }
+}
+
+img {
+    max-width: 100%;
+
+    h3 & {
+        vertical-align: middle;
+        margin: 0 20px 0 0;
+    }
+}
+
+button,
+input,
+textarea {
+    &:focus {
+        outline: none;
+    }
+}
+
+table {
+    min-width: 100%;
+}
+
+blockquote {
+    text-align: center;
+    color: $cLightBlue;
+    font-size: 24px;
+    line-height: 30px;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+    font-weight: 900;
+    @include desktop {
+        font-size: 42px;
+        line-height: 52px;
+    }
+}
+
+figcaption {
+    font-size: 18px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: 4px;
+    @include desktop {
+        font-size: 20px;
+        line-height: 52px;
+    }
+}

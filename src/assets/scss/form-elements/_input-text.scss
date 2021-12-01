@@ -1,0 +1,33 @@
+input[type="text"],
+input[type="password"],
+input[type="search"],
+input[type="email"],
+input[type="url"],
+input[type="tel"] {
+    @include placeholder-color(rgba($color, .5));
+    color: $color;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba($color, .5);
+    box-sizing: border-box;
+    font-family: Miller;
+    font-size: 19px;
+    line-height: 30px;
+    padding: 20px 0;
+    width: 100%;
+    letter-spacing: .5px;
+    border-radius: 0;
+    transition: .2s ease-in color;
+    @include tablet {
+        font-size: 19px;
+        line-height: 30px;
+    }
+
+    &:focus {
+        color: $color;
+    }
+
+    .submitted &:invalid {
+        border-color: #FF5C5C;
+    }
+}

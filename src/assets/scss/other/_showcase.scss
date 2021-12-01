@@ -1,0 +1,66 @@
+.showcase {
+    padding: 120px 0 0;
+    position: relative;
+    background-color: #0C1F2F;
+    margin: 0 0 50px;
+    overflow: hidden;
+    @include tablet {
+        padding-top: 180px;
+        margin-bottom: 150px;
+    }
+
+    &_title {
+        position: absolute;
+        top: 120px;
+        font-size: 18px;
+        line-height: 26px;
+        font-weight: 900;
+        max-width: 700px;
+        text-align: center;
+        left: $indent;
+        right: $indent;
+        z-index: 1;
+        @include tablet {
+            top: 180px;
+            font-size: 30px;
+            line-height: 46px;
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+        }
+
+        span {
+            @include tablet {
+                display: block;
+            }
+        }
+    }
+    &_blindfold {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        @include media (500px) {
+            top: 48%;
+        }
+        @include tablet {
+            top: 46%;
+        }
+    }
+    &_image,
+    &_video {
+        display: block;
+        width: 200%;
+        margin: -10vw auto 0;
+        transform: translateX(-25%);
+        @include tablet {
+            width: 95%;
+            margin: auto;
+            transform: none;
+        }
+        @include desktop {
+            margin-top: -5vw;
+        }
+    }
+}

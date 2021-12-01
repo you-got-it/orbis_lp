@@ -1,0 +1,71 @@
+@mixin invisible-text {
+    font: 0/0 a;
+    text-shadow: none;
+    color: transparent;
+}
+@mixin cutted-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+@mixin tablet() {
+    @media all and (min-width: 768px) { @content; }
+}
+@mixin desktop() {
+    @media all and (min-width: 1124px) { @content; }
+}
+@mixin desktop-large() {
+    @media all and (min-width: 1366px) { @content; }
+}
+@mixin media($resolution) {
+    @media all and (min-width: $resolution) { @content; }
+}
+@mixin mediaHeight($resolution) {
+    @media all and (min-height: $resolution) { @content; }
+}
+@mixin placeholder-color($color) {
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+    &::-moz-placeholder {
+        color: $color;
+    }
+    &:-ms-input-placeholder
+    {
+        color: $color;
+    }
+}
+
+@mixin font($settings) {
+	font: {
+		family: map-get($settings, "font-family");
+		size: map-get($settings, "font-size");
+		style: map-get($settings, "font-style");
+		weight: map-get($settings, "font-weight");
+	}
+	letter-spacing: map-get($settings, "letter-spacing");
+	line-height: map-get($settings, "line-height");
+	text-transform: map-get($settings, "text-transform");
+}
+
+@mixin layout {
+    padding-left: $indent;
+    padding-right: $indent;
+    @include tablet {
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    @include media(1366px) {
+        max-width: $max-width;
+    }
+
+}
+
+@mixin gradiented-text($color1, $color2) {
+    @supports(-webkit-background-clip: text) {
+        background: linear-gradient($color1,$color2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}

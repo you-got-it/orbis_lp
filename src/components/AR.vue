@@ -7,7 +7,6 @@
       height="10px"
       @click="canvasClick"
       :style="{
-        background: '#f2f2f2',
         cursor: mouse.hover ? 'pointer' : 'auto',
       }"
     ></canvas>
@@ -575,8 +574,11 @@ export default class AR extends Vue {
     return Math.random() * 1.1 + 0.1;
   }
 
-  mouseDown() {
-    this.mouse.isDown = true;
+  mouseDown(e) {
+    console.log(e);
+    if (e.emitter === "wheel") {
+      return;
+    }
     gsap.to(this.moments, {
       duration: 0.3,
       speed: 0,
@@ -586,6 +588,10 @@ export default class AR extends Vue {
     this.explore.downTime = Date.now();
   }
   mouseUp() {
+    console.log(this.mouse.isDown);
+    if (!this.mouse.isDown) {
+      return;
+    }
     this.mouse.isDown = false;
     if (
       this.explore.mouseDownId !== "" &&
@@ -770,7 +776,7 @@ export default class AR extends Vue {
   z-index: 6;
   line-height: 1.5em;
   @include font($font-alright-normal);
-  @include desktop-up-layout {
+  @include desktop {
     font-size: 32px;
   }
 }
@@ -789,6 +795,7 @@ export default class AR extends Vue {
     position: fixed;
     left: 0;
     top: 0;
+    background: $bg_color;
   }
 }
 .debug {

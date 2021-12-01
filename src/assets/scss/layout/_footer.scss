@@ -1,0 +1,37 @@
+.footer {
+    background: #142636;
+
+    &_holder {
+        @include layout;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        @include tablet {
+            padding-top: 66px;
+            padding-bottom: 66px;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    &_menu {
+        margin: 0 0 20px;
+        display: flex;
+        gap: 8px;
+        @include tablet {
+            gap: 30px;
+        }
+    }
+    &_menu-link {
+        font-size: 16px;
+        line-height: 18px;
+        text-transform: uppercase;
+        color: $color;
+    }
+    &_copyrights {
+        font-size: 12px;
+        line-height: 18px;
+        margin: 0 0 50px;
+        @include tablet {
+            margin: 0;
+        }
+    }
+}

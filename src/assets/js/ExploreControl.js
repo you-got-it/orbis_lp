@@ -154,7 +154,7 @@ var ExploreControl = function (object, domElement) {
 		event.preventDefault();
 		event.stopPropagation();
 
-		scope.dispatchEvent(startEvent);
+		scope.dispatchEvent({ type: 'start', emitter:'wheel' });
 
 		handleMouseWheel(event);
 
@@ -254,7 +254,7 @@ var ExploreControl = function (object, domElement) {
 			document.addEventListener('mousemove', onMouseMove, false);
 			document.addEventListener('mouseup', onMouseUp, false);
 
-			scope.dispatchEvent(startEvent);
+			scope.dispatchEvent({ type: 'start', emitter:'mouse' });
 
 		}
 
@@ -338,7 +338,7 @@ var ExploreControl = function (object, domElement) {
 
 		if (state !== STATE.NONE) {
 
-			scope.dispatchEvent(startEvent);
+			scope.dispatchEvent({ type: 'start', emitter:'mouse' });
 
 		}
 

@@ -1,0 +1,24 @@
+.about {
+    margin: 15px 0 50px;
+    @include tablet {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin: 35px 0 100px;
+    }
+
+    h2 {
+        margin: 0 0 30px;
+        @include tablet {
+            max-width: 60%;
+            margin: 0;
+        }
+
+        & + a {
+            @include tablet {
+                display: inline-block;
+                margin: 0 0 15px;
+            }
+        }
+    }
+}

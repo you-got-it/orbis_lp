@@ -1,0 +1,102 @@
+.form {
+    text-align: center;
+    @include tablet {
+        margin-bottom: 150px;
+    }
+    
+    &_title {
+        margin: 0 0 60px;
+        @include tablet {
+            margin-bottom: 120px;
+            // margin-left: -4%;
+            // width: 108%;
+        }
+
+        span {
+            font-weight: 900;
+            font-size: 24px;
+            line-height: 30px;
+            white-space: pre-wrap;
+            border: 0 solid $cLightBlue;
+            position: relative;
+            @include tablet {
+                font-weight: 900;
+                font-size: 60px;
+                line-height: 60px;
+            }
+
+            span {
+                white-space: nowrap;
+                font-size: inherit;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    left: -0.46em;
+                    top:-0.46em;
+                    bottom:-0.46em;
+                    right:-0.46em;
+                    padding: 0.46em;
+                    z-index: -1;
+                    background-color: $cBlue;                  
+                }
+            }
+
+        }
+
+        div span::before {
+            z-index: -2;
+        }
+        div > span::before {
+            content: none;
+        }
+    }
+    &_row {
+        margin: 0 auto 50px;
+        max-width: 572px;
+        position: relative;
+        @include tablet {
+            margin-bottom: 80px;
+        }
+    }
+    &_error {
+        font-size: 19px;
+        line-height: 30px;
+        text-transform: uppercase;
+        position: absolute;
+        left: 0;
+        top: -30px;
+        color: #FF5C5C;
+        display: none;
+        @include tablet {
+            font-size: 20px;
+            line-height: 20px;
+        }
+
+        .submitted input:invalid + & {
+            display: block;
+        }
+    }
+    &_success {
+        display: none;
+    }
+
+    &.done {
+        .form_title {
+            display: none !important;
+        }
+        .form_row {
+            display: none;
+        }
+        .form_title__success {
+            display: block !important;
+        }
+        .form_success {
+            display: block;
+        }
+    }
+}
+
+#form {
+    position: relative;
+    top: -70px;
+}

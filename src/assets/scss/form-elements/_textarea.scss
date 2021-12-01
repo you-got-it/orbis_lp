@@ -1,0 +1,24 @@
+textarea {
+    @include placeholder-color(rgba($color, .5));
+    color: $color;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba($color, .5);
+    box-sizing: border-box;
+    font-family: Miller;
+    font-size: 19px;
+    line-height: 30px;
+    padding: 20px 0;
+    width: 100%;
+    letter-spacing: .5px;
+    height: 120px;
+    border-radius: 0;
+    transition: .2s ease-in color;
+    resize: none;
+    transition: .2s ease-in border-color, .2s ease-in color;
+
+    &:focus,
+    &.focus {
+        color: $color;
+    }
+}
