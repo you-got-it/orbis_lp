@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import AR from "./components/AR.vue";
-import HintScreen from "./components/HintScreen.vue";
+import LearnMore from "./components/LearnMore.vue";
 
 export const router = new Router({
   mode: "history",
@@ -9,19 +9,19 @@ export const router = new Router({
   routes: [
     {
       path: "",
-      redirect: "start",
+      redirect: "memories",
     },
     {
-      path: "/start",
-      component: HintScreen,
+      path: "/info",
+      component: LearnMore,
       props: {},
     },
     {
-      path: "/ar",
+      path: "/memories",
       component: AR,
       props: {},
     },
-    { path: "*", redirect: "start" },
+    { path: "*", redirect: "memories" },
   ],
 });
 

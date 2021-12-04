@@ -11,5 +11,7 @@ module.exports = {
   // devServer: {
   //   https: true,
   // }, 
-  publicPath: './', 
+  publicPath: process.env.NODE_ENV === 'production'
+  ? '/banners/orbis/'
+  : '/'
 };

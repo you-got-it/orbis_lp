@@ -4,15 +4,12 @@
       <h3 class="form_title overlay-title"><span v-html="getTitle"></span></h3>
       <div class="intro_text content overlay-description">
         <p>
-          It would be magical, my stomach would be turning with excitement at
-          the thought of seeing all of their smiling faces. I would be excited
-          at seeing how much my Grandsons had grown and changed in those 3
-          years,are they taller, have their faces changed, had logans hair
-          darkened, Is Aiden taller then me now. Do my children look older now
-          then I remember them looking.
+          {{ data.description }}
         </p>
       </div>
-      <blockquote class="overlay-name">Angela</blockquote>
+      <blockquote class="overlay-name">
+        {{ data.first_name }} {{ data.second_name }}
+      </blockquote>
     </figure>
   </div>
 </template>
@@ -22,7 +19,13 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class Overlay extends Vue {
-  title = "I’d see my 3 children & 2 Grandsons";
+  @Prop()
+  data;
+
+  get title() {
+    return this.data.title;
+  }
+
   get getTitle() {
     const words = this.title.split(" ");
     let str = "";
@@ -45,8 +48,8 @@ export default class Overlay extends Vue {
   width: 100%;
   height: 100%;
   position: fixed;
-  background-color: rgba(19, 30, 39, 0.95);
-  z-index: 1;
+  background-color: rgba(19, 30, 39, 0.96);
+  z-index: 2;
   text-align: center;
   display: flex;
   flex-direction: column;

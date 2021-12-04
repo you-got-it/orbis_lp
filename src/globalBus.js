@@ -8,7 +8,7 @@ const globalBus = new Vue({
     mouse: {
       x: 0,
       y: 0,
-      pos: new Vector2(),
+      pos: new Vector2(-1,-1),
       lastPos: new Vector2(),
       dragObject: null,
       lastX: 0,

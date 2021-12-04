@@ -2,12 +2,12 @@
     background: #142636;
 
     &_holder {
-        @include layout;
-        padding-top: 50px;
-        padding-bottom: 50px;
+        // @include layout;
+        // padding-top: 50px;
+        // padding-bottom: 50px;
         @include tablet {
-            padding-top: 66px;
-            padding-bottom: 66px;
+            // padding-top: 66px;
+            // padding-bottom: 66px;
             display: flex;
             justify-content: space-between;
         }

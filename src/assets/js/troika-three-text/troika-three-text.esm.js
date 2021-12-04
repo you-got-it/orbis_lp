@@ -1453,11 +1453,11 @@ function getTextRenderInfo(args, callback) {
         visibleBounds: result.visibleBounds,
         timings: result.timings,
         get totalBounds() {
-          console.log('totalBounds deprecated, use blockBounds instead');
+          //console.log('totalBounds deprecated, use blockBounds instead');
           return result.blockBounds
         },
         get totalBlockSize() {
-          console.log('totalBlockSize deprecated, use blockBounds instead');
+          //console.log('totalBlockSize deprecated, use blockBounds instead');
           const [x0, y0, x1, y1] = result.blockBounds;
           return [x1 - x0, y1 - y0]
         }

@@ -14,7 +14,9 @@
 </template>
 
 <script>
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import MemoriesStore from "@/store/memoriesStore";
+import { getModule } from "vuex-module-decorators";
 import {
   Texture,
   AddOperation,
@@ -106,7 +108,6 @@ export default class AR extends Vue {
   models = {};
   mixer;
   mixers = [];
-  debugString = "String";
   loading = true;
   mainTextString =
     "IF YOU LOST YOUR SIGHT, WHAT MOMENT WOULD YOU WANT TO SEE AGAIN?";
@@ -117,6 +118,34 @@ export default class AR extends Vue {
 
   get mouse() {
     return globalBus.mouse;
+  }
+  get memoriesStore() {
+    return getModule(MemoriesStore, this.$store);
+  }
+
+  get memories() {
+    return this.memoriesStore.memories;
+  }
+
+  get overlayId() {
+    return this.memoriesStore.overlayId;
+  }
+
+  mometsOffset = 0;
+
+  fetched = false;
+  mometsInit = false;
+
+  @Watch("memories") fetchDone() {
+    this.fetched = true;
+    this.mometsOffset = Math.ceil(Math.random() * this.memories.length);
+    this.initMoments();
+  }
+
+  @Watch("overlayId") overlayIdCanged() {
+    if (this.overlayId === -1) {
+      this.setMometsSpeed();
+    }
   }
 
   width = 0;
@@ -145,6 +174,7 @@ export default class AR extends Vue {
     //console.log(ArToolkitProfile);
     window.app = this;
     this.startAR();
+    // console.log(this.memories);
   }
 
   beforeDestroy() {
@@ -250,7 +280,7 @@ export default class AR extends Vue {
     this.scene.add(this.light);
 
     this.camera = new PerspectiveCamera(35, 1, 0.01, 1000);
-    this.camera.position.set(0, 0, 6);
+    this.camera.position.set(0, -0.2, 6);
     this.scene.add(this.camera);
 
     // render
@@ -387,7 +417,10 @@ export default class AR extends Vue {
     this.renderer.compile(this.scene, this.camera);
     this.scene.remove(this.string);
 
-    this.initMoments();
+    if (this.memories.length > 0) {
+      this.mometsOffset = Math.ceil(Math.random() * this.memories.length);
+      this.initMoments();
+    }
     this.raf = window.requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -492,9 +525,12 @@ export default class AR extends Vue {
   }
 
   initMoments() {
+    this.mometsInit = true;
     for (let i = 0; i < 25; i += 1) {
       const string = this.string.clone();
-      string.text = this.momentsString[i % this.momentsString.length];
+      const storyId = (i + this.mometsOffset) % this.memories.length;
+      const moment = this.memories[storyId];
+      string.text = moment.title;
       string.material = this.string.material.clone();
 
       //const rad = 0.1 + Math.random() * 1.6;
@@ -541,7 +577,7 @@ export default class AR extends Vue {
           speed,
           dAng,
           addAng: 0,
-          storyId: i % this.momentsString.length,
+          storyId,
           dY,
           bg: bgMesh,
           text: string.text,
@@ -575,7 +611,6 @@ export default class AR extends Vue {
   }
 
   mouseDown(e) {
-    console.log(e);
     if (e.emitter === "wheel") {
       return;
     }
@@ -588,7 +623,6 @@ export default class AR extends Vue {
     this.explore.downTime = Date.now();
   }
   mouseUp() {
-    console.log(this.mouse.isDown);
     if (!this.mouse.isDown) {
       return;
     }
@@ -598,17 +632,23 @@ export default class AR extends Vue {
       this.explore.mouseDownId === this.explore.hoverId &&
       Date.now() - this.explore.downTime < 200
     ) {
-      console.log(this.moments[this.explore.mouseDownId].storyId);
+      this.memoriesStore.setOverlayId(
+        this.moments[this.explore.mouseDownId].storyId
+      );
     } else {
-      gsap.to(this.moments, {
-        duration: 0.3,
-        speed: () => {
-          return this.getRandomSpeed();
-        },
-        ease: "sine.in",
-      });
+      this.setMometsSpeed();
     }
     this.explore.mouseDownId = "";
+  }
+
+  setMometsSpeed() {
+    gsap.to(this.moments, {
+      duration: 0.3,
+      speed: () => {
+        return this.getRandomSpeed();
+      },
+      ease: "sine.in",
+    });
   }
 
   canvasClick() {
