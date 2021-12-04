@@ -14,7 +14,11 @@
               LEARN MORE
             </router-link>
           </li>
-          <li class="header-nav-item"><a href="">SHARE YOUR MEMORY</a></li>
+          <li class="header-nav-item">
+            <router-link to="share" class="header__menu-link">
+              SHARE YOUR MEMORY
+            </router-link>
+          </li>
         </ul>
       </nav>
       <img

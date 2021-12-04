@@ -16,18 +16,23 @@ export default class FormsStore extends VuexModule {
   @Action
   submitForms(): Promise<void> {
     const url = `https://script.google.com/macros/s/AKfycbzA2cTUTPiet2cUz3OeADg2P3aDlLP2qLNAkfC9Xi9yuC4dglIG4rnuCrZhFBacF7hO/exec`;
-
-    return axios
-      .get(url, {
-        params: this.data,
-      })
-      .then((result) => {
-        console.log("submit", result);
-      })
-      .catch((err) => {
-        //commit("setMenuProp", { prop: "formsDisabled", data: false });
-        console.log(err);
-      });
+    // const url = `https://script.google.com/macros/s/AKfycbzA2ADg2P3aDlLP2qLNAkfC9Xi9yuC4dglIG4rnuCrZhFBacF7hO/exec`;
+    return new Promise((resolve, reject) => {
+      axios
+        .get(url, {
+          params: this.data,
+        })
+        .then((result: any) => {
+          resolve(result);
+          //console.log("submit", result);
+        })
+        .catch((err) => {
+          reject(err);
+          // console.log("err", err);
+          //commit("setMenuProp", { prop: "formsDisabled", data: false });
+          //console.log(err);
+        });
+    });
   }
 
   @Mutation

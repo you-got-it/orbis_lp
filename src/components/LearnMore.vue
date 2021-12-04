@@ -25,12 +25,12 @@
       ></div>
       <video
         class="showcase_video"
-        src="/video/hero-video.mp4"
+        :src="`${publicPath}video/hero-video.mp4`"
         loop
         muted
         autoplay
         playsinline
-        poster="/img/hero-video-cover.jpg"
+        :poster="`${publicPath}img/hero-video-cover.jpg`"
       ></video>
     </div>
 
@@ -50,7 +50,7 @@
             children and adults in low income-countries.
           </p>
         </div>
-        <a href="#form" class="button">share your memory</a>
+        <router-link to="share" class="button">share your memory</router-link>
       </div>
 
       <div class="video-section">
@@ -85,59 +85,75 @@
           A platform for people to share their favourite moments to raise
           awareness about <span class="bright-text">avoidable blindness</span>.
         </h2>
-        <a href="#form" class="button">share your memory</a>
+        <router-link to="share" class="button">share your memory</router-link>
       </div>
 
-      <!-- <swiper
-        class="slider"
-        :slides-per-view="'auto'"
-        :space-between="8"
-        :breakpoints="{
-          768: {
-            spaceBetween: 20,
-          },
-        }"
-      >
-        <swiper-slide>
-          <div class="person">
-            <img class="person_image" src="/img/slider-1.jpg" alt="" />
+      <div class="slider" ref="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="person">
+              <img
+                class="person_image"
+                :src="`${publicPath}img/slider-1.jpg`"
+                alt=""
+              />
+            </div>
           </div>
-        </swiper-slide>
-        <swiper-slide>
-          <div class="person">
-            <img class="person_image" src="/img/slider-2.jpg" alt="" />
+          <div class="swiper-slide">
+            <div class="person">
+              <img
+                class="person_image"
+                :src="`${publicPath}img/slider-2.jpg`"
+                alt=""
+              />
+            </div>
           </div>
-        </swiper-slide>
-        <swiper-slide>
-          <div class="person">
-            <img class="person_image" src="/img/slider-3.jpg" alt="" />
+          <div class="swiper-slide">
+            <div class="person">
+              <img
+                class="person_image"
+                :src="`${publicPath}img/slider-3.jpg`"
+                alt=""
+              />
+            </div>
           </div>
-        </swiper-slide>
-        <swiper-slide>
-          <div class="person">
-            <img class="person_image" src="/img/slider-4.jpg" alt="" />
+          <div class="swiper-slide">
+            <div class="person">
+              <img
+                class="person_image"
+                :src="`${publicPath}img/slider-4.jpg`"
+                alt=""
+              />
+            </div>
           </div>
-        </swiper-slide>
-        <swiper-slide>
-          <div class="person">
-            <img class="person_image" src="/img/slider-5.jpg" alt="" />
+          <div class="swiper-slide">
+            <div class="person">
+              <img
+                class="person_image"
+                :src="`${publicPath}img/slider-5.jpg`"
+                alt=""
+              />
+            </div>
           </div>
-        </swiper-slide>
-        <swiper-slide>
-          <div class="person">
-            <img class="person_image" src="/img/slider-6.jpg" alt="" />
+          <div class="swiper-slide">
+            <div class="person">
+              <img
+                class="person_image"
+                :src="`${publicPath}img/slider-6.jpg`"
+                alt=""
+              />
+            </div>
           </div>
-        </swiper-slide>
-      </swiper> -->
-      <Swiper :slides-per-view="3" :space-between="50">
-        <!-- <swiper-slide>Slide 1</swiper-slide>
-        <swiper-slide>Slide 2</swiper-slide>
-        <swiper-slide>Slide 3</swiper-slide> -->
-      </Swiper>
+        </div>
+      </div>
+
       <div class="orbis">
         <picture class="orbis_image">
-          <source srcset="/img/girl-mobile.jpg" media="(max-width: 768px)" />
-          <img src="/img/girl.jpg" alt="" class="" />
+          <source
+            :srcset="`${publicPath}img/girl-mobile.jpg`"
+            media="(max-width: 768px)"
+          />
+          <img :src="`${publicPath}img/girl.jpg`" alt="" class="" />
         </picture>
         <span class="orbis_title">who are orbis?</span>
         <p>
@@ -162,77 +178,62 @@
       </div>
 
       <div class="form">
-        <h3 class="form_title js-random-text">
-          <div>
-            <span
-              ><span>If you</span> <span>lost</span> <span>your</span>
-              <span>sight,</span></span
-            >
-          </div>
-          <span
-            ><span>what</span> <span>moment</span> <span>would</span>
-            <span>you</span> <span>want</span> <span>to</span> <span>see</span>
-            <span>again?</span></span
-          >
-        </h3>
-        <h3 class="form_title js-random-text" style="display: none">
-          <div>
-            <span
-              ><span>If</span> <span>you</span> <span>were</span>
-              <span>going</span> <span>blind</span> <span>tomorrow,</span></span
-            >
-          </div>
-          <span
-            ><span>what is</span> <span>the final</span> <span>image</span>
-            <span>you’d</span> <span>want</span> <span>to see?</span></span
-          >
-        </h3>
-        <h3 class="form_title js-random-text" style="display: none">
-          <div>
-            <span
-              ><span>If you</span> <span>went</span> <span>blind</span>
-              <span>for</span> <span>3 years,</span></span
-            >
-          </div>
-          <span
-            ><span>what’s</span> <span>the first</span> <span>thing</span>
-            <span>you’d</span> <span>want</span> <span>to see?</span></span
-          >
-        </h3>
-        <h3 class="form_title form_title__success" style="display: none">
-          <div>
-            <span
-              ><span>Thank you</span> <span>for</span>
-              <span>submitting</span></span
-            >
-          </div>
-          <span><span>your</span> <span>memory.</span></span>
-        </h3>
+        <Title :title="currentTitle" />
+        <router-link to="share" class="button">share your memory</router-link>
       </div>
     </div>
   </main>
 </template>
 
-<script lang="ts">
+<script>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/swiper.scss";
+import { Swiper } from "swiper";
+import "swiper/swiper-bundle.css";
 // import MemoriesStore from "@/store/memoriesStore";
 // import { getModule } from "vuex-module-decorators";
 // import { gsap } from "gsap";
+import Texts from "../assets/js/texts.js";
+import Title from "@/components/Title.vue";
+
 @Component({
-  components: {
-    Swiper,
-    SwiperSlide,
-  },
+  components: { Title },
 })
-export default class LearnMore extends Vue {}
+export default class LearnMore extends Vue {
+  swiper;
+  currentTitle = "";
+  get publicPath() {
+    return process.env.BASE_URL;
+  }
+
+  beforeDestroye() {
+    this.swiper.destroy();
+  }
+  mounted() {
+    this.currentTitle =
+      Texts.titles[Math.trunc(Math.random() * Texts.titles.length)];
+    this.$nextTick(() => {
+      this.swiper = new Swiper(this.$refs.swiper, {
+        slidesPerView: "auto",
+        spaceBetween: 8,
+        breakpoints: {
+          768: {
+            spaceBetween: 20,
+          },
+        },
+      });
+    });
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins";
 @import "~@/assets/scss/const";
 .info {
   text-align: left;
+  position: relative;
+}
+.swiper-slide {
+  flex-shrink: 1;
 }
 </style>

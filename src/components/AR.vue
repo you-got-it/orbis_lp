@@ -5,11 +5,11 @@
       ref="3d"
       width="10px"
       height="10px"
-      @click="canvasClick"
       :style="{
         cursor: mouse.hover ? 'pointer' : 'auto',
       }"
     ></canvas>
+    <router-link to="share" class="button">share your memory</router-link>
   </div>
 </template>
 
@@ -201,6 +201,7 @@ export default class AR extends Vue {
     this.initScene();
     this.onWindowResize();
     window.addEventListener("resize", this.onWindowResize.bind(this), false);
+    this.renderer.clear();
     await this.loadResources();
     this.setupObjects();
   }
@@ -627,9 +628,11 @@ export default class AR extends Vue {
       return;
     }
     this.mouse.isDown = false;
+
     if (
       this.explore.mouseDownId !== "" &&
       this.explore.mouseDownId === this.explore.hoverId &&
+      Math.abs(this.mouse.pos.x - this.mouse.lastPos.x) < 0.06 &&
       Date.now() - this.explore.downTime < 200
     ) {
       this.memoriesStore.setOverlayId(
@@ -730,12 +733,41 @@ export default class AR extends Vue {
     this.explore.controls.fps = delta;
     this.explore.controls.update();
     const intersect = this.hitTestStrings(this.mouse.pos);
+    const currentHoverId = this.explore.hoverId;
     if (intersect) {
+      // low speed on hover
+      if (this.moments[intersect.object.momentId].hover === false) {
+        gsap.to(this.moments[intersect.object.momentId], {
+          duration: 0.2,
+          speed: 0.1,
+          ease: "sine.inOut",
+        });
+      }
       this.moments[intersect.object.momentId].hover = true;
+      if (
+        intersect.object.momentId !== currentHoverId &&
+        currentHoverId !== ""
+      ) {
+        // random speed if hover changed
+
+        gsap.to(this.moments[currentHoverId], {
+          duration: 0.2,
+          speed: this.getRandomSpeed(),
+          ease: "sine.inOut",
+        });
+      }
       this.explore.hoverId = intersect.object.momentId;
       globalBus.setHover(true);
     } else {
       globalBus.setHover(false);
+      if (this.explore.hoverId !== "") {
+        // random speed if hover leave
+        gsap.to(this.moments[this.explore.hoverId], {
+          duration: 0.2,
+          speed: this.getRandomSpeed(),
+          ease: "sine.inOut",
+        });
+      }
       this.explore.hoverId = "";
     }
     this.moments.forEach((moment) => {
@@ -806,31 +838,17 @@ export default class AR extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import "@/assets/scss/app.scss";
-.subcont {
-  font-size: 16px;
-  bottom: 70px;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 20px;
-  position: absolute;
-  z-index: 6;
-  line-height: 1.5em;
-  @include font($font-alright-normal);
-  @include desktop {
-    font-size: 32px;
-  }
-}
-.subtitles {
-  display: inline;
-  background: #253746;
-  color: white;
-  padding: 0.28em;
-  padding-left: 0;
-  padding-right: 0;
-  box-shadow: 8px 0 0 #253746, -8px 0 0 #253746;
+.button {
+  z-index: 1;
+  margin-bottom: 300px;
 }
 .ar {
   overscroll-behavior: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
   &__canvas {
     position: fixed;
     left: 0;

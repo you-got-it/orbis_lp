@@ -1,14 +1,23 @@
 <template>
   <div id="app">
     <Header />
-    <router-view :key="$route.fullPath" ref="route" />
-    <Overlay v-if="overlayId !== -1" :data="memories[overlayId]" />
-    <Footer />
+    <!-- mode="out-in" :duration="1000" -->
+    <transition name="fade" mode="out-in">
+      <router-view :key="$route.fullPath" ref="route" />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <Overlay v-if="overlayId !== -1" :data="memories[overlayId]" />
+    </transition>
+    <Footer
+      :style="{
+        transform: memoriesPage ? 'translateY(-100%)' : 'translateY(0)',
+      }"
+    />
   </div>
 </template>
 
 <script>
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import AR from "./components/AR.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
@@ -28,7 +37,7 @@ import { getModule } from "vuex-module-decorators";
   },
 })
 export default class App extends Vue {
-  page = 1;
+  currentPath = "/memories";
 
   get formsStore() {
     return getModule(FormsStore, this.$store);
@@ -42,6 +51,20 @@ export default class App extends Vue {
   }
   get overlayId() {
     return this.memoriesStore.overlayId;
+  }
+
+  @Watch("$route", { immediate: true, deep: true })
+  onUrlChange(newVal) {
+    this.currentPath = newVal.path;
+    //console.log(newVal);
+  }
+
+  get memoriesPage() {
+    return this.currentPath === "/memories" ? true : false;
+  }
+
+  get routerPath() {
+    return this.$router.currentRoute.path;
   }
 
   async created() {
@@ -70,7 +93,8 @@ export default class App extends Vue {
 @import "~@/assets/scss/const";
 #app {
   text-align: center;
-  color: #2c3e50;
+  //color: #2c3e50;
+  //background-color: #141e27;
   margin: 0;
   padding: 0;
   border: 0;
@@ -86,10 +110,38 @@ export default class App extends Vue {
 }
 .footer {
   z-index: 1;
-  position: absolute;
+  //  position: absolute;
   width: 100%;
   text-align: left;
   background: transparent;
   bottom: 0;
+  transition: 0.3s transform;
+  transform: translateY(0);
 }
+
+.fade-enter-active {
+  transition-duration: 0.7s;
+  transition-property: opacity, transform;
+  //transition-timing-function: ease;
+}
+
+.fade-leave-active {
+  transition-duration: 0.15s;
+  transition-property: opacity, transform;
+  //transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+  //transform: translateY(100px);
+}
+
+// .fade-enter-active,
+// .fade-leave-active {
+//   transition: opacity 0.5s;
+// }
+// .fade-enter, .loaderFade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+//   opacity: 0;
+// }
 </style>

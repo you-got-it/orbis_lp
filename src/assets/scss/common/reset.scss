@@ -13,7 +13,7 @@ dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
+ figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
   margin: 0;
@@ -158,9 +158,9 @@ img {
  * Address margin not present in IE 6/7/8/9, Safari 5, and Opera 11.
  */
 
-figure {
-  margin: 0;
-}
+// figure {
+//   margin: 0;
+// }
 
 /**
  * Correct margin displayed oddly in IE 6/7.

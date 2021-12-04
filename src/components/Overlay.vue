@@ -1,7 +1,8 @@
 <template>
   <div class="overlay layout">
     <figure>
-      <h3 class="form_title overlay-title"><span v-html="getTitle"></span></h3>
+      <!-- <h3 class="form_title overlay-title"><span v-html="getTitle"></span></h3> -->
+      <Title :title="data.title" />
       <div class="intro_text content overlay-description">
         <p>
           {{ data.description }}
@@ -16,8 +17,13 @@
 
 <script>
 import { Component, Prop, Vue } from "vue-property-decorator";
+import Title from "@/components/Title.vue";
 
-@Component
+@Component({
+  components: {
+    Title,
+  },
+})
 export default class Overlay extends Vue {
   @Prop()
   data;
@@ -44,6 +50,22 @@ export default class Overlay extends Vue {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins";
 @import "~@/assets/scss/const";
+
+/deep/.form_title {
+  margin-bottom: 60px;
+
+  span {
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 30px;
+    @include desktop {
+      font-weight: 900;
+      font-size: 42px;
+      line-height: 42px;
+    }
+  }
+}
+
 .overlay {
   width: 100%;
   height: 100%;
@@ -56,20 +78,9 @@ export default class Overlay extends Vue {
   align-items: center;
   box-sizing: border-box;
   overflow: auto;
-  .overlay-title {
-    margin-bottom: 60px;
+  top: 0;
+  left: 0;
 
-    span {
-      font-weight: 900;
-      font-size: 24px;
-      line-height: 30px;
-      @include desktop {
-        font-weight: 900;
-        font-size: 42px;
-        line-height: 42px;
-      }
-    }
-  }
   .overlay-name {
     color: #fff;
     font-size: 20px;
