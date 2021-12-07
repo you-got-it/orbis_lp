@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <Header />
+    <Header :showIntro="showIntro && memoriesPage" />
     <!-- mode="out-in" :duration="1000" -->
-    <transition name="fade" mode="out-in">
+    <transition
+      name="fade"
+      mode="out-in"
+      :duration="{ enter: 700, leave: 300 }"
+    >
       <router-view :key="$route.fullPath" ref="route" />
     </transition>
     <transition name="fade" mode="out-in">
       <Overlay v-if="overlayId !== -1" :data="memories[overlayId]" />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <Intro v-if="showIntro && memoriesPage" @skipIntro="skipIntro" />
     </transition>
     <Footer
       :style="{
@@ -19,6 +26,7 @@
 <script>
 import { Component, Vue, Watch } from "vue-property-decorator";
 import AR from "./components/AR.vue";
+import Intro from "./components/Intro.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 import Overlay from "./components/Overlay.vue";
@@ -30,6 +38,7 @@ import { getModule } from "vuex-module-decorators";
 @Component({
   components: {
     AR,
+    Intro,
     Overlay,
     Header,
     Footer,
@@ -38,6 +47,7 @@ import { getModule } from "vuex-module-decorators";
 })
 export default class App extends Vue {
   currentPath = "/memories";
+  showIntro = false;
 
   get formsStore() {
     return getModule(FormsStore, this.$store);
@@ -71,6 +81,10 @@ export default class App extends Vue {
     await this.memoriesStore.getData();
   }
 
+  skipIntro() {
+    this.showIntro = false;
+  }
+
   mounted() {
     // this.formsStore.setData({
     //   id: "meme1",
@@ -93,8 +107,12 @@ export default class App extends Vue {
 @import "~@/assets/scss/const";
 #app {
   text-align: center;
+
   //color: #2c3e50;
   //background-color: #141e27;
+  @include desktop {
+    overflow: auto;
+  }
   margin: 0;
   padding: 0;
   border: 0;
@@ -126,7 +144,7 @@ export default class App extends Vue {
 }
 
 .fade-leave-active {
-  transition-duration: 0.15s;
+  transition-duration: 0.3s;
   transition-property: opacity, transform;
   //transition-timing-function: ease;
 }

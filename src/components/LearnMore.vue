@@ -1,17 +1,9 @@
 <template>
   <main class="info">
     <div class="showcase">
-      <h1 class="showcase_title js-random-text">
+      <h1 class="showcase_title" v-html="this.showcaseTitle">
         <span>If you lost your sight,</span> what moment would you want to see
         again?
-      </h1>
-      <h1 class="showcase_title js-random-text" style="display: none">
-        <span>If you were going blind tomorrow,</span> what is the final image
-        you’d want to see?
-      </h1>
-      <h1 class="showcase_title js-random-text" style="display: none">
-        <span>If you went blind for 3 years,</span> what’s the first thing you’d
-        want to see?
       </h1>
       <div
         style="
@@ -202,6 +194,7 @@ import Title from "@/components/Title.vue";
 export default class LearnMore extends Vue {
   swiper;
   currentTitle = "";
+  showcaseTitle = "";
   get publicPath() {
     return process.env.BASE_URL;
   }
@@ -211,6 +204,8 @@ export default class LearnMore extends Vue {
   }
   mounted() {
     this.currentTitle =
+      Texts.titles[Math.trunc(Math.random() * Texts.titles.length)];
+    this.showcaseTitle =
       Texts.titles[Math.trunc(Math.random() * Texts.titles.length)];
     this.$nextTick(() => {
       this.swiper = new Swiper(this.$refs.swiper, {
@@ -229,6 +224,9 @@ export default class LearnMore extends Vue {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins";
 @import "~@/assets/scss/const";
+.form {
+  margin-bottom: 150px;
+}
 .info {
   text-align: left;
   position: relative;

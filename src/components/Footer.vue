@@ -15,17 +15,29 @@
             class="footer_menu-link"
             >terms & conditions</a
           >
+          <a
+            href=" https://secure.orbis.org/ "
+            target="__blank"
+            class="footer_menu-link"
+            >Donate</a
+          >
+          <a
+            href="https://gbr.orbis.org/en/about-us"
+            target="__blank"
+            class="footer_menu-link"
+            >About Orbis</a
+          >
         </div>
         <div class="footer_copyrights">
           <p>
             Orbis UK (Orbis Charitable Trust) is an affiliate of Orbis
-            International. Registered charity number 1061352, company number
-            3303689
+            International.
           </p>
+          <p>Registered charity number 1061352, company number 3303689</p>
           <p>6th Floor, 10 Lower Thames Street, London EC3R 6AF</p>
         </div>
       </div>
-      <img src="@/assets/images/fr.svg" alt="" class="footer_logo" />
+      <img src="@/assets/images/fr.svg" alt="" class="footer-logo" />
     </div>
   </footer>
 </template>
@@ -42,4 +54,17 @@ export default class Footer extends Vue {}
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins";
 @import "~@/assets/scss/const";
+.footer {
+  padding: 30px;
+  @include desktop {
+    padding: 30px 82px;
+  }
+  box-sizing: border-box;
+  .footer-logo {
+    width: 158px;
+  }
+  p {
+    margin: 0;
+  }
+}
 </style>

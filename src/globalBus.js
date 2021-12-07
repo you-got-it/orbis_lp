@@ -70,10 +70,10 @@ const globalBus = new Vue({
     }
   },
   created() {
-    window.addEventListener('resize', this.resize);
-    window.addEventListener('mousedown', this.mousedown);
-    window.addEventListener('mouseup', this.mouseup);
-    window.addEventListener('mousemove', this.mousemove);
+     window.addEventListener('resize', this.resize);
+    // window.addEventListener('mousedown', this.mousedown);
+    // window.addEventListener('mouseup', this.mouseup);
+    // window.addEventListener('mousemove', this.mousemove);
     // VISIBILITY
     let visibilityChange = 'visibilitychange';
     this.hidden = '';

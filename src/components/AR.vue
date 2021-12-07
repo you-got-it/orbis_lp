@@ -9,7 +9,9 @@
         cursor: mouse.hover ? 'pointer' : 'auto',
       }"
     ></canvas>
-    <router-link to="share" class="button">share your memory</router-link>
+    <router-link to="share" class="button ar-button"
+      >share your memory</router-link
+    >
   </div>
 </template>
 
@@ -109,16 +111,31 @@ export default class AR extends Vue {
   mixer;
   mixers = [];
   loading = true;
+  needsResize = false;
   mainTextString =
     "IF YOU LOST YOUR SIGHT, WHAT MOMENT WOULD YOU WANT TO SEE AGAIN?";
   mainTween;
+
+  mouse = {
+    x: 0,
+    y: 0,
+    pos: new Vector2(-1, -1),
+    lastPos: new Vector2(),
+    dragObject: null,
+    lastX: 0,
+    lastY: 0,
+    offsetX: 0,
+    offsetY: 0,
+    isDown: false,
+    hover: false,
+  };
+
   get getDebugString() {
     return this.debugString;
   }
-
-  get mouse() {
-    return globalBus.mouse;
-  }
+  // get mouse() {
+  //   return globalBus.mouse;
+  // }
   get memoriesStore() {
     return getModule(MemoriesStore, this.$store);
   }
@@ -188,22 +205,90 @@ export default class AR extends Vue {
     this.controls.dispose();
   }
 
+  onWindowResizeEvent() {
+    this.needsResize = true;
+  }
+
   onWindowResize() {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
+
+    const currentDesktop = this.isDesktop;
+
+    if (this.width < 768) {
+      this.isDesktop = false;
+    } else {
+      this.isDesktop = true;
+    }
+
+    if (currentDesktop !== this.isDesktop && this.mainText) {
+      this.splittedText.forEach((s) => {
+        delete s._gsap;
+      });
+      this.mainText.maxWidth = this.isDesktop ? 2.8 : 1.6;
+    }
+
     this.renderer.setPixelRatio(1);
+    if (!this.isDesktop) {
+      this.height = 500;
+    }
     this.camera.aspect = this.width / this.height;
+    const tHeight = Math.max(window.innerHeight, 800);
+    this.camera.zoom = ((this.isDesktop ? 0.8 : 2.4) * this.width) / tHeight;
+
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(this.width, this.height);
+    this.needsResize = false;
+    // });
   }
 
   async startAR() {
     this.initScene();
     this.onWindowResize();
-    window.addEventListener("resize", this.onWindowResize.bind(this), false);
+    window.addEventListener(
+      "resize",
+      this.onWindowResizeEvent.bind(this),
+      false
+    );
+
+    this.$refs["3d"].addEventListener("mousedown", this.mousedown);
+    this.$refs["3d"].addEventListener("mouseup", this.mouseup);
+    this.$refs["3d"].addEventListener("mousemove", this.mousemove);
     this.renderer.clear();
     await this.loadResources();
     this.setupObjects();
+  }
+
+  getMousePos(e) {
+    const rect = this.$refs["3d"].getBoundingClientRect();
+    return {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    };
+  }
+
+  mousemove(e) {
+    const rect = this.$refs["3d"].getBoundingClientRect();
+
+    this.mouse.pos.set(
+      (e.clientX / rect.width) * 2 - 1,
+      -(e.clientY / rect.height) * 2 + 1
+    );
+
+    // this.$emit("mousemove");
+  }
+  mousedown(e) {
+    this.mouse.isDown = true;
+    const rect = this.$refs["3d"].getBoundingClientRect();
+    this.mouse.pos.set(
+      (e.clientX / rect.width) * 2 - 1,
+      -(e.clientY / rect.height) * 2 + 1
+    );
+    this.mouse.lastPos.copy(this.mouse.pos);
+  }
+  mouseup() {
+    //this.mouse.isDown = false;
+    //this.$emit("mouseup", this.mouse.pos);
   }
 
   async loadResources() {
@@ -264,9 +349,6 @@ export default class AR extends Vue {
 
     await Promise.all(promises).then(() => {
       this.loading = false;
-      if (this.isDesktop) {
-        this.markersLoading = false;
-      }
       console.log("promiseAll");
       //
     });
@@ -425,22 +507,6 @@ export default class AR extends Vue {
     this.raf = window.requestAnimationFrame(this.animate.bind(this));
   }
 
-  updateColorRanges() {
-    const array = this.mainText.geometry.attributes.aTroikaGlyphColor.array;
-    let last = 0;
-    for (let i = 0; i < this.splittedText.length; i += 1) {
-      const item = this.splittedText[i];
-      for (let ind = 0; ind < item.text.length; ind += 1) {
-        const start = ind * 3 + last;
-        array[start] = item.outlineBlur;
-        array[start + 1] = item.outlineOpacity * this.mainText.fillOpacity;
-        array[start + 2] = item.z;
-      }
-      last += item.text.length * 3;
-    }
-    this.mainText.geometry.attributes.aTroikaGlyphColor.needsUpdate = true;
-  }
-
   initMainText() {
     this.mainText = new Text(createCustomMaterial);
     this.scene.add(this.mainText);
@@ -466,7 +532,7 @@ export default class AR extends Vue {
     this.mainText.fontSize = 0.2;
     this.mainText.position.z = 0;
     this.mainText.color = 0xffffff;
-    this.mainText.maxWidth = 2.8;
+    this.mainText.maxWidth = this.isDesktop ? 2.8 : 1.6;
     this.mainText.textAlign = "center";
     this.mainText.anchorX = "center";
     this.mainText.anchorY = "middle";
@@ -506,7 +572,6 @@ export default class AR extends Vue {
             duration: 3,
             outlineBlur: 0.0001,
             z: 0,
-            //outlineOpacity: 1,
             ease: "power4.out",
           },
           i * 0.4
@@ -515,7 +580,6 @@ export default class AR extends Vue {
           item,
           {
             duration: 2,
-            //outlineBlur: 0.0001,
             outlineOpacity: 1,
             ease: "power3.in",
           },
@@ -525,8 +589,23 @@ export default class AR extends Vue {
     this.mainTween.timeScale(1.5);
   }
 
+  updateColorRanges() {
+    const array = this.mainText.geometry.attributes.aTroikaGlyphColor.array;
+    let last = 0;
+    for (let i = 0; i < this.splittedText.length; i += 1) {
+      const item = this.splittedText[i];
+      for (let ind = 0; ind < item.text.length; ind += 1) {
+        const start = ind * 3 + last;
+        array[start] = item.outlineBlur;
+        array[start + 1] = item.outlineOpacity * this.mainText.fillOpacity;
+        array[start + 2] = item.z;
+      }
+      last += item.text.length * 3;
+    }
+    this.mainText.geometry.attributes.aTroikaGlyphColor.needsUpdate = true;
+  }
+
   initMoments() {
-    this.mometsInit = true;
     for (let i = 0; i < 25; i += 1) {
       const string = this.string.clone();
       const storyId = (i + this.mometsOffset) % this.memories.length;
@@ -534,14 +613,14 @@ export default class AR extends Vue {
       string.text = moment.title;
       string.material = this.string.material.clone();
 
-      //const rad = 0.1 + Math.random() * 1.6;
-      const rad = 1.52 + Math.random() * 0.3;
-      //const rad = 0.3;
+      const rad = this.isDesktop
+        ? 1.52 + Math.random() * 0.3
+        : 0.8 + Math.random() * 0.22;
 
       const dAng = Math.PI; //Math.random() * Math.PI * 2;
       const speed = 0; // Math.random() * 0.5 + 0.2;
       const group = new Group();
-      const dY = Math.random() * 0.5 - 0.25;
+      const dY = (Math.random() - 0.5) * (this.isDesktop ? 0.5 : 1.2);
       string.position.z = rad;
       group.rotation.y = dAng;
 
@@ -589,6 +668,7 @@ export default class AR extends Vue {
     gsap.delayedCall(0.6, () => {
       this.stringAnim();
     });
+    this.mometsInit = true;
     // gsap.delayedCall(8, () => {
     //   this.stringAnim();
     // });
@@ -749,23 +829,24 @@ export default class AR extends Vue {
         currentHoverId !== ""
       ) {
         // random speed if hover changed
-
         gsap.to(this.moments[currentHoverId], {
-          duration: 0.2,
+          duration: 0.3,
           speed: this.getRandomSpeed(),
-          ease: "sine.inOut",
+          ease: "sine.in",
         });
       }
       this.explore.hoverId = intersect.object.momentId;
+      this.mouse.hover = true;
       globalBus.setHover(true);
     } else {
+      this.mouse.hover = false;
       globalBus.setHover(false);
       if (this.explore.hoverId !== "") {
         // random speed if hover leave
         gsap.to(this.moments[this.explore.hoverId], {
-          duration: 0.2,
+          duration: 0.3,
           speed: this.getRandomSpeed(),
-          ease: "sine.inOut",
+          ease: "sine.in",
         });
       }
       this.explore.hoverId = "";
@@ -793,6 +874,9 @@ export default class AR extends Vue {
     this.lastTimeMsec = this.lastTimeMsec || nowMsec - 1000 / 60;
     const deltaMsec = Math.min(200, nowMsec - this.lastTimeMsec);
     this.lastTimeMsec = nowMsec;
+    if (this.needsResize) {
+      this.onWindowResize();
+    }
     this.updateMoments(deltaMsec);
 
     // this.camera.position.x +=
@@ -838,9 +922,15 @@ export default class AR extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import "@/assets/scss/app.scss";
+@import "~@/assets/scss/mixins";
+@import "~@/assets/scss/const";
 .button {
   z-index: 1;
-  margin-bottom: 300px;
+  margin-bottom: 160px;
+  opacity: 1 !important;
+  &:hover {
+    opacity: 0.85 !important;
+  }
 }
 .ar {
   overscroll-behavior: none;
@@ -854,6 +944,8 @@ export default class AR extends Vue {
     left: 0;
     top: 0;
     background: $bg_color;
+    // top: 50%;
+    // transform: translateY(-50%);
   }
 }
 .debug {

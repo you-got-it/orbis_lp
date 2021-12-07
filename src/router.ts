@@ -7,8 +7,15 @@ import LearnMore from "./components/LearnMore.vue";
 export const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
+  // scrollBehavior(to, from, savedPosition) {
+  //   return { x: 0, y: 0 };
+  // },
   scrollBehavior(to, from, savedPosition) {
-    return { x: 0, y: 0 };
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        document.getElementById("app")?.scrollTo(0, 0);
+      }, 300);
+    });
   },
   routes: [
     {

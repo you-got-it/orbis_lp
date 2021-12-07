@@ -12,6 +12,8 @@ export default class MemoriesStore extends VuexModule {
   memories: IMemory[] = [];
   overlayId = -1;
 
+  showMenu = false;
+
   error: string | null = null;
 
   @Action
@@ -31,6 +33,11 @@ export default class MemoriesStore extends VuexModule {
   @Mutation
   setMemories(obj: IMemory[]): void {
     this.memories = obj;
+  }
+
+  @Mutation
+  setShowMenu(value: boolean): void {
+    this.showMenu = value;
   }
 
   @Mutation

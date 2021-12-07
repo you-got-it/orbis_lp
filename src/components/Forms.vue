@@ -111,14 +111,27 @@
           </div>
           <div class="social_copy">
             <span class="social_copy-title">Or share with link</span>
-            <button class="social_copy-button js-copy-button">
+            <button
+              class="social_copy-button js-copy-button"
+              @click="copyClick"
+            >
               https://orbis.org/idsee
             </button>
-            <input type="submit" />
           </div>
         </div>
       </div>
     </form>
+    <div class="lmblock">
+      <h1 class="lmblock-title">why are we sharing your memories?</h1>
+      <div class="intro_text content">
+        <p>
+          We are sharing these memories on a public website for others to read,
+          and to bring us closer together and better understand the impact
+          vision loss an have on children and adults in low income-countries
+        </p>
+      </div>
+      <router-link to="info" class="button">learn more about orbis</router-link>
+    </div>
   </main>
 </template>
 
@@ -159,11 +172,22 @@ export default class Forms extends Vue {
     //
   }
 
+  copyClick(e) {
+    e.preventDefault();
+
+    navigator.clipboard.writeText(e.target.innerText).then(
+      function () {
+        console.log("Async: Copying to clipboard was successful!");
+      },
+      function (err) {
+        console.error("Async: Could not copy text: ", err);
+      }
+    );
+  }
+
   async onSubmit(e) {
-    console.log("tut");
     e.preventDefault();
     this.submitted = true;
-    console.log(e);
     let isValid = true;
     document.querySelectorAll("input[name], textarea").forEach((el) => {
       console.log(el);
@@ -224,6 +248,14 @@ export default class Forms extends Vue {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins";
 @import "~@/assets/scss/const";
+
+.lmblock {
+  margin-bottom: 110px;
+  .lmblock-title {
+    text-transform: uppercase;
+  }
+}
+
 .info {
   text-align: left;
   position: relative;

@@ -1337,9 +1337,9 @@ function getTextRenderInfo(args, callback) {
     };
     atlas.sdfTexture.font = args.font;
   }
-
+  
   // Issue request to the typesetting engine in the worker
-  typesetInWorker(args).then(result => {
+  typesetInWorker(args).then(result => {      
     const {glyphIds, glyphPositions, fontSize, unitsPerEm, timings} = result;
     const neededSDFs = [];
     const glyphBounds = new Float32Array(glyphIds.length * 4);
@@ -1372,7 +1372,7 @@ function getTextRenderInfo(args, callback) {
         // Collect those that need SDF generation
         neededSDFs.push(glyphInfo);
       }
-
+     
       // Calculate bounds for renderable quads
       // TODO can we get this back off the main thread?
       const {sdfViewBox} = glyphInfo;
@@ -1432,7 +1432,7 @@ function getTextRenderInfo(args, callback) {
       }
       timings.sdfTotal = now() - sdfStart;
       timings.total = now() - totalStart;
-
+      
       // Invoke callback with the text layout arrays and updated texture
       callback(Object.freeze({
         parameters: args,
@@ -2492,16 +2492,18 @@ const Text = /*#__PURE__*/(() => {
      * @param {function} [callback]
      */
     sync(callback) {
+      
       if (this._needsSync) {
         this._needsSync = false;
-
+       
         // If there's another sync still in progress, queue
         if (this._isSyncing) {
           (this._queuedSyncs || (this._queuedSyncs = [])).push(callback);
         } else {
           this._isSyncing = true;
-          this.dispatchEvent(syncStartEvent);
-        
+          this.dispatchEvent(syncStartEvent);     
+      
+
           getTextRenderInfo({
             text: this.text,
             font: this.font,
@@ -2520,6 +2522,7 @@ const Text = /*#__PURE__*/(() => {
             includeCaretPositions: true, //TODO parameterize
             sdfGlyphSize: this.sdfGlyphSize
           }, textRenderInfo => {
+           
             this._isSyncing = false;
 
             // Save result for later use in onBeforeRender
@@ -2533,7 +2536,7 @@ const Text = /*#__PURE__*/(() => {
               textRenderInfo.chunkedBounds,
               textRenderInfo.glyphColors
             );
-
+           
             // If we had extra sync requests queued up, kick it off
             const queued = this._queuedSyncs;
             if (queued) {
@@ -2543,11 +2546,12 @@ const Text = /*#__PURE__*/(() => {
                 queued.forEach(fn => fn && fn());
               });
             }
-
+           
             this.dispatchEvent(syncCompleteEvent);
             if (callback) {
               callback();
             }
+           
           });
         }
       }

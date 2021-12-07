@@ -1,8 +1,7 @@
 .form {
     text-align: center;
-    @include tablet {
-        margin-bottom: 150px;
-    }
+    margin-bottom: 200px;
+ 
     
     &_title {
         margin: 0 0 60px;

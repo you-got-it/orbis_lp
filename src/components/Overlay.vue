@@ -80,6 +80,8 @@ export default class Overlay extends Vue {
   overflow: auto;
   top: 0;
   left: 0;
+  justify-content: center;
+  padding: 120px 40px 40px;
 
   .overlay-name {
     color: #fff;
