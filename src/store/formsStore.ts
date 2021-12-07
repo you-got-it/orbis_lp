@@ -15,7 +15,7 @@ export default class FormsStore extends VuexModule {
 
   @Action
   submitForms(): Promise<void> {
-    const url = `https://script.google.com/macros/s/AKfycbzA2cTUTPiet2cUz3OeADg2P3aDlLP2qLNAkfC9Xi9yuC4dglIG4rnuCrZhFBacF7hO/exec`;
+    const url = `https://script.google.com/macros/s/AKfycbyw-lZAXoTX6sEujLOcir_-vA0LXOMhxpkRh_yRQ52IR9D7FoTdm2Z17cdFn1Y4XMU/exec`;
     // const url = `https://script.google.com/macros/s/AKfycbzA2ADg2P3aDlLP2qLNAkfC9Xi9yuC4dglIG4rnuCrZhFBacF7hO/exec`;
     return new Promise((resolve, reject) => {
       axios
