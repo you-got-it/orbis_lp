@@ -676,7 +676,8 @@ export default class AR extends Vue {
         });
       });
     }
-    gsap.delayedCall(4, () => {
+    gsap.delayedCall(this.mometsInit ? 0.01 : 4, () => {
+      this.explore.phi = 0;
       this.stringAnim();
     });
     this.mometsInit = true;

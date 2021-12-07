@@ -1,15 +1,15 @@
 @font-face {
     font-family: 'Alright Sans Regular';
-    src: url('/fonts/Alright-Sans-Regular.woff2') format('woff2'),
-        url('/fonts/Alright-Sans-Regular.woff') format('woff');
+    src: url('#{$path}/fonts/Alright-Sans-Regular.woff2') format('woff2'),
+        url('#{$path}/fonts/Alright-Sans-Regular.woff') format('woff');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 @font-face {
     font-family: 'Alright Sans Regular';
-    src: url('/fonts/Alright-Sans-Black.woff2') format('woff2'),
-        url('/fonts/Alright-Sans-Black.woff') format('woff');
+    src: url('#{$path}/fonts/Alright-Sans-Black.woff2') format('woff2'),
+        url('#{$path}/fonts/Alright-Sans-Black.woff') format('woff');
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -17,8 +17,8 @@
 
 @font-face {
     font-family: 'Miller';
-    src: url('/fonts/Miller-Text.woff2') format('woff2'),
-        url('/fonts/Miller-Text.woff') format('woff');
+    src: url('#{$path}/fonts/Miller-Text.woff2') format('woff2'),
+        url('#{$path}/fonts/Miller-Text.woff') format('woff');
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -27,14 +27,14 @@
 
 @font-face {
     font-family: 'Alright';
-    src: url('/fonts/FontsFree-Net-aa4woff2.ttf') format('truetype');
+    src: url('#{$path}/fonts/FontsFree-Net-aa4woff2.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
       font-display: swap; 
   }
   @font-face {
     font-family: 'Alright';
-    src: url('/fonts/FontsFree-Net-aa1woff2-1.ttf') format('truetype');
+    src: url('#{$path}/fonts/FontsFree-Net-aa1woff2-1.ttf') format('truetype');
       font-weight: bold;
       font-style: normal;
       font-display: swap; 
