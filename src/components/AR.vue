@@ -201,6 +201,9 @@ export default class AR extends Vue {
   reset() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener("resize", this.animate.bind(this), false);
+    this.$refs["3d"].removeEventListener("mousedown", this.mousedown);
+    this.$refs["3d"].removeEventListener("mouseup", this.mouseup);
+    this.$refs["3d"].removeEventListener("mousemove", this.mousemove);
 
     this.controls.dispose();
   }
@@ -225,6 +228,13 @@ export default class AR extends Vue {
       this.splittedText.forEach((s) => {
         delete s._gsap;
       });
+      this.moments.forEach((m) => {
+        m.group.remove(m.bg);
+        m.group.remove(m.string);
+        this.scene.remove(m.group);
+      });
+      this.moments = [];
+      this.initMoments();
       this.mainText.maxWidth = this.isDesktop ? 2.8 : 1.6;
     }
 
@@ -423,6 +433,7 @@ export default class AR extends Vue {
     this.explore.controls.dampingFactor = 0.035;
     this.explore.controls.addEventListener("start", this.mouseDown, false);
     this.explore.controls.addEventListener("end", this.mouseUp, false);
+    this.explore.controls.enabled = false;
   }
 
   setupObjects() {
@@ -665,7 +676,7 @@ export default class AR extends Vue {
         });
       });
     }
-    gsap.delayedCall(0.6, () => {
+    gsap.delayedCall(4, () => {
       this.stringAnim();
     });
     this.mometsInit = true;
@@ -675,6 +686,7 @@ export default class AR extends Vue {
   }
 
   stringAnim() {
+    this.explore.controls.enabled = true;
     gsap.to(this.moments, {
       duration: 2,
       dAng: () => {
@@ -926,7 +938,10 @@ export default class AR extends Vue {
 @import "~@/assets/scss/const";
 .button {
   z-index: 1;
-  margin-bottom: 160px;
+  margin-bottom: 10px;
+  @include tablet {
+    margin-bottom: 160px;
+  }
   opacity: 1 !important;
   &:hover {
     opacity: 0.85 !important;
@@ -937,13 +952,20 @@ export default class AR extends Vue {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+  @include tablet {
+    justify-content: flex-end;
+    height: 100%;
+  }
   &__canvas {
-    position: fixed;
     left: 0;
     top: 0;
     background: $bg_color;
+    @include tablet {
+      position: fixed;
+    }
     // top: 50%;
     // transform: translateY(-50%);
   }

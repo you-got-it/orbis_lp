@@ -1,5 +1,13 @@
 <template>
-  <div id="app">
+  <div
+    id="app"
+    :style="{
+      'background-color': memoriesPage
+        ? 'rgba(19, 30, 39, 1)'
+        : 'rgba(19, 30, 39, 0)',
+      overflow: memoriesPage ? 'hidden' : 'auto',
+    }"
+  >
     <Header :showIntro="showIntro && memoriesPage" />
     <!-- mode="out-in" :duration="1000" -->
     <transition
@@ -7,7 +15,7 @@
       mode="out-in"
       :duration="{ enter: 700, leave: 300 }"
     >
-      <router-view :key="$route.fullPath" ref="route" />
+      <router-view :key="$route.fullPath" v-if="checkIntro" ref="route" />
     </transition>
     <transition name="fade" mode="out-in">
       <Overlay v-if="overlayId !== -1" :data="memories[overlayId]" />
@@ -47,7 +55,7 @@ import { getModule } from "vuex-module-decorators";
 })
 export default class App extends Vue {
   currentPath = "/memories";
-  showIntro = false;
+  showIntro = true;
 
   get formsStore() {
     return getModule(FormsStore, this.$store);
@@ -61,6 +69,13 @@ export default class App extends Vue {
   }
   get overlayId() {
     return this.memoriesStore.overlayId;
+  }
+
+  get checkIntro() {
+    if (this.memoriesPage && this.showIntro) {
+      return false;
+    }
+    return true;
   }
 
   @Watch("$route", { immediate: true, deep: true })
@@ -110,6 +125,11 @@ export default class App extends Vue {
 
   //color: #2c3e50;
   //background-color: #141e27;
+  height: fit-content;
+
+  @include tablet {
+    height: 100%;
+  }
   @include desktop {
     overflow: auto;
   }
@@ -134,7 +154,9 @@ export default class App extends Vue {
   background: transparent;
   bottom: 0;
   transition: 0.3s transform;
-  transform: translateY(0);
+  @include mobile {
+    transform: translateY(0) !important;
+  }
 }
 
 .fade-enter-active {

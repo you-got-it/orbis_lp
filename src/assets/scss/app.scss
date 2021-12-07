@@ -116,5 +116,9 @@ html, body, #app, .main {
 }
 
 .layout{
-  padding: 330px 40px 40px;
+  padding: 150px 40px 40px;
+  @include desktop {
+    padding: 330px 40px 40px;
+  }
+ 
 }

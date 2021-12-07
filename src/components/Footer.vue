@@ -66,5 +66,15 @@ export default class Footer extends Vue {}
   p {
     margin: 0;
   }
+  .footer_menu {
+    display: flex;
+    flex-direction: column;
+    @include tablet {
+      flex-direction: row;
+    }
+    a {
+      line-height: 2em;
+    }
+  }
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div class="intro">
+    <img src="@/assets/images/logo.svg" alt="" class="header-logo" />
     <div class="intro-showcase">
       <div
         style="
@@ -39,12 +40,27 @@ export default class Overlay extends Vue {
 @import "~@/assets/scss/mixins";
 @import "~@/assets/scss/const";
 
+.header-logo {
+  position: fixed;
+  z-index: 1;
+  top: 30px;
+  left: 30px;
+  pointer-events: all;
+  width: 89px;
+  flex-shrink: 0;
+  @include desktop {
+    width: 133px;
+    top: 82px;
+    left: 82px;
+  }
+}
+
 .intro {
   width: 100%;
   height: 100%;
   position: fixed;
   background-color: #0c1f2f;
-  z-index: 2;
+  z-index: 3;
   text-align: center;
   display: flex;
   flex-direction: column;

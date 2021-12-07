@@ -39,17 +39,29 @@
       <nav class="header-mobile-nav">
         <ul>
           <li class="header-nav-item">
-            <router-link to="memories" class="header__menu-link">
+            <router-link
+              to="memories"
+              @click.native="closeClick"
+              class="header__menu-link"
+            >
               MEMORIES
             </router-link>
           </li>
           <li class="header-nav-item">
-            <router-link to="info" class="header__menu-link">
+            <router-link
+              to="info"
+              @click.native="closeClick"
+              class="header__menu-link"
+            >
               LEARN MORE
             </router-link>
           </li>
           <li class="header-nav-item">
-            <router-link to="share" class="header__menu-link">
+            <router-link
+              to="share"
+              @click.native="closeClick"
+              class="header__menu-link"
+            >
               SHARE YOUR MEMORY
             </router-link>
           </li>
@@ -82,7 +94,9 @@ export default class Header extends Vue {
   }
 
   closeClick() {
+    console.log("!!!WWW");
     if (this.showMenu) {
+      this.hideCloseButton();
       this.memoriesStore.setShowMenu(false);
       return;
     }
@@ -156,7 +170,7 @@ export default class Header extends Vue {
         delay: 0.2,
       },
       {
-        duration: 0.7,
+        duration: 0.5,
         rotate: -260,
         scale: 0,
         ease: "power3.in",
@@ -262,13 +276,18 @@ export default class Header extends Vue {
     }
   }
 
-  .header-burger {
-    position: fixed;
+  &-burger {
+    position: absolute;
     right: 26px;
     top: 26px;
     padding: 10px;
     pointer-events: all;
     cursor: pointer;
+    transform: scale(1);
+    transition: 0.3s transform 0.4s;
+    ._menu & {
+      transform: scale(0);
+    }
     @include desktop {
       display: none;
     }

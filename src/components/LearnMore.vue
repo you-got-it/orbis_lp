@@ -228,6 +228,7 @@ export default class LearnMore extends Vue {
   margin-bottom: 150px;
 }
 .info {
+  z-index: 1;
   text-align: left;
   position: relative;
 }

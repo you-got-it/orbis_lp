@@ -139,8 +139,10 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Title from "@/components/Title.vue";
 import Texts from "../assets/js/texts.js";
+import BadWords from "../assets/js/badwords.js";
 import FormsStore from "@/store/formsStore";
 import { getModule } from "vuex-module-decorators";
+
 // import MemoriesStore from "@/store/memoriesStore";
 // import { getModule } from "vuex-module-decorators";
 // import { gsap } from "gsap";
@@ -185,12 +187,28 @@ export default class Forms extends Vue {
     );
   }
 
+  badFilter(text) {
+    const array = text.split(" ");
+    for (let i = 0; i < array.length; i += 1) {
+      if (BadWords.includes(array[i].toLowerCase())) {
+        return "";
+      }
+    }
+
+    return text;
+  }
+
   async onSubmit(e) {
     e.preventDefault();
     this.submitted = true;
+    this.title = this.badFilter(this.title);
+    this.description = this.badFilter(this.description);
+    this.first_name = this.badFilter(this.first_name);
+    this.second_name = this.badFilter(this.second_name);
+    this.email = this.badFilter(this.email);
+
     let isValid = true;
     document.querySelectorAll("input[name], textarea").forEach((el) => {
-      console.log(el);
       if (!el.checkValidity()) {
         isValid = false;
       }
@@ -256,9 +274,8 @@ export default class Forms extends Vue {
   }
 }
 
-.info {
-  text-align: left;
-  position: relative;
+.forms {
+  z-index: 1;
 }
 .swiper-slide {
   flex-shrink: 1;
