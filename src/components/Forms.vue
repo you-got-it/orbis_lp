@@ -345,6 +345,10 @@ export default class Forms extends Vue {
           this.waiting = false;
           this.done = true;
           this.currentTitle = Texts.thanks;
+          this.$parent.$el.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         })
         .catch((err) => {
           this.waiting = false;

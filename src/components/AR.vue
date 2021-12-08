@@ -413,7 +413,7 @@ export default class AR extends Vue {
       new Promise((resolve, reject) => {
         preloadFont(
           {
-            font: "./fonts/FontsFree-Net-aa1woff2-1.ttf",
+            font: "./fonts/Alright-Sans-Black.woff",
             characters: this.mainTextString,
           },
           () => {
@@ -530,7 +530,7 @@ export default class AR extends Vue {
 
     this.string = new Text();
     this.string.text = `I'd see my Beautiful Cat`;
-    this.string.font = "./fonts/FontsFree-Net-aa1woff2-1.ttf";
+    this.string.font = "./fonts/Alright-Sans-Black.woff";
     this.string.fontSize = 0.06;
     this.string.color = 0xffffff;
     this.string.textAlign = "center";
@@ -627,7 +627,7 @@ export default class AR extends Vue {
     });
 
     this.mainText.text = this.mainTextString;
-    this.mainText.font = "./fonts/FontsFree-Net-aa1woff2-1.ttf";
+    this.mainText.font = "./fonts/Alright-Sans-Black.woff";
     this.mainText.fontSize = 0.2;
     this.mainText.position.z = 0;
     this.mainText.color = 0xffffff;

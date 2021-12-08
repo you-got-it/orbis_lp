@@ -1,5 +1,7 @@
 <template>
-  <h3 class="form_title"><span v-html="getTitle"></span></h3>
+  <h3 class="form_title">
+    <span v-html="getTitle" style="white-space: pre-line"></span>
+  </h3>
 </template>
 
 <script>

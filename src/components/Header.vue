@@ -8,17 +8,17 @@
     <div :class="['header-right', { _hidden: showIntro }]">
       <nav class="header-nav">
         <ul>
-          <li class="header-nav-item">
+          <li class="header-nav-item header-nav-item-desktop">
             <router-link to="memories" class="header__menu-link">
               MEMORIES
             </router-link>
           </li>
-          <li class="header-nav-item">
+          <li class="header-nav-item header-nav-item-desktop">
             <router-link to="info" class="header__menu-link">
               LEARN MORE
             </router-link>
           </li>
-          <li class="header-nav-item">
+          <li class="header-nav-item header-nav-item-desktop">
             <router-link to="share" class="header__menu-link">
               SHARE YOUR MEMORY
             </router-link>
@@ -126,7 +126,7 @@ export default class Header extends Vue {
 
   @Watch("overlayId") setOverlayAnim() {
     if (this.overlayId !== -1) {
-      gsap.to(".header-nav-item", {
+      gsap.to(".header-nav-item-desktop", {
         duration: 0.4,
         autoAlpha: 0,
         //x: -250,
@@ -150,7 +150,7 @@ export default class Header extends Vue {
         }
       );
     } else {
-      gsap.to(".header-nav-item", {
+      gsap.to(".header-nav-item-desktop", {
         duration: 0.3,
         autoAlpha: 1,
         //x: 0,
@@ -215,6 +215,7 @@ export default class Header extends Vue {
   visibility: hidden;
   opacity: 0;
   transition: 0.3s;
+  transition-delay: 0.4s;
   transition-property: opacity, visibility;
   ._menu & {
     opacity: 1;
@@ -231,7 +232,19 @@ export default class Header extends Vue {
     justify-content: center;
   }
   .header-mobile-ul {
+    li:nth-child(1) {
+      transition-delay: 0.16s;
+    }
+    li:nth-child(2) {
+      transition-delay: 0.08s;
+    }
+    li:nth-child(3) {
+      transition-delay: 0s;
+    }
     ._menu & {
+      li:nth-child(1) {
+        transition-delay: 0s;
+      }
       li:nth-child(2) {
         transition-delay: 0.08s;
       }
@@ -244,6 +257,7 @@ export default class Header extends Vue {
     margin: 2em 0;
     transform: translateY(80px);
     opacity: 0;
+    transition: 0.3s;
     ._menu & {
       opacity: 1;
       transition: 0.5s;
