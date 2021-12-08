@@ -205,7 +205,7 @@ export default class AR extends Vue {
     this.$refs["3d"].removeEventListener("mouseup", this.mouseup);
     this.$refs["3d"].removeEventListener("mousemove", this.mousemove);
 
-    this.controls.dispose();
+    //  this.controls.dispose();
   }
 
   onWindowResizeEvent() {
@@ -239,13 +239,31 @@ export default class AR extends Vue {
     }
 
     this.renderer.setPixelRatio(1);
+
     if (!this.isDesktop) {
-      this.height = 500;
+      this.height = this.width * 1.0;
+      this.camera.zoom = 1.5;
+      this.camera.setViewOffset(
+        this.width,
+        this.height,
+        0,
+        -60,
+        this.width,
+        this.height
+      );
+    } else {
+      const tHeight = Math.max(window.innerHeight, 800);
+      this.camera.zoom = (0.8 * this.width) / tHeight;
+      this.camera.setViewOffset(
+        this.width,
+        this.height,
+        0,
+        0,
+        this.width,
+        this.height
+      );
     }
     this.camera.aspect = this.width / this.height;
-    const tHeight = Math.max(window.innerHeight, 800);
-    this.camera.zoom = ((this.isDesktop ? 0.8 : 2.4) * this.width) / tHeight;
-
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(this.width, this.height);
     this.needsResize = false;
@@ -264,6 +282,10 @@ export default class AR extends Vue {
     this.$refs["3d"].addEventListener("mousedown", this.mousedown);
     this.$refs["3d"].addEventListener("mouseup", this.mouseup);
     this.$refs["3d"].addEventListener("mousemove", this.mousemove);
+
+    this.$refs["3d"].addEventListener("touchend", this.ontouchend, false);
+    this.$refs["3d"].addEventListener("touchmove", this.touchmove, false);
+    this.$refs["3d"].addEventListener("touchstart", this.ontouchstart, false);
     this.renderer.clear();
     await this.loadResources();
     this.setupObjects();
@@ -284,9 +306,39 @@ export default class AR extends Vue {
       (e.clientX / rect.width) * 2 - 1,
       -(e.clientY / rect.height) * 2 + 1
     );
-
-    // this.$emit("mousemove");
   }
+
+  touchmove(e) {
+    const rect = this.$refs["3d"].getBoundingClientRect();
+
+    this.mouse.pos.set(
+      (e.touches[0].clientX / rect.width) * 2 - 1,
+      -(e.touches[0].clientY / rect.height) * 2 + 1
+    );
+  }
+
+  ontouchend(e) {
+    // const rect = this.$refs["3d"].getBoundingClientRect();
+    // this.mouse.pos.set(
+    //   (e.touches[0].clientX / rect.width) * 2 - 1,
+    //   -(e.touches[0].clientY / rect.height) * 2 + 1
+    // );
+    //console.log(...this.mouse.pos);
+    //this.mouse.pos.set(-1, -1);
+  }
+
+  ontouchstart(e) {
+    const rect = this.$refs["3d"].getBoundingClientRect();
+    this.mouse.isDown = true;
+    this.mouse.pos.set(
+      (e.touches[0].clientX / rect.width) * 2 - 1,
+      -(e.touches[0].clientY / rect.height) * 2 + 1
+    );
+    this.mouse.lastPos.copy(this.mouse.pos);
+    this.updateMoments(0);
+    this.explore.mouseDownId = this.explore.hoverId;
+  }
+
   mousedown(e) {
     this.mouse.isDown = true;
     const rect = this.$refs["3d"].getBoundingClientRect();
@@ -295,10 +347,46 @@ export default class AR extends Vue {
       -(e.clientY / rect.height) * 2 + 1
     );
     this.mouse.lastPos.copy(this.mouse.pos);
+    this.explore.downTime = Date.now();
   }
   mouseup() {
+    //this.mouse.pos.set(-1, -1);
     //this.mouse.isDown = false;
     //this.$emit("mouseup", this.mouse.pos);
+  }
+
+  mouseDown(e) {
+    if (e.emitter === "wheel") {
+      return;
+    }
+    gsap.to(this.moments, {
+      duration: 0.3,
+      speed: 0,
+      ease: "sine.out",
+    });
+    this.explore.mouseDownId = this.explore.hoverId;
+    this.explore.downTime = Date.now();
+  }
+
+  mouseUp() {
+    if (!this.mouse.isDown) {
+      return;
+    }
+
+    if (
+      this.explore.mouseDownId !== "" &&
+      this.explore.mouseDownId === this.explore.hoverId &&
+      Math.abs(this.mouse.pos.x - this.mouse.lastPos.x) < 0.06 &&
+      Date.now() - this.explore.downTime < 200
+    ) {
+      this.memoriesStore.setOverlayId(
+        this.moments[this.explore.mouseDownId].storyId
+      );
+    } else {
+      this.setMometsSpeed();
+    }
+    this.explore.mouseDownId = "";
+    //this.mouse.pos.set(-1, -1);
   }
 
   async loadResources() {
@@ -387,16 +475,16 @@ export default class AR extends Vue {
     this.renderer.outputEncoding = sRGBEncoding;
     this.renderer.autoClear = true;
 
-    this.controls = new OrbitControls(this.camera, this.$refs["3d"]);
-    this.controls.target.set(0, 0, 0);
-    this.controls.dampingFactor = 0.1;
-    this.controls.enableDamping = true;
+    // this.controls = new OrbitControls(this.camera, this.$refs["3d"]);
+    // this.controls.target.set(0, 0, 0);
+    // this.controls.dampingFactor = 0.1;
+    // this.controls.enableDamping = true;
 
-    this.controls.update();
-    this.controls.autoRotate = false;
-    this.controls.autoRotateSpeed = -2;
+    // this.controls.update();
+    // this.controls.autoRotate = false;
+    // this.controls.autoRotateSpeed = -2;
 
-    this.controls.enabled = false;
+    // this.controls.enabled = false;
 
     this.sceneGroup = new Group();
     this.scene.add(this.sceneGroup);
@@ -617,21 +705,28 @@ export default class AR extends Vue {
   }
 
   initMoments() {
-    for (let i = 0; i < 25; i += 1) {
+    for (let i = 0; i < 35; i += 1) {
       const string = this.string.clone();
       const storyId = (i + this.mometsOffset) % this.memories.length;
       const moment = this.memories[storyId];
-      string.text = moment.title;
+
+      string.text =
+        moment.title.length > 70
+          ? moment.title.slice(0, 67) + "..."
+          : moment.title;
       string.material = this.string.material.clone();
 
       const rad = this.isDesktop
         ? 1.52 + Math.random() * 0.3
         : 0.8 + Math.random() * 0.22;
 
-      const dAng = Math.PI; //Math.random() * Math.PI * 2;
-      const speed = 0; // Math.random() * 0.5 + 0.2;
+      const dAng =
+        Math.PI + (this.mometsInit ? Math.random() * Math.PI * 2 : 0); //Math.random() * Math.PI * 2;
+      const speed = this.mometsInit ? this.getRandomSpeed() : 0; // Math.random() * 0.5 + 0.2;
       const group = new Group();
-      const dY = (Math.random() - 0.5) * (this.isDesktop ? 0.5 : 1.2);
+      // const dY = (Math.random() - 0.5) * (this.isDesktop ? 0.5 : 1.2);
+      // const dY = (-0.5 + (Math.cos((i / 35) * Math.PI * 2) + 1) / 2) * 0.5;
+      const dY = (-0.5 + i / 35) * 0.5;
       string.position.z = rad;
       group.rotation.y = dAng;
 
@@ -676,10 +771,12 @@ export default class AR extends Vue {
         });
       });
     }
-    gsap.delayedCall(this.mometsInit ? 0.01 : 4, () => {
-      this.explore.phi = 0;
-      this.stringAnim();
-    });
+    if (!this.mometsInit) {
+      gsap.delayedCall(4, () => {
+        this.explore.phi = 0;
+        this.stringAnim();
+      });
+    }
     this.mometsInit = true;
     // gsap.delayedCall(8, () => {
     //   this.stringAnim();
@@ -702,39 +799,6 @@ export default class AR extends Vue {
 
   getRandomSpeed() {
     return Math.random() * 1.1 + 0.1;
-  }
-
-  mouseDown(e) {
-    if (e.emitter === "wheel") {
-      return;
-    }
-    gsap.to(this.moments, {
-      duration: 0.3,
-      speed: 0,
-      ease: "sine.out",
-    });
-    this.explore.mouseDownId = this.explore.hoverId;
-    this.explore.downTime = Date.now();
-  }
-  mouseUp() {
-    if (!this.mouse.isDown) {
-      return;
-    }
-    this.mouse.isDown = false;
-
-    if (
-      this.explore.mouseDownId !== "" &&
-      this.explore.mouseDownId === this.explore.hoverId &&
-      Math.abs(this.mouse.pos.x - this.mouse.lastPos.x) < 0.06 &&
-      Date.now() - this.explore.downTime < 200
-    ) {
-      this.memoriesStore.setOverlayId(
-        this.moments[this.explore.mouseDownId].storyId
-      );
-    } else {
-      this.setMometsSpeed();
-    }
-    this.explore.mouseDownId = "";
   }
 
   setMometsSpeed() {
@@ -832,7 +896,7 @@ export default class AR extends Vue {
       if (this.moments[intersect.object.momentId].hover === false) {
         gsap.to(this.moments[intersect.object.momentId], {
           duration: 0.2,
-          speed: 0.1,
+          speed: 0.0,
           ease: "sine.inOut",
         });
       }
@@ -903,7 +967,7 @@ export default class AR extends Vue {
 
     //this.mixer && this.mixer.update(deltaMsec / 1000);
 
-    this.controls.update();
+    //this.controls.update();
     this.renderer.render(this.scene, this.camera);
 
     this.raf = window.requestAnimationFrame(this.animate.bind(this));

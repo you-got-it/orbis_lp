@@ -67,9 +67,7 @@ export default class Overlay extends Vue {
 }
 
 .overlay {
-  width: 100%;
-  height: 100%;
-  position: fixed;
+  position: absolute;
   background-color: rgba(19, 30, 39, 0.96);
   z-index: 2;
   text-align: center;
@@ -80,8 +78,16 @@ export default class Overlay extends Vue {
   overflow: auto;
   top: 0;
   left: 0;
-  justify-content: center;
-  padding: 120px 40px 40px;
+  bottom: 0;
+  right: 0;
+  justify-content: flex-start;
+  padding: 150px 40px 40px;
+  @include tablet {
+    padding: 120px 40px 40px;
+    justify-content: center;
+    position: fixed;
+    height: 100%;
+  }
 
   .overlay-name {
     color: #fff;
@@ -93,6 +99,12 @@ export default class Overlay extends Vue {
     margin-bottom: 50px;
     // max-height: 40%;
     // overflow: auto;
+  }
+  .figure {
+    width: 100%;
+  }
+  figure {
+    margin: 0;
   }
 }
 </style>

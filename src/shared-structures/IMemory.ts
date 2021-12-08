@@ -5,4 +5,5 @@ export interface IMemory {
   second_name: string;
   email: string;
   date: string;
+  recive: string;
 }

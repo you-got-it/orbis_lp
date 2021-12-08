@@ -1,5 +1,7 @@
 <template>
-  <header :class="['header', 'ui', { _menu: showMenu }]">
+  <header
+    :class="['header', 'ui', { _menu: showMenu, _overlay: overlayId !== -1 }]"
+  >
     <router-link to="memories" class="header__menu-link header__menu-logo">
       <img src="@/assets/images/logo.svg" alt="" class="header-logo" />
     </router-link>
@@ -37,7 +39,7 @@
     <div class="header-mobile">
       <img src="@/assets/images/logo.svg" alt="" class="header-logo" />
       <nav class="header-mobile-nav">
-        <ul>
+        <ul class="header-mobile-ul">
           <li class="header-nav-item">
             <router-link
               to="memories"
@@ -94,7 +96,6 @@ export default class Header extends Vue {
   }
 
   closeClick() {
-    console.log("!!!WWW");
     if (this.showMenu) {
       this.hideCloseButton();
       this.memoriesStore.setShowMenu(false);
@@ -210,8 +211,16 @@ export default class Header extends Vue {
   padding: inherit;
   display: none;
   flex-direction: column;
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s;
+  transition-property: opacity, visibility;
   ._menu & {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transition: 0.3s;
+    transition-property: opacity, visibility;
   }
   .header-mobile-nav {
     margin-left: -30px;
@@ -220,8 +229,26 @@ export default class Header extends Vue {
     flex-direction: column;
     justify-content: center;
   }
+  .header-mobile-ul {
+    ._menu & {
+      li:nth-child(2) {
+        transition-delay: 0.08s;
+      }
+      li:nth-child(3) {
+        transition-delay: 0.16s;
+      }
+    }
+  }
   .header-nav-item {
-    margin: 1em 0;
+    margin: 2em 0;
+    transform: translateY(80px);
+    opacity: 0;
+    ._menu & {
+      opacity: 1;
+      transition: 0.5s;
+      transform: translateY(0);
+      transition-property: opacity, transform;
+    }
   }
 }
 
@@ -260,7 +287,7 @@ export default class Header extends Vue {
   .header-right {
     position: relative;
     transition: 0.4s;
-    transition-property: opacity, visible;
+    transition-property: opacity, visibility;
   }
   .header-close {
     position: fixed;
@@ -287,6 +314,11 @@ export default class Header extends Vue {
     transition: 0.3s transform 0.4s;
     ._menu & {
       transform: scale(0);
+      transition: 0.3s;
+    }
+    ._overlay & {
+      transform: scale(0);
+      transition: 0.3s;
     }
     @include desktop {
       display: none;

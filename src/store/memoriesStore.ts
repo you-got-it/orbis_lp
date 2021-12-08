@@ -18,9 +18,12 @@ export default class MemoriesStore extends VuexModule {
 
   @Action
   getData(): Promise<void> {
-    const url = `https://script.google.com/macros/s/AKfycbzZahwCTiV3myxP1w72oza-Tad8l6bpTL1bUcnCOhmoVnu89bmoyC9R7zg93MpN1GF7/exec`;
+    //const url = `https://script.google.com/macros/s/AKfycbzZahwCTiV3myxP1w72oza-Tad8l6bpTL1bUcnCOhmoVnu89bmoyC9R7zg93MpN1GF7/exec`;
+    const url = `https://script.google.com/macros/s/AKfycby9MeuoOclrkd1DBxdBLGfLssuyq-ECOehE9gUPCdX6KHr2LpyW3-WCQNTLBtkFEULq/exec?get=1&lsrp=1&ndplr=1`;
     return axios
-      .get(url)
+      .get(url, {
+        maxRedirects: 0,
+      })
       .then((result) => {
         this.setMemories(result.data);
       })

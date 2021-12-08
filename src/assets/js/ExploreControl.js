@@ -315,7 +315,7 @@ var ExploreControl = function (object, domElement) {
 
 		if (scope.enabled === false) return;
 
-		event.preventDefault();
+		//event.preventDefault();
 
 		switch (event.touches.length) {
 
@@ -348,8 +348,8 @@ var ExploreControl = function (object, domElement) {
 
 		if (scope.enabled === false) return;
 
-		event.preventDefault();
-		event.stopPropagation();
+	//	event.preventDefault();
+	//	event.stopPropagation();
 
 		switch (event.touches.length) {
 

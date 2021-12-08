@@ -10,11 +10,20 @@
           type="text"
           id="want"
           name="cd_IDSEE"
+          ref="titleInput"
           v-model="title"
           placeholder="Type here what you would see|"
           required
         />
-        <span class="form_error">this is a required field</span>
+        <span
+          class="form_error"
+          v-html="
+            errors.title
+              ? 'Please remove any prohibited words'
+              : 'this is a required field'
+          "
+          >this is a required field</span
+        >
       </div>
       <div class="form_row">
         <label for="moment"
@@ -25,9 +34,15 @@
           type="text"
           id="moment"
           v-model="description"
+          ref="descriptionInput"
           name="cd_IDSEEDESC"
           placeholder="Type here a description of that moment|"
         ></textarea>
+        <span
+          class="form_error"
+          :style="{ display: this.errors.description ? 'block' : 'none' }"
+          >Please remove any prohibited words</span
+        >
       </div>
       <div class="form_row">
         <label for="name">first name</label>
@@ -35,11 +50,20 @@
           type="text"
           id="name"
           v-model="first_name"
+          ref="firstNameInput"
           name="cd_FIRSTNAME"
           placeholder="Enter your first name|"
           required
         />
-        <span class="form_error">this is a required field</span>
+        <span
+          class="form_error"
+          v-html="
+            errors.first_name
+              ? 'Please remove any prohibited words'
+              : 'this is a required field'
+          "
+          >this is a required field</span
+        >
       </div>
       <div class="form_row">
         <label for="surname">second name</label>
@@ -47,11 +71,20 @@
           type="text"
           id="surname"
           name="cd_LASTNAME"
+          ref="secondNameInput"
           v-model="second_name"
           placeholder="Enter your second name|"
           required
         />
-        <span class="form_error">this is a required field</span>
+        <span
+          class="form_error"
+          v-html="
+            errors.second_name
+              ? 'Please remove any prohibited words'
+              : 'this is a required field'
+          "
+          >this is a required field</span
+        >
       </div>
       <div class="form_row">
         <label for="mail">email address</label>
@@ -75,6 +108,7 @@
         <input
           type="checkbox"
           id="recieve"
+          v-model="recive"
           onclick="cd_IDSEEOPTIN_radio.value = this.checked ? 'y' : 'n';"
         />
         <label for="recieve"
@@ -107,7 +141,8 @@
         <div class="social">
           <span class="social_title">share this page</span>
           <div class="social_links">
-            <div class="addthis_inline_share_toolbox"></div>
+            <!-- <div class="addthis_inline_share_toolbox"></div> -->
+            <AddThis publicId="ra-6142409eb2f29e37" />
           </div>
           <div class="social_copy">
             <span class="social_copy-title">Or share with link</span>
@@ -130,24 +165,25 @@
           vision loss an have on children and adults in low income-countries
         </p>
       </div>
-      <router-link to="info" class="button">learn more about orbis</router-link>
+      <router-link to="info" class="button">more about orbis</router-link>
     </div>
   </main>
 </template>
 
 <script>
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch, Ref } from "vue-property-decorator";
 import Title from "@/components/Title.vue";
 import Texts from "../assets/js/texts.js";
 import BadWords from "../assets/js/badwords.js";
 import FormsStore from "@/store/formsStore";
 import { getModule } from "vuex-module-decorators";
+import AddThis from "vue-simple-addthis-share";
 
 // import MemoriesStore from "@/store/memoriesStore";
 // import { getModule } from "vuex-module-decorators";
 // import { gsap } from "gsap";
 @Component({
-  components: { Title },
+  components: { Title, AddThis },
 })
 export default class Forms extends Vue {
   currentTitle = "";
@@ -158,9 +194,47 @@ export default class Forms extends Vue {
   first_name = "";
   second_name = "";
   email = "";
+  recive = false;
   submitted = false;
   done = false;
   waiting = false;
+
+  errors = {
+    title: false,
+    description: false,
+    first_name: false,
+    second_name: false,
+  };
+
+  @Ref("titleInput")
+  titleInput;
+  @Ref("descriptionInput")
+  descriptionInput;
+  @Ref("firstNameInput")
+  firstNameInput;
+  @Ref("secondNameInput")
+  secondNameInput;
+
+  @Watch("title")
+  setTileValidity() {
+    this.titleInput.setCustomValidity("");
+    this.errors.title = false;
+  }
+  @Watch("description")
+  setDescriptionValidity() {
+    this.descriptionInput.setCustomValidity("");
+    this.errors.description = false;
+  }
+  @Watch("first_name")
+  setFirstNameValidity() {
+    this.firstNameInput.setCustomValidity("");
+    this.errors.first_name = false;
+  }
+  @Watch("second_name")
+  setSecondNameValidity() {
+    this.secondNameInput.setCustomValidity("");
+    this.errors.second_name = false;
+  }
 
   get formsStore() {
     return getModule(FormsStore, this.$store);
@@ -171,6 +245,7 @@ export default class Forms extends Vue {
       Texts.titles[Math.trunc(Math.random() * Texts.titles.length)];
     this.submitButton = document.querySelector('input[type="button"]');
     this.form = document.querySelector("form");
+
     //
   }
 
@@ -187,7 +262,11 @@ export default class Forms extends Vue {
     );
   }
 
-  badFilter(text) {
+  // @Watch("title")
+
+  // }
+
+  badFilterold(text) {
     const array = text.split(" ");
     for (let i = 0; i < array.length; i += 1) {
       if (BadWords.includes(array[i].toLowerCase())) {
@@ -197,15 +276,51 @@ export default class Forms extends Vue {
 
     return text;
   }
+  badFilter(text) {
+    const array = text.split(" ");
+    for (let i = 0; i < array.length; i += 1) {
+      if (BadWords.includes(array[i].toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   async onSubmit(e) {
     e.preventDefault();
     this.submitted = true;
-    this.title = this.badFilter(this.title);
-    this.description = this.badFilter(this.description);
-    this.first_name = this.badFilter(this.first_name);
-    this.second_name = this.badFilter(this.second_name);
-    this.email = this.badFilter(this.email);
+    this.errors.title = this.badFilter(this.title);
+    this.errors.description = this.badFilter(this.description);
+    this.errors.first_name = this.badFilter(this.first_name);
+    this.errors.second_name = this.badFilter(this.second_name);
+    let error = false;
+    if (this.errors.title) {
+      //this.title = "";
+      this.titleInput.setCustomValidity("bad words");
+      error = true;
+    }
+    if (this.errors.description) {
+      //this.description = "";
+      this.descriptionInput.setCustomValidity("bad words");
+      error = true;
+    }
+    if (this.errors.first_name) {
+      //this.first_name = "";
+      this.firstNameInput.setCustomValidity("bad words");
+      error = true;
+    }
+    if (this.errors.second_name) {
+      //this.second_name = "";
+      this.secondNameInput.setCustomValidity("bad words");
+      error = true;
+    }
+    if (error) {
+      return;
+    }
+    // this.title = this.badFilter(this.title, this.errors.title);
+    // this.description = this.badFilter(this.description);
+    // this.first_name = this.badFilter(this.first_name);
+    // this.second_name = this.badFilter(this.second_name);
 
     let isValid = true;
     document.querySelectorAll("input[name], textarea").forEach((el) => {
@@ -220,7 +335,8 @@ export default class Forms extends Vue {
         first_name: this.first_name,
         second_name: this.second_name,
         email: this.email,
-        date: Date.now(),
+        date: new Date().toISOString().slice(0, 10),
+        recive: this.recive ? "y" : "n",
       });
       this.waiting = true;
       this.formsStore

@@ -84,6 +84,15 @@ export default class App extends Vue {
     //console.log(newVal);
   }
 
+  @Watch("overlayId")
+  setBodyStyle(newVal) {
+    if (newVal === -1) {
+      document.body.style.overflow = "initial";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+  }
+
   get memoriesPage() {
     return this.currentPath === "/memories" ? true : false;
   }

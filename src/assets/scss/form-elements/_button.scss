@@ -7,14 +7,21 @@
     cursor: pointer;
     color: $cDark;
     font-weight: 900;
-    font-size: 20px;
-    height: 74px;
-    line-height: 78px;
-    padding: 0 35px;
+    font-size: 18px;
+    height: 55px;
+    line-height: 58px;
+    padding: 0 20px;
     text-align: center;
     white-space: nowrap;
     text-transform: uppercase;
     transition: .2s ease-in-out opacity;
+
+    @include tablet {
+        font-size: 20px;
+        height: 74px;
+        line-height: 78px;
+        padding: 0 35px;
+    }
 
     &:hover,
     &:focus {
