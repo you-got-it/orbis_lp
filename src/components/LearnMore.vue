@@ -5,16 +5,7 @@
         <span>If you lost your sight,</span> what moment would you want to see
         again?
       </h1>
-      <div
-        style="
-          position: absolute;
-          top: 50px;
-          left: 0;
-          height: 400px;
-          width: 100%;
-          background-image: linear-gradient(180deg, #0c1f2f, transparent);
-        "
-      ></div>
+      <div class="info-gradient"></div>
       <video
         class="showcase_video"
         :src="`${publicPath}video/hero-video.mp4`"
@@ -231,7 +222,20 @@ export default class LearnMore extends Vue {
   z-index: 1;
   text-align: left;
   position: relative;
+  .info-gradient {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    height: 220px;
+    width: 100%;
+    z-index: 1;
+    background-image: linear-gradient(180deg, #0c1f2f, transparent);
+    @include tablet {
+      height: 400px;
+    }
+  }
 }
+
 .swiper-slide {
   flex-shrink: 1;
 }

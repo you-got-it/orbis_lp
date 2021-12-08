@@ -83,7 +83,7 @@ export default class Overlay extends Vue {
   justify-content: flex-start;
   padding: 150px 40px 40px;
   @include tablet {
-    padding: 120px 40px 40px;
+    padding: 120px 140px 40px;
     justify-content: center;
     position: fixed;
     height: 100%;

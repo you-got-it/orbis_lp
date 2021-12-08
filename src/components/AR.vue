@@ -238,7 +238,7 @@ export default class AR extends Vue {
       this.mainText.maxWidth = this.isDesktop ? 2.8 : 1.6;
     }
 
-    this.renderer.setPixelRatio(1);
+    this.renderer.setPixelRatio(Math.min(1.7, window.devicePixelRatio));
 
     if (!this.isDesktop) {
       this.height = this.width * 1.0;
@@ -386,7 +386,7 @@ export default class AR extends Vue {
       this.setMometsSpeed();
     }
     this.explore.mouseDownId = "";
-    //this.mouse.pos.set(-1, -1);
+    this.mouse.pos.set(-1, -1);
   }
 
   async loadResources() {
@@ -707,6 +707,9 @@ export default class AR extends Vue {
   initMoments() {
     for (let i = 0; i < 35; i += 1) {
       const string = this.string.clone();
+      if (!this.isDesktop) {
+        this.string.fontSize = 0.08;
+      }
       const storyId = (i + this.mometsOffset) % this.memories.length;
       const moment = this.memories[storyId];
 
@@ -724,9 +727,9 @@ export default class AR extends Vue {
         Math.PI + (this.mometsInit ? Math.random() * Math.PI * 2 : 0); //Math.random() * Math.PI * 2;
       const speed = this.mometsInit ? this.getRandomSpeed() : 0; // Math.random() * 0.5 + 0.2;
       const group = new Group();
-      const dY = (Math.random() - 0.5) * (this.isDesktop ? 0.5 : 1.2);
+      // const dY = (Math.random() - 0.5) * (this.isDesktop ? 0.5 : 1.2);
       // const dY = (-0.5 + (Math.cos((i / 35) * Math.PI * 2) + 1) / 2) * 0.5;
-      // const dY = (-0.5 + i / 35) * 0.5;
+      const dY = (-0.5 + i / 35) * (this.isDesktop ? 0.5 : 1.2);
       string.position.z = rad;
       group.rotation.y = dAng;
 

@@ -223,7 +223,8 @@ export default class Header extends Vue {
     transition-property: opacity, visibility;
   }
   .header-mobile-nav {
-    margin-left: -30px;
+    margin-left: -60px;
+    margin-top: -100px;
     height: 100%;
     display: flex;
     flex-direction: column;
