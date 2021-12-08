@@ -724,9 +724,9 @@ export default class AR extends Vue {
         Math.PI + (this.mometsInit ? Math.random() * Math.PI * 2 : 0); //Math.random() * Math.PI * 2;
       const speed = this.mometsInit ? this.getRandomSpeed() : 0; // Math.random() * 0.5 + 0.2;
       const group = new Group();
-      // const dY = (Math.random() - 0.5) * (this.isDesktop ? 0.5 : 1.2);
+      const dY = (Math.random() - 0.5) * (this.isDesktop ? 0.5 : 1.2);
       // const dY = (-0.5 + (Math.cos((i / 35) * Math.PI * 2) + 1) / 2) * 0.5;
-      const dY = (-0.5 + i / 35) * 0.5;
+      // const dY = (-0.5 + i / 35) * 0.5;
       string.position.z = rad;
       group.rotation.y = dAng;
 
