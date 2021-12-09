@@ -22,7 +22,7 @@
         :poster="`${publicPath}img/hero-video-cover.jpg`"
       ></video>
     </div>
-    <div class="button intro-skip" @click="$emit('skipIntro')">skip</div>
+    <div class="button intro-skip" @click="$emit('skipIntro')">skip intro</div>
   </div>
 </template>
 

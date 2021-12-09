@@ -685,7 +685,7 @@ export default class AR extends Vue {
           i * 0.4
         );
     });
-    this.mainTween.timeScale(1.5);
+    this.mainTween.timeScale(2);
   }
 
   updateColorRanges() {
@@ -705,6 +705,7 @@ export default class AR extends Vue {
   }
 
   initMoments() {
+    this.moments = [];
     for (let i = 0; i < 35; i += 1) {
       const string = this.string.clone();
       if (!this.isDesktop) {
@@ -910,7 +911,7 @@ export default class AR extends Vue {
       ) {
         // random speed if hover changed
         gsap.to(this.moments[currentHoverId], {
-          duration: 0.3,
+          duration: 0.5,
           speed: this.getRandomSpeed(),
           ease: "sine.in",
         });
@@ -924,7 +925,7 @@ export default class AR extends Vue {
       if (this.explore.hoverId !== "") {
         // random speed if hover leave
         gsap.to(this.moments[this.explore.hoverId], {
-          duration: 0.3,
+          duration: 0.5,
           speed: this.getRandomSpeed(),
           ease: "sine.in",
         });

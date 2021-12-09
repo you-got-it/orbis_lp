@@ -98,6 +98,12 @@
         />
         <span class="form_error">this is a required field</span>
       </div>
+      <div class="form_row intro_text">
+        <p>
+          When you submit your memory it will appear on the website along with
+          your first name
+        </p>
+      </div>
       <div class="form_row">
         <input
           type="hidden"
@@ -162,7 +168,7 @@
         <p>
           We are sharing these memories on a public website for others to read,
           and to bring us closer together and better understand the impact
-          vision loss an have on children and adults in low income-countries
+          vision loss can have on children and adults in low income-countries
         </p>
       </div>
       <router-link to="info" class="button">more about orbis</router-link>

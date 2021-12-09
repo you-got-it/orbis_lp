@@ -1,6 +1,6 @@
 <template>
   <main class="info">
-    <div class="showcase">
+    <!-- <div class="showcase">
       <h1 class="showcase_title" v-html="this.showcaseTitle">
         <span>If you lost your sight,</span> what moment would you want to see
         again?
@@ -15,7 +15,7 @@
         playsinline
         :poster="`${publicPath}img/hero-video-cover.jpg`"
       ></video>
-    </div>
+    </div> -->
 
     <div class="content">
       <div class="intro">
@@ -222,6 +222,13 @@ export default class LearnMore extends Vue {
   z-index: 1;
   text-align: left;
   position: relative;
+  padding-top: 150px;
+  @include desktop {
+    padding-top: 180px;
+  }
+  @include desktop {
+    padding-top: 220px;
+  }
   .info-gradient {
     position: absolute;
     top: 50px;
