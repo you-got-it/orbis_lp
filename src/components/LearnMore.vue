@@ -61,6 +61,24 @@
           >3 out of 4 cases of blindness are treatable.</span
         >
       </h2>
+
+      <div class="orbis">
+        <picture class="orbis_image">
+          <source
+            :srcset="`${publicPath}img/girl-mobile.jpg`"
+            media="(max-width: 768px)"
+          />
+          <img :src="`${publicPath}img/girl.jpg`" alt="" class="" />
+        </picture>
+        <span class="orbis_title">who are orbis?</span>
+        <p>
+          We are an international eye care charity that saves people’s sight,
+          giving them the chance to change their lives. We train eye health
+          professionals and workers, raise awareness, and improve access to eye
+          care around the world.
+        </p>
+      </div>
+
       <span class="marked-text">What is ‘I’d see’?</span>
 
       <div class="about">
@@ -128,23 +146,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="orbis">
-        <picture class="orbis_image">
-          <source
-            :srcset="`${publicPath}img/girl-mobile.jpg`"
-            media="(max-width: 768px)"
-          />
-          <img :src="`${publicPath}img/girl.jpg`" alt="" class="" />
-        </picture>
-        <span class="orbis_title">who are orbis?</span>
-        <p>
-          We are an international eye care charity that saves people’s sight,
-          giving them the chance to change their lives. We train eye health
-          professionals and workers, raise awareness, and improve access to eye
-          care around the world.
-        </p>
       </div>
 
       <div class="quote-wrapper">

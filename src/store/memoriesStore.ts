@@ -41,7 +41,7 @@ export default class MemoriesStore extends VuexModule {
 
   @Mutation
   setMemories(obj: IMemory[]): void {
-    this.memories = obj;
+    this.memories = obj.filter((m) => m.title !== "");
   }
 
   @Mutation

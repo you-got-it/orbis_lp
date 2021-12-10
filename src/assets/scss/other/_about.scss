@@ -1,6 +1,6 @@
 .about {
     margin: 15px 0 50px;
-    @include tablet {
+    @include desktop {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
@@ -9,13 +9,13 @@
 
     h2 {
         margin: 0 0 30px;
-        @include tablet {
+        @include desktop {
             max-width: 60%;
             margin: 0;
         }
 
         & + a {
-            @include tablet {
+            @include desktop {
                 display: inline-block;
                 margin: 0 0 15px;
             }
