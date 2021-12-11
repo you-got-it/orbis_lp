@@ -205,6 +205,14 @@ export default class AR extends Vue {
     this.$refs["3d"].removeEventListener("mouseup", this.mouseup);
     this.$refs["3d"].removeEventListener("mousemove", this.mousemove);
 
+    this.$refs["3d"].removeEventListener("touchend", this.ontouchend, false);
+    this.$refs["3d"].removeEventListener("touchmove", this.touchmove, false);
+    this.$refs["3d"].removeEventListener(
+      "touchstart",
+      this.ontouchstart,
+      false
+    );
+
     //  this.controls.dispose();
   }
 
@@ -361,7 +369,9 @@ export default class AR extends Vue {
     }
     gsap.to(this.moments, {
       duration: 0.3,
-      speed: 0,
+      speed: (i) => {
+        return this.moments[i].speed * 0.1;
+      },
       ease: "sine.out",
     });
     this.explore.mouseDownId = this.explore.hoverId;
@@ -386,7 +396,10 @@ export default class AR extends Vue {
       this.setMometsSpeed();
     }
     this.explore.mouseDownId = "";
-    this.mouse.pos.set(-1, -1);
+    if (!this.isDesktop) {
+      this.mouse.pos.set(-1, -1);
+    }
+    this.mouse.isDown = false;
   }
 
   async loadResources() {
@@ -907,7 +920,8 @@ export default class AR extends Vue {
       this.moments[intersect.object.momentId].hover = true;
       if (
         intersect.object.momentId !== currentHoverId &&
-        currentHoverId !== ""
+        currentHoverId !== "" &&
+        !this.mouse.isDown
       ) {
         // random speed if hover changed
         gsap.to(this.moments[currentHoverId], {
@@ -922,7 +936,7 @@ export default class AR extends Vue {
     } else {
       this.mouse.hover = false;
       globalBus.setHover(false);
-      if (this.explore.hoverId !== "") {
+      if (this.explore.hoverId !== "" && !this.mouse.isDown) {
         // random speed if hover leave
         gsap.to(this.moments[this.explore.hoverId], {
           duration: 0.5,
