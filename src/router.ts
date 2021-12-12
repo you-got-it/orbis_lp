@@ -5,7 +5,7 @@ import Forms from "./components/Forms.vue";
 import LearnMore from "./components/LearnMore.vue";
 
 export const router = new Router({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   // scrollBehavior(to, from, savedPosition) {
   //   return { x: 0, y: 0 };
