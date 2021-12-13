@@ -163,15 +163,16 @@
       </div>
     </form>
     <div class="lmblock">
-      <h1 class="lmblock-title">why are we sharing your memories?</h1>
+      <h1 class="lmblock-title">Want to find out more?</h1>
       <div class="intro_text content">
         <p>
-          We are sharing these memories on a public website for others to read,
-          and to bring us closer together and better understand the impact
-          vision loss can have on children and adults in low income-countries
+          We are an international eye care charity that saves people's sight,
+          giving them the chance to change their lives. We train eye health
+          professionals and workers, raise awareness, and improve access to
+          eye care around the world.
         </p>
       </div>
-      <router-link to="info" class="button">more about orbis</router-link>
+      <router-link to="info" class="button">More about Orbis</router-link>
     </div>
   </main>
 </template>
