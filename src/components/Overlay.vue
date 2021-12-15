@@ -9,7 +9,7 @@
         </p>
       </div>
       <blockquote class="overlay-name">
-        {{ data.first_name }} {{ data.second_name.charAt(0) }}
+        {{ data.first_name }} {{ String(data.second_name).charAt(0) }}
       </blockquote>
     </figure>
   </div>

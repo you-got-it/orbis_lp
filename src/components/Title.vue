@@ -20,7 +20,7 @@ export default class Title extends Vue {
   // }
 
   get getTitle() {
-    const words = this.title.split(" ");
+    const words = String(this.title).split(" ");
     let str = "";
     words.forEach((w, i) => {
       str += "<span>";
