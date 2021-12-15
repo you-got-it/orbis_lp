@@ -171,8 +171,8 @@
         <p>
           We are an international eye care charity that saves people's sight,
           giving them the chance to change their lives. We train eye health
-          professionals and workers, raise awareness, and improve access to
-          eye care around the world.
+          professionals and workers, raise awareness, and improve access to eye
+          care around the world.
         </p>
       </div>
       <router-link to="info" class="button">More about Orbis</router-link>
