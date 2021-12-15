@@ -163,6 +163,11 @@
             </button>
           </div>
         </div>
+        <router-link
+          :to="{ path: 'memories', query: { id: sharingId } }"
+          class="button"
+          >View you memory</router-link
+        >
       </div>
     </form>
     <div class="lmblock">
