@@ -102,90 +102,93 @@ export default class Header extends Vue {
       return;
     }
     this.memoriesStore.setOverlayId(-1);
+    this.$router.push({
+      path: "memories",
+    });
   }
 
   burgerClick() {
-    gsap.fromTo(
-      ".header-close",
-      {
-        duration: 0.7,
-        rotate: -260,
-        scale: 0,
-        ease: "power3.in",
-      },
-      {
-        duration: 0.7,
-        rotate: 0,
-        scale: 1,
-        delay: 0.2,
-        ease: "power3.out",
-      }
-    );
+    // gsap.fromTo(
+    //   ".header-close",
+    //   {
+    //     duration: 0.7,
+    //     rotate: -260,
+    //     scale: 0,
+    //     ease: "power3.in",
+    //   },
+    //   {
+    //     duration: 0.7,
+    //     rotate: 0,
+    //     scale: 1,
+    //     delay: 0.2,
+    //     ease: "power3.out",
+    //   }
+    // );
     this.memoriesStore.setShowMenu(true);
   }
 
   @Watch("overlayId") setOverlayAnim() {
     if (this.overlayId !== -1) {
-      gsap.to(".header-nav-item-desktop", {
-        duration: 0.4,
-        autoAlpha: 0,
-        //x: -250,
-        stagger: 0.02,
-        ease: "sine.inOut",
-      });
-      gsap.fromTo(
-        ".header-close",
-        {
-          duration: 0.7,
-          rotate: -260,
-          scale: 0,
-          ease: "power3.in",
-        },
-        {
-          duration: 0.7,
-          rotate: 0,
-          scale: 1,
-          delay: 0.2,
-          ease: "power3.out",
-        }
-      );
+      // gsap.to(".header-nav-item-desktop", {
+      //   duration: 0.4,
+      //   autoAlpha: 0,
+      //   //x: -250,
+      //   stagger: 0.02,
+      //   ease: "sine.inOut",
+      // });
+      // gsap.fromTo(
+      //   ".header-close",
+      //   {
+      //     duration: 0.7,
+      //     rotate: -260,
+      //     scale: 0,
+      //     ease: "power3.in",
+      //   },
+      //   {
+      //     duration: 0.7,
+      //     rotate: 0,
+      //     scale: 1,
+      //     delay: 0.2,
+      //     ease: "power3.out",
+      //   }
+      // );
     } else {
-      gsap.to(".header-nav-item-desktop", {
-        duration: 0.3,
-        autoAlpha: 1,
-        //x: 0,
-        stagger: -0.02,
-        delay: 0.4,
-        ease: "sine.inOut",
-      });
-      this.hideCloseButton();
+      // gsap.to(".header-nav-item-desktop", {
+      //   duration: 0.3,
+      //   autoAlpha: 1,
+      //   //x: 0,
+      //   stagger: -0.02,
+      //   delay: 0.4,
+      //   ease: "sine.inOut",
+      // });
+      // this.hideCloseButton();
     }
   }
 
   hideCloseButton() {
-    gsap.fromTo(
-      ".header-close",
-      {
-        rotate: 0,
-        scale: 1,
-        delay: 0.2,
-      },
-      {
-        duration: 0.5,
-        rotate: -260,
-        scale: 0,
-        ease: "power3.in",
-      }
-    );
+    // gsap.fromTo(
+    //   ".header-close",
+    //   {
+    //     rotate: 0,
+    //     scale: 1,
+    //     delay: 0.2,
+    //   },
+    //   {
+    //     duration: 0.5,
+    //     rotate: -260,
+    //     scale: 0,
+    //     ease: "power3.in",
+    //   }
+    // );
   }
 
   mounted() {
     //
     this.$nextTick(() => {
-      gsap.set([".header-close"], {
-        rotate: -260,
-        scale: 0,
-      });
+      // gsap.set([".header-close"], {
+      //   rotate: -260,
+      //   scale: 0,
+      // });
     });
   }
 }
@@ -258,7 +261,9 @@ export default class Header extends Vue {
     transform: translateY(80px);
     opacity: 0;
     transition: 0.3s;
+    pointer-events: none;
     ._menu & {
+      pointer-events: all;
       opacity: 1;
       transition: 0.5s;
       transform: translateY(0);
@@ -285,12 +290,23 @@ export default class Header extends Vue {
       align-items: center;
     }
   }
-  .header-nav-item {
+  &-nav-item {
     pointer-events: all;
+    opacity: 1;
+    transition: 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95) 0.4s;
+    visibility: visible;
+    transition-property: opacity, visibility;
+    ._overlay & {
+      opacity: 0;
+      transition: 0.4s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+      transition-property: opacity, visibility;
+      visibility: hidden;
+    }
     @include desktop {
       margin-left: 40px;
     }
   }
+
   .header-logo {
     pointer-events: all;
     width: 89px;
@@ -304,7 +320,7 @@ export default class Header extends Vue {
     transition: 0.4s;
     transition-property: opacity, visibility;
   }
-  .header-close {
+  &-close {
     position: fixed;
     right: 34px;
     top: 34px;
@@ -312,6 +328,13 @@ export default class Header extends Vue {
     pointer-events: all;
     cursor: pointer;
     z-index: 1;
+    transform: rotate(-260deg) scale(0);
+    transition: transform 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    ._overlay &,
+    ._menu & {
+      transform: rotate(0deg) scale(1);
+      transition: transform 0.7s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
     @include desktop {
       right: 60px;
       top: 66px;

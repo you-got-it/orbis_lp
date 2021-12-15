@@ -15,7 +15,7 @@
       mode="out-in"
       :duration="{ enter: 700, leave: 300 }"
     >
-      <router-view :key="$route.fullPath" v-if="checkIntro" ref="route" />
+      <router-view :key="$route.path" v-if="checkIntro" ref="route" />
     </transition>
     <transition name="fade" mode="out-in">
       <Overlay v-if="overlayId !== -1" :data="memories[overlayId]" />
@@ -81,7 +81,25 @@ export default class App extends Vue {
   @Watch("$route", { immediate: true, deep: true })
   onUrlChange(newVal) {
     this.currentPath = newVal.path;
-    //console.log(newVal);
+    if (this.currentPath === "/memories" && newVal.query.id) {
+      this.showIntro = false;
+      const storyId = this.memories.findIndex((m) => m.id === newVal.query.id);
+      if (storyId === -1) {
+        this.memoriesStore.setOverlayId(99999999);
+      } else {
+        this.memoriesStore.setOverlayId(storyId);
+      }
+    }
+  }
+
+  @Watch("memories") fetchDone() {
+    if (this.currentPath === "/memories" && this.$route.query.id) {
+      this.showIntro = false;
+      const storyId = this.memories.findIndex(
+        (m) => m.id === this.$route.query.id
+      );
+      this.memoriesStore.setOverlayId(storyId);
+    }
   }
 
   @Watch("overlayId")

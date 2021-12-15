@@ -53,4 +53,8 @@ export default class MemoriesStore extends VuexModule {
   setOverlayId(num: number): void {
     this.overlayId = num;
   }
+  @Mutation
+  addMemorie(obj: IMemory): void {
+    this.memories.push(obj);
+  }
 }

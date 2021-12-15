@@ -148,7 +148,10 @@
           <span class="social_title">share this page</span>
           <div class="social_links">
             <!-- <div class="addthis_inline_share_toolbox"></div> -->
-            <AddThis publicId="ra-6142409eb2f29e37" />
+            <AddThis
+              publicId="ra-6142409eb2f29e37"
+              :data-url="`https://idsee.orbis.org/#/memories?id=${sharingId}`"
+            />
           </div>
           <div class="social_copy">
             <span class="social_copy-title">Or share with link</span>
@@ -156,7 +159,7 @@
               class="social_copy-button js-copy-button"
               @click="copyClick"
             >
-              https://orbis.org/idsee
+              {{ `https://idsee.orbis.org/#/memories?id=${sharingId}` }}
             </button>
           </div>
         </div>
@@ -182,6 +185,7 @@ import Title from "@/components/Title.vue";
 import Texts from "../assets/js/texts.js";
 import BadWords from "../assets/js/badwords.js";
 import FormsStore from "@/store/formsStore";
+import MemoriesStore from "@/store/memoriesStore";
 import { getModule } from "vuex-module-decorators";
 import AddThis from "vue-simple-addthis-share";
 
@@ -211,6 +215,7 @@ export default class Forms extends Vue {
     first_name: false,
     second_name: false,
   };
+  sharingId = "";
 
   @Ref("titleInput")
   titleInput;
@@ -244,6 +249,9 @@ export default class Forms extends Vue {
 
   get formsStore() {
     return getModule(FormsStore, this.$store);
+  }
+  get memoriesStore() {
+    return getModule(MemoriesStore, this.$store);
   }
 
   mounted() {
@@ -328,7 +336,7 @@ export default class Forms extends Vue {
     // this.description = this.badFilter(this.description);
     // this.first_name = this.badFilter(this.first_name);
     // this.second_name = this.badFilter(this.second_name);
-
+    this.sharingId = Date.now().toString(36);
     let isValid = true;
     document.querySelectorAll("input[name], textarea").forEach((el) => {
       if (!el.checkValidity()) {
@@ -336,7 +344,7 @@ export default class Forms extends Vue {
       }
     });
     if (isValid) {
-      this.formsStore.setData({
+      const memObj = {
         title: this.title,
         description: this.description,
         first_name: this.first_name,
@@ -344,7 +352,9 @@ export default class Forms extends Vue {
         email: this.email,
         date: new Date().toISOString().slice(0, 10),
         recive: this.recive ? "y" : "n",
-      });
+        id: this.sharingId,
+      };
+      this.formsStore.setData(memObj);
       this.waiting = true;
       this.formsStore
         .submitForms()
@@ -352,6 +362,7 @@ export default class Forms extends Vue {
           this.waiting = false;
           this.done = true;
           this.currentTitle = Texts.thanks;
+          this.memoriesStore.addMemorie(memObj);
           window.scrollTo({
             top: 0,
             behavior: "smooth",
@@ -361,32 +372,7 @@ export default class Forms extends Vue {
           this.waiting = false;
           this.$router.go(this.$router.currentRoute);
         });
-      // if (!result) {
-      //   console.log("error");
-      // } else {
-      //   console.log(result);
-      //   this.done = true;
-      //   this.currentTitle = Texts.thanks;
-      // }
     }
-    /*   
-
-
-  
-
-    let formData = new FormData();
-    document.querySelectorAll("input[name], textarea").forEach((el) => {
-      console.log(el);
-      if (!el.checkValidity()) {
-        isValid = false;
-      }
-    });
-
-    if (isValid) {
-      this.form.submit();
-
-      this.form.classList.add("done");
-    }*/
   }
 }
 </script>

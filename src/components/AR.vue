@@ -389,9 +389,16 @@ export default class AR extends Vue {
       Math.abs(this.mouse.pos.x - this.mouse.lastPos.x) < 0.06 &&
       Date.now() - this.explore.downTime < 200
     ) {
-      this.memoriesStore.setOverlayId(
-        this.moments[this.explore.mouseDownId].storyId
-      );
+      // this.memoriesStore.setOverlayId(
+      //   this.moments[this.explore.mouseDownId].storyId
+      // );
+
+      this.$router.push({
+        path: "memories",
+        query: {
+          id: this.memories[this.moments[this.explore.mouseDownId].storyId].id,
+        },
+      });
     } else {
       this.setMometsSpeed();
     }

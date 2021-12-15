@@ -1,6 +1,6 @@
 <template>
   <div class="overlay layout">
-    <figure>
+    <figure v-if="data">
       <!-- <h3 class="form_title overlay-title"><span v-html="getTitle"></span></h3> -->
       <Title :title="data.title" />
       <div class="intro_text content overlay-description">

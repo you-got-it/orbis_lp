@@ -6,4 +6,5 @@ export interface IMemory {
   email: string;
   date: string;
   recive: string;
+  id: string;
 }
