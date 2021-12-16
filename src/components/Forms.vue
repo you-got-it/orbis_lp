@@ -373,6 +373,10 @@ export default class Forms extends Vue {
             top: 0,
             behavior: "smooth",
           });
+          document.getElementById("app").scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         })
         .catch((err) => {
           this.waiting = false;
