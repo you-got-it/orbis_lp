@@ -166,7 +166,7 @@
         <router-link
           :to="{ path: 'memories', query: { id: sharingId } }"
           class="button"
-          >View you memory</router-link
+          >View your memory</router-link
         >
       </div>
     </form>
