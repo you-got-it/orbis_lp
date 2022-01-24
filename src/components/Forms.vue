@@ -377,6 +377,12 @@ export default class Forms extends Vue {
             top: 0,
             behavior: "smooth",
           });
+
+          // Send Facebook Pixel Lead standard event.
+          // https://developers.facebook.com/docs/facebook-pixel/implementation/conversion-tracking/#standard-events
+          if (window.fbq) {
+            window.fbq("track", "Lead");
+          }
         })
         .catch((err) => {
           this.waiting = false;
